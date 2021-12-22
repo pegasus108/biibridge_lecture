@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+
+#contents .section#secInfo {
+	padding:0 0 20px 0;
+	margin:19px 25px 0 25px;
+}
+#contents .section .title {
+	background-image:url(../../images/common/bg_info_body.jpg);
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+#contents .section h2 {
+	margin-bottom:20px;
+	background-image:url(../../images/common/icon_info.jpg);
+	background-position:left top;
+	background-repeat:no-repeat;
+	font-size:14px;
+}
+#contents .section h2 strong {
+	display:block;
+	padding-left:23px;
+	background-image:url(../../images/common/bg_info_end.jpg);
+	background-position:right top;
+	background-repeat:no-repeat;
+	line-height:31px;
+}

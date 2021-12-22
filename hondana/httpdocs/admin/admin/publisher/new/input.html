@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>出版社登録 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header">
+				<td colspan="2">
+					<div id="logo"><a href="../../../admin/">hondana管理システム</a></div>
+					<div id="hnavi">
+						<p id="hnaviLogout"><a href="../../../logout/">ログアウト</a></p>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+					<ul>
+						<li id="gnavi01"><a href="../../info/">インフォメーション</a></li>
+						<li id="gnavi02"><a href="../../publisher/">出版社</a></li>
+						<li id="gnavi03"><a href="../../import_images/">書影一括取込</a></li>
+					</ul>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../admin/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">出版社一覧</a>&nbsp;&gt;&nbsp;出版社登録</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi">
+					<dl>
+						<dt class="title">出版社一覧</dt>
+						<dd>
+							<ul>
+								<li><a href="../">出版社一覧</a></li>
+								<li><a href="../new/">出版社登録</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</td>
+				<td id="main">
+					<div class="title"><h1><strong>出版社登録</strong></h1></div>
+					<form id="listForm" action="./" method="post" enctype="multipart/form-data">
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>会社コード</th>
+									<td>
+										{if isset($errors.publisher_no)}<p class="error">{$errors.publisher_no}</p>{/if}
+										システム側で自動採番
+								</tr>
+								<tr>
+									<th>会社名<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.name)}<p class="error">{$errors.name|escape}</p>{/if}
+										<input type="text" name="name" value="{$name|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社名カナ<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.kana)}<p class="error">{$errors.kana|escape}</p>{/if}
+										<strong>全角カタカナでご入力ください。</strong><br />
+										<input type="text" name="kana" value="{$kana|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社郵便番号<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.zipcode)}<p class="error">{$errors.zipcode}</p>{/if}
+										<input type="text" name="zipcode" value="{$zipcode|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社住所<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.address)}<p class="error">{$errors.address|escape}</p>{/if}
+										<textarea name="address" cols="48" rows="3">{$address|escape}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>会社電話番号<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.tel)}<p class="error">{$errors.tel|escape}</p>{/if}
+										<input type="text" name="tel" value="{$tel|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社FAX</th>
+									<td>
+										{if isset($errors.fax)}<p class="error">{$errors.fax}</p>{/if}
+										<input type="text" name="fax" value="{$fax|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>ロゴ</th>
+									<td>
+										{if isset($errors.logo)}<p class="error">{$errors.logo}</p>{/if}
+										<strong>200px×50px以内、pngまたはgif形式の画像をご指定ください。</strong><br />
+										{if $logo.http_path}
+										<img src="{$logo.http_path}?stamp={$smarty.now}" /><br />
+										{elseif $image}
+										<img src="{$publisher_url}{$image}" /><br />
+										{/if}
+										<input type="file" name="logo" />
+									</td>
+								</tr>
+								<tr>
+									<th>取引コード</th>
+									<td>
+										{if isset($errors.transaction_code)}<p class="error">{$errors.transaction_code}</p>{/if}
+										<input type="text" name="transaction_code" value="{$transaction_code|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>ISBN 出版社記号</th>
+									<td>
+										{if isset($errors.publisher_prefix)}<p class="error">{$errors.publisher_prefix}</p>{/if}
+										<input type="text" name="publisher_prefix" value="{$publisher_prefix|escape}" maxlength="7" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>部署</th>
+									<td>
+										{if isset($errors.from_person_unit)}<p class="error">{$errors.from_person_unit}</p>{/if}
+										<input type="text" name="from_person_unit" value="{$from_person_unit|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>担当者<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.person_name)}<p class="error">{$errors.person_name}</p>{/if}
+										<input type="text" name="person_name" value="{$person_name|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>担当者メールアドレス<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.person_mail)}<p class="error">{$errors.person_mail}</p>{/if}
+										<input type="text" name="person_mail" value="{$person_mail|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>copyright</th>
+									<td>
+										{if isset($errors.copyright)}<p class="error">{$errors.copyright}</p>{/if}
+										<input type="text" name="copyright" value="{$copyright}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>url</th>
+									<td>
+										{if isset($errors.url)}<p class="error">{$errors.url}</p>{/if}
+										<strong>独自ドメインをご利用の場合は、<br />
+										http://で始まるURLをご入力ください。<br />
+										URLは/で終わる必要があります。</strong><br />
+										<input type="text" name="url" value="{$url|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>HONDANA用ID</th>
+									<td>
+										{if isset($errors.id)}<p class="error">{$errors.id}</p>{/if}
+										<input type="text" name="id" value="{$id|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>HONDANA用パスワード</th>
+									<td>
+										{if isset($errors.pass_n)}<p class="error">{$errors.pass_n}</p>{/if}
+										<input type="password" name="pass_n" size="25" value="{$pass_n|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>HONDANA用パスワード（確認）</th>
+									<td>
+										<input type="password" name="pass_c" size="25" value="{$pass_c|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>データ連携担当者名<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.linkage_person_name)}<p class="error">{$errors.linkage_person_name}</p>{/if}
+										<input type="text" name="linkage_person_name" value="{$linkage_person_name|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>データ連携担当者メールアドレス<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.linkage_person_mail)}<p class="error">{$errors.linkage_person_mail}</p>{/if}
+										<input type="text" name="linkage_person_mail" value="{$linkage_person_mail|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社説明</th>
+									<td>
+										{if isset($errors.description)}<p class="error">{$errors.description}</p>{/if}
+										<input type="text" name="description" value="{$description|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>キャッチフレーズ</th>
+									<td>
+										{if isset($errors.catchphrase)}<p class="error">{$errors.catchphrase}</p>{/if}
+										<strong>25文字でご入力ください。</strong><br />
+										<input type="text" name="catchphrase" value="{$catchphrase|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>アフィリエイト（amazon）ID</th>
+									<td>
+										{if isset($errors.amazon_associates_id)}<p class="error">{$errors.amazon_associates_id}</p>{/if}
+										<input type="text" name="amazon_associates_id" value="{$amazon_associates_id|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>アフィリエイト（楽天）ID</th>
+									<td>
+										{if isset($errors.rakuten_affiliate_id)}<p class="error">{$errors.rakuten_affiliate_id}</p>{/if}
+										<input type="text" name="rakuten_affiliate_id" value="{$rakuten_affiliate_id|escape}" size="50" />
+									</td>
+								</tr>
+								<tr>
+									<th>7&amp;Y用アフィリエイト基本URL</th>
+									<td>
+										{if isset($errors.seven_and_y_url)}<p class="error">{$errors.seven_and_y_url}</p>{/if}
+										<input type="text" name="seven_and_y_url" value="{$seven_and_y_url|escape}" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<th>エルパカBOOKS用アフィリエイト基本URL</th>
+									<td>
+										{if isset($errors.erupakabooks_url)}<p class="error">{$errors.erupakabooks_url}</p>{/if}
+										<input type="text" name="erupakabooks_url" value="{$erupakabooks_url|escape}" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<th>グーグルAnalytics用タグ</th>
+									<td>
+										{if isset($errors.google_analytics_tag)}<p class="error">{$errors.google_analytics_tag}</p>{/if}
+										<textarea name="google_analytics_tag" cols="80" rows="5">{$google_analytics_tag|escape}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>ブックサービス用No</th>
+									<td>
+										{if isset($errors.bookservice_no)}<p class="error">{$errors.bookservice_no}</p>{/if}
+										<input type="text" name="bookservice_no" value="{$bookservice_no|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>お問い合わせ用メールアドレス<strong>※必須</strong></th>
+									<td>
+										{if isset($errors.contact_mail)}<p class="error">{$errors.contact_mail}</p>{/if}
+										<input type="text" name="contact_mail" value="{$contact_mail|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>ショッピングカート&nbsp;メール送信先</th>
+									<td>
+										{if isset($errors.cart_mail)}<p class="error">{$errors.cart_mail}</p>{/if}
+										<input type="text" name="cart_mail" value="{$cart_mail|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>JPO連携機能</th>
+									<td>
+										{if isset($errors.jpo)}<p class="error">{$errors.jpo}</p>{/if}
+										<select name="jpo">
+											<option value="0"{if !$jpo || $jpo=='0'} selected{/if}>連携不可</option>
+											<option value="1"{if $jpo=='1'} selected{/if}>連携可</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>スマートフォンサイト</th>
+									<td>
+										{if isset($errors.smp)}<p class="error">{$errors.smp}</p>{/if}
+										<select name="smp">
+											<option value="0"{if !$smp || $smp=='0'} selected{/if}>無効</option>
+											<option value="1"{if $smp=='1'} selected{/if}>有効</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>YONDEMILL 販売システム連携</th>
+									<td>
+										{if isset($errors.yondemill_book_sales)}<p class="error">{$errors.yondemill_book_sales}</p>{/if}
+										<select name="yondemill_book_sales">
+											<option value="0"{if !$yondemill_book_sales || $yondemill_book_sales=='0'} selected{/if}>無効</option>
+											<option value="1"{if $yondemill_book_sales=='1'} selected{/if}>有効</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>書影一括取込機能</th>
+									<td>
+										{if isset($errors.import_images)}<p class="error">{$errors.import_images}</p>{/if}
+										<select name="import_images">
+											<option value="0"{if !$import_images || $import_images=='0'} selected{/if}>無効</option>
+											<option value="1"{if $import_images=='1'} selected{/if}>有効</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>電子書籍機能</th>
+									<td>
+										{if isset($errors.ebook_store_status)}<p class="error">{$errors.ebook_store_status}</p>{/if}
+										<select name="ebook_store_status">
+											<option value="0"{if !$ebook_store_status || $ebook_store_status=='0'} selected{/if}>無効</option>
+											<option value="1"{if $ebook_store_status=='1'} selected{/if}>有効</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>お知らせカテゴリ 複数登録機能</th>
+									<td>
+										{if isset($errors.news_category_edit)}<p class="error">{$errors.news_category_edit}</p>{/if}
+										<select name="news_category_edit" disabled="disabled">
+											<option value="0"{if !$news_category_edit || $news_category_edit=='0'} selected{/if}>無効</option>
+											<option value="1"{if $news_category_edit=='1'} selected{/if}>有効</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" name="confirm" value="確認" /></p>
+						<input type="hidden" name="action" value="confirm" />
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

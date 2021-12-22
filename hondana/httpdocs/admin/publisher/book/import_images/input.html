@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書影一括取込 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書影一括取込</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi"><!--#include virtual="/admin/publisher/include/lnavi/book.html" --></td>
+				<td id="main">
+					<div class="title"><h1><strong>書影一括取込</strong></h1></div>
+					<p class="text">
+						書影情報を一括登録します。（登録済みの書影については上書きされます）<br />
+						書影のファイルは <strong>[ISBN].jpg</strong> というファイル名でご用意いただき<br />
+						アップロードする書影ファイルを全て選択した状態でzip形式に圧縮してください。<br />
+						(zipを解凍した際にフォルダができるのではなく 書影ファイルがその場に展開される状態)<br />
+						<br />
+						※書影ファイルは<strong>100点以内</strong>、zipファイルは<strong>50MB以内</strong>でご用意下さい。<br />
+						<br />
+						<a href="import_images.zip">サンプルファイル</a>をダウンロード
+					</p>
+					<form action="./" method="post" enctype="multipart/form-data">
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>書影情報（zip形式）</th>
+									<td colspan="3">
+										{if $errors.zip}<p class="error">{$errors.zip}</p>{/if}
+										<input type="file" name="zip" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" name="confirm" value="確認" /></p>
+						<input type="hidden" name="action" value="confirm" />
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

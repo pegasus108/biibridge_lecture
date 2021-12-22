@@ -1,0 +1,1 @@
+SELECT * FROM publisher_account WHERE BINARY id = BINARY '{$id}' AND BINARY password = BINARY '{$pass}'

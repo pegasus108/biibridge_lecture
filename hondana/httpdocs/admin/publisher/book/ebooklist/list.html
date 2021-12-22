@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>試し読み一覧 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<link href="/admin/js/jquery-ui/css/custom-theme/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-ui/js/jquery-ui-1.8.6.custom.min.js"></script>
+<script type="text/javascript" src="/admin/js/jquery-ui/js/jquery.ui.datepicker-ja.js"></script>
+<script type="text/javascript" src="/admin/js/common_list.js"></script>
+<script type="text/javascript">
+{literal}
+$(function(){
+	$(".date").datepicker({
+		// changeMonth: true,
+		// changeYear: true,
+		dateFormat: 'yy-mm-dd'
+	});
+});
+{/literal}
+</script>
+</head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page" class="gnavi02">
+		<table id="container">
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+			<tr id="gnavi">
+				<td colspan="2">
+	<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+				</td>
+			</tr>
+			<tr id="path">
+				<td colspan="2"><a href="/admin/publisher/">管理トップ</a>&nbsp;&gt;&nbsp;試し読み一覧</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+				<td id="main">
+					<div class="title"><h1><strong>試し読み一覧</strong></h1></div>
+{if $publisher.yondemill_book_sales}
+					<div class="searchWrapper">
+						<form action="./" method="post">
+							<input type="hidden" name="action" value="list" />
+							<div class="tableWrapper">
+								<table>
+									<tr>
+										<th>タイトル</th>
+										<td><input type="text" name="search_title" value="{$search_title}" /></td>
+									</tr>
+									<tr>
+										<th>表示件数</th>
+										<td>
+											<select name="amount">
+												<option value="10"{if $amount=='10'} selected{/if}>10件</option>
+												<option value="20"{if $amount=='20'} selected{/if}>20件</option>
+												<option value="50"{if $amount=='50'} selected{/if}>50件</option>
+												<option value="100"{if $amount=='100'} selected{/if}>100件</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<p class="button"><input type="submit" name="search_submit" value="検索" /></p>
+						</form>
+					</div>
+					{if $pageInfo.total}
+					<form method="post" id="listForm">
+						<div class="tableWrapper">
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+							<table>
+								<tr>
+									<th>
+										<a href="./?order=title_{if $order=='title_asc'}desc{else}asc{/if}">
+											{if $order=='title_asc'}▲{elseif $order=='title_desc'}▼{/if}タイトル
+										</a>
+									</th>
+									<th>試し読みページ確認</th>
+								</tr>
+{foreach name=bookList from=$bookList item=v}
+								<tr>
+									<td><a href="/admin/publisher/book/edit/?book_no={$v.book_no|escape}">{$v.name|escape} {$v.sub_name}</a></td>
+									<td>
+										<a href="{$v.yondemill_book_sales_url|escape}" target="_blank">試し読みページを開く</a>
+									</td>
+								</tr>
+{/foreach}
+							</table>
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+						</div>
+					</form>
+{elseif $pageInfo.total==0 && $search_submit}
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>ご指定の検索条件に該当する試し読みはございません。</strong>
+							</div>
+						</div>
+{/if}
+{else}
+					<p style="padding-left: 10px; font-size: 120%; line-height: 2;">
+						試し読み一覧をご利用いただくには、YONDEMILL電子書籍販売システムへの登録が必要です。<br />
+						詳細はHONDANA担当者にお問い合わせ下さい。
+					</p>
+{/if}
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

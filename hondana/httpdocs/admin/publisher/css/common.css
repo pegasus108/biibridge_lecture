@@ -1,0 +1,156 @@
+@charset "utf-8";
+#main .tableWrapper#twBook .title {
+  background: none;
+}
+#main .tableWrapper#twBook table {
+  border-top: 1px solid #DECCB4;
+  border-right: 1px solid #DECCB4;
+}
+#main .tableWrapper#twBook th,
+#main .tableWrapper#twBook td {
+  padding: 5px 10px;
+  border: none;
+  border-bottom: 1px solid #DECCB4;
+  border-left: 1px solid #DECCB4;
+  text-align: left;
+  vertical-align: top;
+}
+#main .tableWrapper#twBook #JPOOpenCloseButton {
+  background-color: #FFFEDF;
+  text-align: center;
+}
+#main .tableWrapper#twBook .JPOInput th,
+#main .tableWrapper#twBook .JPOInput td {
+  padding: 0;
+}
+#main .tableWrapper#twBook .JPOInput th .inner,
+#main .tableWrapper#twBook .JPOInput td .inner {
+  padding: 5px 10px;
+}
+#main .tableWrapper#twBook .JPOInput th .inner {
+  padding-left: 20px;
+}
+#main .tableWrapper#twBook th {
+  width: 15%;
+  padding-left: 20px;
+  background: none;
+  background-image: url(../images/common/table_title_back.gif);
+  background-repeat: no-repeat;
+  background-position: left top;
+  white-space: nowrap;
+}
+#main .tableWrapper#twBook th img {
+  margin-bottom: -3px;
+}
+#main .tableWrapper#twBook th.title {
+  background-color: #EDE9E0;
+  font-size: 120%;
+}
+#main .tableWrapper#twBook td table {
+  width: auto;
+}
+#main .tableWrapper#twBook #tinyMCE table,
+#main .tableWrapper#twBook #tinyMCE th,
+#main .tableWrapper#twBook #tinyMCE td {
+  width: auto;
+  padding: 0px;
+  border: none;
+}
+#main .tableWrapper#twBook .paging {
+  text-align: right;
+}
+#main .tableWrapper#twBook .link {
+  margin: 5px 0 0 0;
+  padding: 0 0 0 15px;
+}
+#main .tableWrapper#twBook .hasLink .link {
+  margin: 0;
+}
+#siteStatusNumbers {
+  font-size: 120%;
+  font-weight: bold;
+}
+#main dl.tableWrapper {
+  margin-top: 13px;
+}
+#main dl.tableWrapper dt {
+  font-size: 100%;
+  font-weight: bold;
+}
+#main .tableWrapper .listedTable table {
+  width: 80%;
+}
+#main .tableWrapper .listedTable {
+  margin-bottom: 30px;
+}
+#contents .dashboardHelpText {
+  display: none;
+}
+#dashboard.tableWrapper dt {
+  padding: 6px 0 10px 20px;
+  background: url(../images/common/table_title_back.gif) no-repeat scroll left top transparent;
+}
+#dashboard.tableWrapper .moreCloseButton {
+  margin-top: 10px;
+  padding-left: 12px;
+  background: url(../../images/common/icon_close.jpg) no-repeat scroll 0px 5px transparent;
+}
+#dashboard.tableWrapper .moreOpenButton {
+  margin-top: 10px;
+  padding-left: 12px;
+  background: url(../../images/common/icon_open.jpg) no-repeat scroll 0px 5px transparent;
+}
+#main td.errorJPO {
+  background-color: #D1EAE0;
+}
+#main .errorJPO {
+  color: #1B9662;
+}
+#main ul.errorJPO {
+  padding: 5px 0 20px 5px;
+}
+#main .JPOInput .error {
+  color: #1B9662;
+}
+#main .tableWrapper th strong.jpoOnlyItems {
+  color: #1B9662;
+}
+#main [data-set-wrap] [data-set] {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+#main [data-set-wrap] [data-set]:first-child:nth-last-child(2) [data-set-delete] {
+  display: none;
+}
+#main [data-set-wrap] [data-set] [data-set-delete] {
+  margin-left: 10px;
+}
+#main [data-set-wrap] [data-set] label {
+  display: block;
+  margin-top: 10px;
+}
+#main [data-set-wrap] [data-set] label:first-child {
+  margin-top: 0;
+}
+#main [data-set-wrap] [data-set] label:before {
+  content: '[';
+}
+#main [data-set-wrap] [data-set] label:after {
+  content: ']';
+}
+#main [data-set-wrap] [data-set-delete],
+#main [data-set-wrap] [data-set-add] {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  font-size: 180%;
+  cursor: pointer;
+}
+#main .setwrap {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #DECCB4;
+}

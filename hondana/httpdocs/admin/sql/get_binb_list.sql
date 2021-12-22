@@ -1,0 +1,1 @@
+select * from yondemill_book where yondemill_id in ({$idlist});

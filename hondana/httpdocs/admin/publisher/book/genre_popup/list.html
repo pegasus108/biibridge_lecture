@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower_popup.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報ジャンル管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common_popup.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="../../../js/common_popup.js"></script>
+<script type="text/javascript" src="../../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>書誌情報ジャンル一覧</strong></h1></div>
+{if $errors.sort}
+					<p class="error" style="padding-bottom: 10px;"><strong>{$errors.sort|escape}</strong></p>
+{/if}
+					<form method="post" id="listForm">
+						<div class="tableWrapper">
+							<p class="button buttonTop"><input type="button" name="addItem" value="選択" /></p>
+							<table>
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>カテゴリ</th>
+									<th data-add>新規登録</th>
+								</tr>
+								{foreach name=genre from=$genreList item=genre}
+								{if $genre.lft != $genre.rgt - 1}
+								{/if}
+								<tr>
+									<td>
+										<input type="checkbox" name="item" value="" class="slimeCheck" />
+										<table class="none">
+											<tr>
+
+												<td><input type="hidden" name="book_genre_list[]" value="{$genre.genre_no|escape}" />{$genre.name}</td>
+												<td><input type="button" onclick="unSelectItem(this);" value="削除" /></td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										{section name=space loop=$genre.depth-1}&nbsp;&nbsp;{/section}
+										{if $genre.rgt+1 == $genre.parent_rgt}└{else}├{/if}
+										<a href="edit/index.php?genre_no={$genre.genre_no|escape}" data-edit>
+											{$genre.name}
+										</a>
+									</td>
+									<td data-add>
+										{if $genre.add_flag == '1'}
+										{section name=space loop=$genre.depth-1}&nbsp;&nbsp;{/section}
+										<a href="new/?new_entry=true&target_genre={$genre.genre_no|escape}">子ジャンルを登録</a>
+										{else}
+										&nbsp;
+										{/if}
+									</td>
+								</tr>
+								{if	$smarty.foreach.genre.last}
+								<tr data-add>
+									<td>&nbsp;</td>
+									<td> ─ <a href="new/?new_entry=true">新規ジャンルを登録</a></td>
+									<td>&nbsp;</td>
+								</tr>
+								{/if}
+								{foreachelse}
+								<tr data-add>
+									<td>&nbsp;</td>
+									<td> ─ <a href="new/?new_entry=true">新規ジャンルを登録</a></td>
+									<td>&nbsp;</td>
+								</tr>
+								{/foreach}
+							</table>
+							<input type="hidden" name="actionTarget" value="bookGenre" />
+							<p class="button"><input type="button" name="addItem" value="選択" /></p>
+						</div>
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

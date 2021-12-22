@@ -1,0 +1,22 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call(NewsTableSeeder::class);
+        $this->call(SeriesTableSeeder::class);
+        $this->call(AuthorTableSeeder::class);
+        $this->call(BookTableSeeder::class);
+        $this->call(BannerBigTableSeeder::class);
+    }
+}

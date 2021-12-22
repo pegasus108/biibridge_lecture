@@ -1,0 +1,1368 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報変更 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common_lower.js?update=20180306"></script>
+<script type="text/javascript" src="/admin/js/book_jpo_confirm.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script>
+</head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書誌情報変更</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!--#include virtual="/admin/publisher/include/lnavi/book.html" --></td>
+			<td id="main">
+				<div class="title"><h1><strong>書誌情報変更</strong></h1></div>
+					<form action="./" method="post">
+						<input type="hidden" name="book_no" value="{$book_no}" />
+						<input type="hidden" name="upkey" value="{$upkey}" />
+{assign var=alist value=$stockStatusList}
+{if $alist}
+{foreach name='stockStatusList' from=$alist key=id item=list}
+{foreach name='stockStatusListinner' from=$list key=k item=v}
+<input type="hidden" name="stockStatusList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="stockStatusList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookLabelList}
+{if $alist}
+{foreach name='oldBookLabelList' from=$alist key=id item=list}
+{foreach name='oldBookLabelListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookLabelList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookLabelList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookGenreList}
+{if $alist}
+{foreach name='oldBookGenreList' from=$alist key=id item=list}
+{foreach name='oldBookGenreListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookGenreList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookGenreList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookSeriesList}
+{if $alist}
+{foreach name='oldBookSeriesList' from=$alist key=id item=list}
+{foreach name='oldBookSeriesListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookSeriesList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookSeriesList" value="" />
+{/if}
+
+{assign var=alist value=$oldOpusList}
+{if $alist}
+{foreach name='oldOpusList' from=$alist key=id item=list}
+{foreach name='oldOpusListinner' from=$list key=k item=v}
+<input type="hidden" name="oldOpusList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldOpusList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookRelateList}
+{if $alist}
+{foreach name='oldBookRelateList' from=$alist key=id item=list}
+{foreach name='oldBookRelateListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookRelateList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookRelateList" value="" />
+{/if}
+
+{assign var=alist value=$oldSpsite}
+{if $alist}
+{foreach name='oldSpsite' from=$alist key=id item=list}
+{foreach name='oldSpsiteinner' from=$list key=k item=v}
+<input type="hidden" name="oldSpsite[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldSpsite" value="" />
+{/if}
+
+{assign var=alist value=$oldCpsite}
+{if $alist}
+{foreach name='oldCpsite' from=$alist key=id item=list}
+{foreach name='oldCpsiteinner' from=$list key=k item=v}
+<input type="hidden" name="oldCpsite[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldCpsite" value="" />
+{/if}
+
+{foreach name=old from=$old key=k item=v}
+<input type="hidden" name="old[{$k}]" value="{$v}" />
+{/foreach}
+
+						{if $publisher.jpo
+							&& ( count($attentions_jpo)
+							|| !$publisher.transaction_code
+							|| !$publisher.publisher_prefix
+							|| !$publisher.from_person_unit )
+						}
+							<ul class="errorJPO">
+								{if !$publisher.transaction_code && $publisher.jpo}
+										<li>
+											・JPO連携を行う場合は<strong>システム設定</strong>から<strong>取引コード</strong>の設定をお願いいたします。
+										</li>
+								{/if}
+								{if !$publisher.publisher_prefix && $publisher.jpo}
+										<li>
+											・JPO連携を行う場合は<strong>システム設定</strong>から<strong>ISBN 出版社記号</strong>の設定をお願いいたします。
+										</li>
+								{/if}
+								{if !$publisher.from_person_unit && $publisher.jpo}
+										<li>
+											・JPO連携を行う場合は<strong>システム設定</strong>から<strong>部署</strong>の設定をお願いいたします。
+										</li>
+								{/if}
+								{if $attentions_jpo}
+									{foreach from=$attentions_jpo item=errorjpo}
+										<li>・{$errorjpo}</li>
+									{/foreach}
+								{/if}
+							</ul>
+						{/if}
+
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr>
+									<th colspan="4" class="title">概要</th>
+								</tr>
+								<tr>
+									<th>書名{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td>
+										{$name|escape}
+										<input type="hidden" name="name" value="{$name|escape}" />
+										<input type="hidden" name="jpoSync" value="{$jpoSync|escape}" />
+									</td>
+									<th>書名カナ{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td{if $errors_jpo.kana} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.kana|escape}</p>
+										{$kana|escape}
+										<input type="hidden" name="kana" value="{$kana|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>巻次</th>
+									<td colspan="3">
+										{$volume|escape}
+										<input type="hidden" name="volume" value="{$volume|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>サブタイトル</th>
+									<td>
+										{$sub_name|escape}
+										<input type="hidden" name="sub_name" value="{$sub_name|escape}" />
+									</td>
+									<th>サブタイトルカナ</th>
+									<td>
+										{$sub_kana|escape}
+										<input type="hidden" name="sub_kana" value="{$sub_kana|escape}" />
+									</td>
+								</tr>
+								<tr class="RoleTypeLabel">
+									<th>レーベル</th>
+									<td colspan="3" class="hasLink">
+										{foreach name=book_label from=$book_label_list item=book_label}
+										<p>{foreach name=label from=$labelList item=label}{if $label.label_no==$book_label}{$label.name}{/if}{/foreach}</p>
+										<input type="hidden" name="book_label_list[]" value="{$book_label}" />
+										{foreachelse}
+										<input type="hidden" name="book_label_list" value="" />
+										{/foreach}
+									</td>
+								</tr>
+								<tr class="RoleTypeGenre">
+									<th>ジャンル</th>
+									<td colspan="3" class="hasLink">
+										{foreach name=book_genre from=$book_genre_list item=book_genre}
+										<p>{foreach name=genre from=$genreList item=genre}{if $genre.genre_no==$book_genre}{$genre.name}{/if}{/foreach}</p>
+										<input type="hidden" name="book_genre_list[]" value="{$book_genre}" />
+										{foreachelse}
+										<input type="hidden" name="book_genre_list" value="" />
+										{/foreach}
+									</td>
+								</tr>
+								<tr class="RoleTypeSeries">
+									<th>シリーズ</th>
+									<td colspan="3" class="hasLink">
+										{foreach name=book_series from=$book_series_list item=book_series}
+										<p>{foreach name=series from=$seriesList item=series}{if $series.series_no==$book_series}{$series.name}{/if}{/foreach}</p>
+										<input type="hidden" name="book_series_list[]" value="{$book_series}" />
+										{foreachelse}
+										<input type="hidden" name="book_series_list" value="" />
+										{/foreach}
+									</td>
+								</tr>
+								<tr>
+									<th colspan="4" class="title">詳細</th>
+								</tr>
+								<tr class="RoleTypeImage">
+									<th>書影</th>
+									<td colspan="3">
+										<input type="hidden" name="clear_image" value="{$clear_image}" />
+										{if $clear_image}
+										<p>削除</p>
+										{elseif $book_httppath}
+										<img src="{$book_httppath}?stamp={$smarty.now}" alt="{$name}" />
+										{elseif !$clear_image && $image}
+										<img src="{$image}" alt="{$name}" />
+										{/if}
+										<input type="hidden" name="image" value="{$image}" />
+									</td>
+								</tr>
+								<tr>
+									<th>著者名</th>
+									<td colspan="3" class="hasLink{if $errors_jpo.author} errorJPO{/if}">
+										<p class="errorJPO">{$errors_jpo.author|escape}</p>
+										{foreach name=opus from=$opus_list item=opus}
+										<p>
+											{$author_data_list[$opus].name|escape}&nbsp;
+											{foreach name=authorType from=$authorTypeList item=authorType}
+												{if $authorType.author_type_no==$author_type_list[$smarty.foreach.opus.index] && 16!=$author_type_list[$smarty.foreach.opus.index]}{$authorType.name}{/if}
+											{/foreach}
+											{if 16==$author_type_list[$smarty.foreach.opus.index]}
+												{$author_type_other[$smarty.foreach.opus.index]}
+											{/if}
+										</p>
+										<input type="hidden" name="opus_list[]" value="{$opus}" />
+										{foreachelse}
+										<input type="hidden" name="opus_list" value="" />
+										{/foreach}
+										{foreach name=authorType from=$author_type_list item=authorType}
+										<input type="hidden" name="author_type_list[]" value="{$authorType}" />
+										{foreachelse}
+										<input type="hidden" name="author_type_list" value="" />
+										{/foreach}
+										{foreach name=authorTypeOther from=$author_type_other item=authorTypeOther}
+										<input type="hidden" name="author_type_other[]" value="{$authorTypeOther}" />
+										{foreachelse}
+										<input type="hidden" name="author_type_other" value="" />
+										{/foreach}
+
+										{* JPRO用 著者区分 *}
+										{foreach name=jpo_author_type_list from=$jpo_author_type_list key=k item=v}
+										<input type="hidden" name="jpo_author_type_list[{$k}]" value="{$v}" />
+										{/foreach}
+									</td>
+								</tr>
+								<tr>
+									<th>商品コード</th>
+									<td>
+										{$product_code|escape}
+										<input type="hidden" name="product_code" value="{$product_code|escape}" />
+									</td>
+									<th>JANコード</th>
+									<td{if $errors_jpo.c_code} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.jan_code|escape}</p>
+										{$jan_code|escape}
+										<input type="hidden" name="jan_code" value="{$jan_code|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>ISBN{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td{if $errors_jpo.isbn} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.isbn|escape}</p>
+										{$isbn|escape}
+										<input type="hidden" name="isbn" value="{$isbn|escape}" />
+									</td>
+									<th>eISBN</th>
+									<td>
+										{$e_isbn|escape}
+										<input type="hidden" name="e_isbn" value="{$e_isbn|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>雑誌コード</th>
+									<td>
+										{$magazine_code|escape}
+										<input type="hidden" name="magazine_code" value="{$magazine_code|escape}" />
+									</td>
+									<th>Cコード{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td{if $errors_jpo.c_code} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.c_code|escape}</p>
+										{$c_code|escape}
+										<input type="hidden" name="c_code" value="{$c_code|escape}" />
+									</td>
+{*
+									<th>JANコード</th>
+									<td{if $errors_jpo.c_code} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.jan_code|escape}</p>
+										{$jan_code|escape}
+										<input type="hidden" name="jan_code" value="{$jan_code|escape}" />
+									</td>
+*}
+								</tr>
+								<tr class="RoleTypeReleaseDate">
+									<th>出版年月日（搬入日）</th>
+									<td class="shortTextWrapper">
+										{if $book_date=='0000-00-00'}
+											<p>設定なし</p>
+										{elseif $book_date!=''}
+											<p>{$book_date}</p>
+										{/if}
+										<input type="hidden" name="book_date" value="{$book_date}" />
+									</td>
+									<th>書店発売日{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td class="shortTextWrapper{if $attentions_jpo.release_date} errorJPO{/if}">
+										<p class="errorJPO">{$attentions_jpo.release_date|escape}</p>
+										{if $release_date=='0000-00-00'}
+											<p>設定なし</p>
+										{elseif $release_date!=''}
+											<p>{$release_date}</p>
+										{/if}
+										<input type="hidden" name="release_date" value="{$release_date}" />
+									</td>
+								</tr>
+								<tr>
+									<th>初版発行日（奥付日）</th>
+									<td class="shortTextWrapper">
+										{if $first_edition_issue_date=='0000-00-00'}
+											<p>設定なし</p>
+										{elseif $first_edition_issue_date!=''}
+											<p>{$first_edition_issue_date}</p>
+										{/if}
+									</td>
+									<th>初版発行部数</th>
+									<td>
+										{$first_edition_circulation_number|escape}
+										<input type="hidden" name="first_edition_circulation_number" value="{$first_edition_circulation_number|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>印刷所</th>
+									<td>
+										{$printoffice|escape}
+										<input type="hidden" name="printoffice" value="{$printoffice|escape}" />
+									</td>
+									<th>特殊印刷所</th>
+									<td>
+										{$sp_printoffice|escape}
+										<input type="hidden" name="sp_printoffice" value="{$sp_printoffice|escape}" />
+									</td>
+								</tr>
+								<tr class="RoleTypeVersion">
+									<th>版</th>
+									<td colspan="3">
+										{$version|escape}
+										<input type="hidden" name="version" value="{$version|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>判型</th>
+									<td{if $errors_jpo.book_size_no} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.book_size_no|escape}</p>
+										{foreach name=bookSize from=$bookSizeList item=bookSize}
+										{if $bookSize.book_size_no==$book_size_no}{$bookSize.name|escape}{/if}
+										{/foreach}
+										<input type="hidden" name="book_size_no" value="{$book_size_no}" />
+									</td>
+									<th>判型（実寸）</th>
+									<td{if $errors_jpo.measure_height} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.measure_height|escape}</p>
+										{if $measure_height}タテ：{$measure_height|escape}mm&nbsp;{/if}
+										{if $measure_width}ヨコ：{$measure_width|escape}mm{/if}
+										{if $measure_thickness}厚さ：{$measure_thickness|escape}mm{/if}
+										<input type="hidden" name="measure_height" value="{$measure_height|escape}" />
+										<input type="hidden" name="measure_width" value="{$measure_width|escape}" />
+										<input type="hidden" name="measure_thickness" value="{$measure_thickness|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>束幅</th>
+									<td>
+										{$book_width|escape}
+										<input type="hidden" name="book_width" value="{$book_width|escape}" />
+									</td>
+									<th>ページ数</th>
+									<td>
+										{$page|escape}
+										<input type="hidden" name="page" value="{$page|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>カバー有無</th>
+									<td>
+										{if $book_cover == '1'}有{else if $book_cover == '0'}無{/if}
+										<input type="hidden" name="book_cover" value="{$book_cover|escape}" />
+									</td>
+									<th>オビ有無</th>
+									<td>
+										{if $book_band == '1'}有{else if $book_band == '0'}無{/if}
+										<input type="hidden" name="book_band" value="{$book_band|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>スリップ有無</th>
+									<td colspan="3">
+										{if $book_slip == '1'}有{else if $book_slip == '0'}無{/if}
+										<input type="hidden" name="book_slip" value="{$book_slip|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>コピーライト</th>
+									<td colspan="3">
+										{$copyright|escape}
+										<input type="hidden" name="copyright" value="{$copyright|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>本体価格{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td{if $errors_jpo.price} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.price|escape}</p>
+										{$price|escape}
+										<input type="hidden" name="price" value="{$price|escape}" />
+									</td>
+									<th>電子版価格</th>
+									<td>
+										{$ebook_price|escape}
+										<input type="hidden" name="ebook_price" value="{$ebook_price|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th colspan="4" class="title">内容紹介</th>
+								</tr>
+								<tr>
+									<th>概要（長文）</th>
+									<td colspan="3">
+										{$outline|escape}
+										<input type="hidden" name="outline" value="{$outline|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>概要（短文）</th>
+									<td colspan="3">
+										{$outline_abr|escape}
+										<input type="hidden" name="outline_abr" value="{$outline_abr|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>目次</th>
+									<td colspan="3">
+										{$explain|escape|nl2br}
+										<input type="hidden" name="explain" value="{$explain|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>内容説明</th>
+									<td colspan="3" class="hasLink">
+										<p class="link">プレビューにてご確認ください</p>
+										<input type="hidden" name="content" value="{$content|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>特設サイトリンク</th>
+									<td colspan="3">
+										{if $oldSpsite}
+											{foreach name=spsite_e from=$oldSpsite item=v}
+											{if !$spsite_delete{$upkey}[$v.special_site_link_no]}
+											{* 削除されるデータは非表示 *}
+											<div class="setwrap">
+												<img src="/web/img/uploads/specialsiteimg/{$book_no}/{$v.imagefile|escape}" alt="" style="max-width: 200px;" />
+												<p>
+													[タイトル] <br />
+													{if !empty($v.name)}
+													{$v.name|escape}
+													{/if}
+												</p>
+												<p>
+													[URL] <br />
+													{$v.url|escape}
+												</p>
+											</div>
+											{/if}
+											{/foreach}
+										{/if}
+										{if !empty($spsite{$upkey})}
+											{foreach name=spsite from=$spsite{$upkey} key=k item=v}
+											{if $spsite{$upkey}[$k]}
+											<div class="setwrap">
+												{if isset($spsiteimg{$upkey}[$k])}
+												<img src="{$spsiteimg{$upkey}[$k].http_path}" alt="" style="max-width: 200px;" />
+												{else}
+												画像なし
+												{/if}
+												<p>
+													[タイトル] <br />
+													{if !empty($spsitename{$upkey}[$k])}
+													{$spsitename{$upkey}[$k]|escape}
+													{/if}
+												</p>
+												<p>
+													[URL] <br />
+													{$spsite{$upkey}[$k]|escape}
+												</p>
+											</div>
+											{/if}
+											{/foreach}
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>キャンペーンサイトURL</th>
+									<td colspan="3">
+										{if $oldCpsite}
+											{foreach name=cpsite_e from=$oldCpsite item=v}
+											{if !$cpsite_delete{$upkey}[$v.campaign_site_link_no]}
+											{* 削除されるデータは非表示 *}
+											<p>
+												{$v.url|escape}
+											</p>
+											{/if}
+											{/foreach}
+										{/if}
+										{if !empty($cpsite{$upkey})}
+											{foreach name=cpsite from=$cpsite{$upkey} key=k item=v}
+											{if $v}
+											<p>
+												{$v|escape}
+											</p>
+											{/if}
+											{/foreach}
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>アンケートURL</th>
+									<td colspan="3">
+										{$questionnaire_url|escape}
+										<input type="hidden" name="questionnaire_url" value="{$questionnaire_url|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th colspan="4" class="title">設定</th>
+								</tr>
+
+								<tr class="RoleTypeKeyword">
+									<th>キーワード</th>
+									<td colspan="3"{if $errors_jpo.keyword} class="errorJPO"{/if}>
+										<p class="errorJPO">{$errors_jpo.keyword|escape}</p>
+										{$keyword|escape}
+										<input type="hidden" name="keyword" value="{$keyword|escape}" />
+									</td>
+								</tr>
+
+								<tr class="RoleTypePublishDate">
+									<th>公開の状態</th>
+									<td>
+										{if $public_status}公開{else}非公開{/if}
+										<input type="hidden" name="public_status" value="{$public_status}" />
+									</td>
+									<th>公開日指定</th>
+									<td class="shortTextWrapper">
+										{if $public_date!='0000-00-00 00:00:00'}
+										{$public_date|escape}
+										{else}なし{/if}
+										<input type="hidden" name="public_date" value="{$public_date}" />
+									</td>
+								</tr>
+								<!--
+								<tr>
+									<th>同一日付表示順</th>
+									<td colspan="3">
+									{$public_date_order|escape}
+									<input type="hidden" name="public_date_order" value="{$public_date_order|escape}" />
+									</td>
+								</tr>
+								-->
+								<tr class="RoleTypeNew">
+									<th>新刊設定</th>
+									<td>
+										{if $new_status}新刊に設定する{else}新刊に設定しない{/if}
+										<input type="hidden" name="new_status" value="{$new_status}" />
+									</td>
+									<th>これから出る本設定</th>
+									<td>
+										{if $next_book}これから出る本に設定する{else}これから出る本に設定しない{/if}
+										<input type="hidden" name="next_book" value="{$next_book}" />
+									</td>
+								</tr>
+								<tr class="RoleTypeRecommend">
+									<th>おすすめ設定</th>
+									<td>
+										{if $recommend_status}おすすめに設定する{else}おすすめに設定しない{/if}
+										<input type="hidden" name="recommend_status" value="{$recommend_status}" />
+									</td>
+									<th>おすすめ表示順</th>
+									<td>
+										{$recommend_order|escape}
+										<input type="hidden" name="recommend_order" value="{$recommend_order|escape}" />
+									</td>
+								</tr>
+{if $ebook_store_status}
+								<tr class="RoleTypeEbook">
+									<th>電子書籍設定</th>
+									<td colspan="3">
+										電子書籍に設定{if $ebook_status}する{else}しない{/if}
+										<input type="hidden" name="ebook_status" value="{$ebook_status}" />
+									</td>
+								</tr>
+{if $ebook_status}
+								<tr class="RoleTypeEbook">
+									<th>電子書籍書店設定</th>
+									<td colspan="3">
+										<ul>
+{foreach name=ebookstoreList from=$ebookstoreList key=k item=v}
+<input type="hidden" name="ebookstoreList[{$k}][name]" value="{$v.name}" />
+<input type="hidden" name="ebookstoreList[{$k}][be_id]" value="{$v.be_id}" />
+<input type="hidden" name="ebookstoreList[{$k}][be_status]" value="{$v.be_status}" />
+<input type="hidden" name="ebookstoreList[{$k}][id]" value="{$v.id}" />
+<input type="hidden" name="ebookstoreList[{$k}][url]" value="{$v.url}" />
+{if $v.be_status == 1}
+											{assign var=index value=$smarty.foreach.ebookstoreList.index}
+											<li{if !$smarty.foreach.ebookstoreList.last} style="margin-bottom: 8px; padding-bottom: 5px;border-bottom: 1px solid #ccc;"{/if}>
+												<p>{$v.name}</p>
+												<p>URL: {$v.url}</p>
+											</li>
+{/if}
+{/foreach}
+										</ul>
+									</td>
+								</tr>
+{/if}
+{/if}
+								<tr class="RoleTypeRecommend">
+									<th>おすすめ紹介文</th>
+									<td colspan="3">
+										{$recommend_sentence|escape|nl2br}
+										<input type="hidden" name="recommend_sentence" value="{$recommend_sentence|escape}" />
+									</td>
+								</tr>
+								{if $publisher.recommend_type == 2}
+								<tr>
+									<th>おすすめ表示用画像</th>
+									<td colspan="3">
+										{if $recommend_status}
+											{if $recommend_image.http_path}
+										<img src="{$recommend_image.http_path}?stamp={$smarty.now}" alt="{$name}" />
+											{elseif $old_recommend_image}
+										<img src="{$old_recommend_image}" alt="{$name}" />
+											{/if}
+										{/if}
+										{if $recommend_image.http_path}
+										<input type="hidden" name="recommend_image_httppath" value="{$recommend_image.http_path}" />
+										{elseif !$clear_recommend_image && $old_recommend_image}
+										<input type="hidden" name="image" value="{$old_recommend_image}" />
+										{/if}
+										<input type="hidden" name="clear_recommend_image" value="{$clear_recommend_image}" />
+									</td>
+								</tr>
+								{/if}
+								<tr class="RoleTypeCart">
+									<th>在庫ステータス</th>
+									<td{if !$publisher.cart} colspan="3"{/if}>
+										{foreach name=stockStatus from=$stockStatusList item=stockStatus}
+										{if $stockStatus.stock_status_no==$stock_status_no}{$stockStatus.name|escape}{/if}
+										{/foreach}
+										<input type="hidden" name="stock_status_no" value="{$stock_status_no}" />
+									</td>
+									{if $publisher.cart}
+									<th>カート</th>
+									<td>
+										{if $cart_status}有効{else}無効{/if}
+										<input type="hidden" name="cart_status" value="{$cart_status}" />
+									</td>
+									{/if}
+								</tr>
+{*
+								<tr class="RoleTypeHonzuki">
+									<th>本が好き！ 連携</th>
+									<td colspan="3">
+										{if $honzuki}有効にする{else}無効にする{/if}
+										<input type="hidden" name="honzuki" value="{$honzuki}" />
+									</td>
+								</tr>
+*}
+								<tr>
+									<th>関連書誌</th>
+									<td colspan="3" class="hasLink">
+										{foreach name=book_relate from=$bookviewlist item=book}
+										<p>{$book.name}</p>
+										<input type="hidden" name="news_relate_list[]" value="{$book.book_no}" />
+										{foreachelse}
+										<input type="hidden" name="news_relate_list" value="" />
+										{/foreach}
+									</td>
+								</tr>
+								<tr>
+									<th>フォーマットの紐付け</th>
+									<td colspan="3" class="hasLink">
+										<p style="padding-bottom: 5px;">この本 ： {if $this_format!=6}{$bookFormat[$this_format].name}{else} {$this_format_other}{/if}</p>
+										{if $book_format_list}
+										{foreach name=book_format from=$book_format_list key=k item=v}
+										<input type="hidden" name="book_format_list[{$k}]" value="{$v}" />
+										<input type="hidden" name="book_format_l[{$k}]" value="{$book_format_l[$k]}" />
+										<input type="hidden" name="book_format_other_l[{$k}]" value="{$book_format_other_l[$k]}" />
+										{assign var=num value=$book_format_l[$k]}
+										<p>{$book_format_data.name[$k]} ： {if $num != 6}{$bookFormat[$num].name}{else} {$book_format_other_l[$k]}{/if}</p>
+										{/foreach}
+										{/if}
+										<input type="hidden" name="this_format" value="{$this_format}" />
+										<input type="hidden" name="this_format_other" value="{$this_format_other}" />
+									</td>
+								</tr>
+{foreach from=$publisher.free item=itemname name=freeList}
+								<tr class="RoleTypeFree{$smarty.foreach.freeList.index}">
+									<th>{$itemname|escape}</th>
+									<td colspan="3">
+										{$free[$smarty.foreach.freeList.index]|escape|nl2br}
+										<input type="hidden" name="free[{$smarty.foreach.freeList.index}]" value="{$free[$smarty.foreach.freeList.index]|escape}" />
+									</td>
+								</tr>
+{foreachelse}
+								<input type="hidden" name="free" value="" />
+{/foreach}
+								{if $publisher.jpo && $jpoSync}
+									<tr id="isConfirmJPOHeader" class="RoleTypeJpo">
+										<th colspan="4" class="title">JPO</th>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>ジャンルコード</th>
+										<td colspan="3">
+											{$subject_codes[$subject_code]|escape}
+											<input type="hidden" name="subject_code" value="{$subject_code}" id="subject_code" />
+										</td>
+									</tr>
+
+									<tr class="RoleTypeJpo">
+										<th>レーベル名</th>
+										<td colspan="3">
+											{$imprint_name|escape}&nbsp;
+											{if $imprint_collationkey}カナ：{$imprint_collationkey|escape}{/if}
+											<input type="hidden" name="imprint_name" value="{$imprint_name}" />
+											<input type="hidden" name="imprint_collationkey" value="{$imprint_collationkey}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>各巻書名</th>
+										<td colspan="3">
+											{$each_volume_name|escape}
+											<input type="hidden" name="each_volume_name" value="{$each_volume_name|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>刊行形態</th>
+										<td>
+											{$publication_forms[$publication_form]|escape}
+											<input type="hidden" name="publication_form" value="{$publication_form|escape}" />
+										</td>
+										<th>月号・号数表記</th>
+										<td>
+											{$monthly_issue|escape}
+											<input type="hidden" name="monthly_issue" value="{$monthly_issue|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>配本回数</th>
+										<td colspan="3">
+											{if $extent_value}{$extent_value|escape}回{/if}
+											<input type="hidden" name="extent_value" value="{$extent_value|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>配本の有無</th>
+										<td colspan="3">
+											{$extents[$extent]|escape}
+											<input type="hidden" name="extent" value="{$extent|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>完結フラグ</th>
+										<td colspan="3">
+											{$completions[$completion]|escape}
+											<input type="hidden" name="completion" value="{$completion|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>セット商品分売可否</th>
+										<td colspan="3">
+											{$unpriced_item_types[$unpriced_item_type]|escape}
+											<input type="hidden" name="unpriced_item_type" value="{$unpriced_item_type}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>発行年月日</th>
+										<td colspan="3" class="shortTextWrapper">
+											{if $Issued_date_year && $Issued_date_month && $Issued_date_day}
+												{$Issued_date_year}年&nbsp;
+												{$Issued_date_month}月&nbsp;
+												{$Issued_date_day}日
+											{/if}
+											<input type="hidden" name="Issued_date_year" value="{$Issued_date_year|escape}" />
+											<input type="hidden" name="Issued_date_month" value="{$Issued_date_month|escape}" />
+											<input type="hidden" name="Issued_date_day" value="{$Issued_date_day|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>発売協定日</th>
+										<td colspan="3" class="shortTextWrapper">
+											{if $on_sale_date_year && $on_sale_date_month && $on_sale_date_day}
+												{$on_sale_date_year}年&nbsp;
+												{$on_sale_date_month}月&nbsp;
+												{$on_sale_date_day}日
+											{/if}
+											<input type="hidden" name="on_sale_date_year" value="{$on_sale_date_year|escape}" />
+											<input type="hidden" name="on_sale_date_month" value="{$on_sale_date_month|escape}" />
+											<input type="hidden" name="on_sale_date_day" value="{$on_sale_date_day|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>注文・申込締切</th>
+										<td colspan="3" class="shortTextWrapper">
+											{if $pre_order_limit_year && $pre_order_limit_month && $pre_order_limit_day}
+												{$pre_order_limit_year}年&nbsp;
+												{$pre_order_limit_month}月&nbsp;
+												{$pre_order_limit_day}日&nbsp;
+											{/if}
+											<input type="hidden" name="pre_order_limit_year" value="{$pre_order_limit_year|escape}" />
+											<input type="hidden" name="pre_order_limit_month" value="{$pre_order_limit_month|escape}" />
+											<input type="hidden" name="pre_order_limit_day" value="{$pre_order_limit_day|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>発売情報解禁日</th>
+										<td colspan="3" class="shortTextWrapper">
+											{if $announcement_date_year && $announcement_date_month && $announcement_date_day}
+												{$announcement_date_year}年&nbsp;
+												{$announcement_date_month}月&nbsp;
+												{$announcement_date_day}日&nbsp;
+											{/if}
+											<input type="hidden" name="announcement_date_year" value="{$announcement_date_year|escape}" />
+											<input type="hidden" name="announcement_date_month" value="{$announcement_date_month|escape}" />
+											<input type="hidden" name="announcement_date_day" value="{$announcement_date_day|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>対象読者 <img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></th>
+										<td colspan="3">
+											{$audience_code_values[$audience_code_value]|escape}
+											<input type="hidden" name="audience_code_value" value="{$audience_code_value}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>成人指定</th>
+										<td colspan="3">
+											{$audience_descriptions[$audience_description]|escape}
+											<input type="hidden" name="audience_description" value="{$audience_description}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>内容紹介2</th>
+										<td colspan="3">
+											{$long_description|escape|nl2br}
+											<input type="hidden" name="long_description" value="{$long_description}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>付録の有無</th>
+										<td colspan="3">
+											{$containeditems[$containeditem]|escape}
+											<input type="hidden" name="containeditem" value="{$containeditem}" />
+										</td>
+									</tr>
+
+									<tr class="RoleTypeJpo">
+										<th>付録の内容</th>
+										<td colspan="3">
+											{$product_form_description|escape}
+											<input type="hidden" name="product_form_description" value="{$product_form_description}" />
+										</td>
+									</tr>
+
+									<tr class="RoleTypeJpo">
+										<th>その他出版社記入欄</th>
+										<td colspan="3">
+											<p class="error" style="color: #FF0000;">※廃止項目です。他の項目へ入力内容を移してください</p>
+											{$promotional_text|escape|nl2br}
+											<input type="hidden" name="promotional_text" value="{$promotional_text}" />
+										</td>
+									</tr>
+
+									<tr class="RoleTypeJpo">
+										<th>言語{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+										<td colspan="3">
+											{$languages[$language]|escape}
+											<input type="hidden" name="language" value="{$language}" />
+										</td>
+									</tr>
+
+									<tr class="RoleTypeJpo">
+										<th>再販{if $publisher.jpo && $jpoSync} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+										<td colspan="3">
+											{$resellings[$reselling]|escape}
+											{if $reselling_date_year && $reselling_date_month && $reselling_date_day}
+												<br />切り替え日：{$reselling_date_year}年&nbsp;
+												{$reselling_date_month}月&nbsp;
+												{$reselling_date_day}日&nbsp;&nbsp;
+											{/if}
+											<input type="hidden" name="reselling" value="{$reselling}" />
+											<input type="hidden" name="reselling_date_year" value="{$reselling_date_year}" />
+											<input type="hidden" name="reselling_date_month" value="{$reselling_date_month}" />
+											<input type="hidden" name="reselling_date_day" value="{$reselling_date_day}" />
+											<input type="hidden" name="resellingdatecheck" value="{$resellingdatecheck}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>特価本体価格</th>
+										<td colspan="3">
+											{if $price_amount}{$price_amount|escape}（税抜）{/if}
+											<input type="hidden" name="price_amount" value="{$price_amount}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>特価期限</th>
+										<td colspan="3" class="shortTextWrapper">
+{* JPROフェーズ2で不要になった？？
+											{if $price_effective_from_year && $price_effective_from_month && $price_effective_from_day}
+												開始日：{$price_effective_from_year}年&nbsp;
+												{$price_effective_from_month}月&nbsp;
+												{$price_effective_from_day}日&nbsp;&nbsp;
+											{/if}
+*}
+											{if $price_effective_until_year && $price_effective_until_month && $price_effective_until_day}
+												{$price_effective_until_year}年&nbsp;
+												{$price_effective_until_month}月&nbsp;
+												{$price_effective_until_day}日
+											{/if}
+{* JPROフェーズ2で不要になった？？
+											<input type="hidden" name="price_effective_from_year" value="{$price_effective_from_year}" />
+											<input type="hidden" name="price_effective_from_month" value="{$price_effective_from_month}" />
+											<input type="hidden" name="price_effective_from_day" value="{$price_effective_from_day}" />
+*}
+											<input type="hidden" name="price_effective_until_year" value="{$price_effective_until_year}" />
+											<input type="hidden" name="price_effective_until_month" value="{$price_effective_until_month}" />
+											<input type="hidden" name="price_effective_until_day" value="{$price_effective_until_day}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>販売条件</th>
+										<td colspan="3">
+											{$supply_restriction_details[$supply_restriction_detail]|escape}
+											<input type="hidden" name="supply_restriction_detail" value="{$supply_restriction_detail}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>取次会社取扱い</th>
+										<td colspan="3">
+											{$Intermediary_company_handlings[$Intermediary_company_handling]|escape}
+											<input type="hidden" name="Intermediary_company_handling" value="{$Intermediary_company_handling}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>内容確定</th>
+										<td colspan="3">
+											{$notification_types[$notification_type]|escape}
+											<input type="hidden" name="notification_type" value="{$notification_type}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th colspan="4" class="title">JPO 図書館選書情報</th>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>受賞情報</th>
+										<td colspan="3">
+											{$award|escape}
+											<input type="hidden" name="award" value="{$award|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>読者書き込み</th>
+										<td colspan="3">
+											{$readers_writes[$readers_write]|escape}
+											{if $readers_write_page}
+											読者書き込みありの場合のページ数：{$readers_write_page|escape}
+											{/if}
+											<input type="hidden" name="readers_write" value="{$readers_write|escape}" />
+											<input type="hidden" name="readers_write_page" value="{$readers_write_page|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>制作特記項目</th>
+										<td colspan="3">
+											{$production_notes_items[$production_notes_item]|escape}
+											<input type="hidden" name="production_notes_item" value="{$production_notes_item|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>付属資料（CD／DVD）の<br />館内外貸出可否</th>
+										<td colspan="3">
+											{$cd_dvds[$cd_dvd]|escape}
+											<input type="hidden" name="cd_dvd" value="{$cd_dvd|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>内容紹介 図書館選書用</th>
+										<td colspan="3">
+											{$library_selection_content|escape|nl2br}
+											<input type="hidden" name="library_selection_content" value="{$library_selection_content|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>担当者コメント</th>
+										<td colspan="3">
+											{$comments|escape|nl2br}
+											<input type="hidden" name="comments" value="{$comments|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>帯内容</th>
+										<td colspan="3">
+											{$band_contents|escape|nl2br}
+											<input type="hidden" name="band_contents" value="{$band_contents|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>類書・競合書</th>
+										<td colspan="3">
+											{$competition|escape|nl2br}
+											<input type="hidden" name="competition" value="{$competition|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>別送資料</th>
+										<td colspan="3">
+											{$separate_material|escape|nl2br}
+											<input type="hidden" name="separate_material" value="{$separate_material|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>装丁者名</th>
+										<td colspan="3">
+											{$bond_name|escape}
+											<input type="hidden" name="bond_name" value="{$bond_name|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>児童書詳細ジャンル <img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></th>
+										<td colspan="3">
+											{$childrens_book_genres[$childrens_book_genre]|escape}
+											<input type="hidden" name="childrens_book_genre" value="{$childrens_book_genre|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>ルビの有無 <img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></th>
+										<td colspan="3">
+											{$rubys[$ruby]|escape}
+											<input type="hidden" name="ruby" value="{$ruby|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>本文活字の大きさ （級数）<img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></th>
+										<td colspan="3">
+											{$font_size|escape}
+											<input type="hidden" name="font_size" value="{$font_size|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>マンガの割合 （ページ数）</th>
+										<td colspan="3">
+											{$percentage_of_manga|escape}
+											<input type="hidden" name="percentage_of_manga" value="{$percentage_of_manga|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>特殊な装丁</th>
+										<td colspan="3">
+											{$special_binding|escape}
+											<input type="hidden" name="special_binding" value="{$special_binding|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>しかけの有無</th>
+										<td colspan="3">
+											{$trick|escape}
+											<input type="hidden" name="trick" value="{$trick|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>その他特記事項</th>
+										<td colspan="3">
+											{$other_noticess[$other_notices]|escape}
+											<input type="hidden" name="other_notices" value="{$other_notices|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th colspan="4" class="title">JPO 仕入れ情報</th>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>初版予定部数</th>
+										<td colspan="3">
+											{$number_of_first_edition|escape}
+											<input type="hidden" name="number_of_first_edition" value="{$number_of_first_edition|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>取次搬入予定日</th>
+										<td colspan="3">
+											{if $delivery_date_year && $delivery_date_month && $delivery_date_day}
+												{$delivery_date_year}年&nbsp;
+												{$delivery_date_month}月&nbsp;
+												{$delivery_date_day}日
+											{/if}
+											<input type="hidden" name="delivery_date_year" value="{$delivery_date_year|escape}" />
+											<input type="hidden" name="delivery_date_month" value="{$delivery_date_month|escape}" />
+											<input type="hidden" name="delivery_date_day" value="{$delivery_date_day|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>返品期限・L表記</th>
+										<td colspan="3">
+											{if $return_deadline_year && $return_deadline_month && $return_deadline_day}
+												{$return_deadline_year}年&nbsp;
+												{$return_deadline_month}月&nbsp;
+												{$return_deadline_day}日
+											{/if}
+											<input type="hidden" name="return_deadline_year" value="{$return_deadline_year|escape}" />
+											<input type="hidden" name="return_deadline_month" value="{$return_deadline_month|escape}" />
+											<input type="hidden" name="return_deadline_day" value="{$return_deadline_day|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>帯（ムック）</th>
+										<td>
+											{$bands[$band]|escape}
+											<input type="hidden" name="band" value="{$band|escape}" />
+										</td>
+										<th>カバー（ムック）</th>
+										<td>
+											{$covers[$cover]|escape}
+											<input type="hidden" name="cover" value="{$cover|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>製本所</th>
+										<td colspan="3">
+											{$binding_place|escape}
+											<input type="hidden" name="binding_place" value="{$binding_place|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>重量 （グラム）</th>
+										<td colspan="3">
+											{$weight|escape}
+											<input type="hidden" name="weight" value="{$weight|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>結束数</th>
+										<td colspan="3">
+											{$number_of_cohesions|escape}
+											<input type="hidden" name="number_of_cohesions" value="{$number_of_cohesions|escape}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th colspan="4" class="title">JPO 日本書籍出版協会「これから出る本」用項目　※書協会員のみ・有料</th>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>著者表示</th>
+										<td>
+											{$recent_publication_author|escape}
+											<input type="hidden" name="recent_publication_author" value="{$recent_publication_author}" />
+										</td>
+										<th>「分類」</th>
+										<td>
+											{if $recent_publication_type}
+											{$recent_publication_types[$recent_publication_type]|escape}
+											{/if}
+											<input type="hidden" name="recent_publication_type" value="{$recent_publication_type}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>「読者対象」</th>
+										<td>
+											{if $recent_publication_reader}
+											{$recent_publication_readers[$recent_publication_reader]|escape}
+											{/if}
+											<input type="hidden" name="recent_publication_reader" value="{$recent_publication_reader}" />
+										</td>
+										<th>「これ本掲載時期」</th>
+										<td>
+											{if $recent_publication_date_year && $recent_publication_date_month && $recent_publication_date_day}
+												{$recent_publication_date_year}年&nbsp;
+												{$recent_publication_date_month}月&nbsp;
+												{$recent_publication_date_day}日&nbsp;&nbsp;
+											{/if}
+											<input type="hidden" name="recent_publication_date_year" value="{$recent_publication_date_year}" />
+											<input type="hidden" name="recent_publication_date_month" value="{$recent_publication_date_month}" />
+											<input type="hidden" name="recent_publication_date_day" value="{$recent_publication_date_day}" />
+										</td>
+									</tr>
+									<tr class="RoleTypeJpo">
+										<th>「内容紹介」</th>
+										<td colspan="3">
+											{$recent_publication_content|escape|nl2br}
+											<input type="hidden" name="recent_publication_content" value="{$recent_publication_content|escape}">
+										</td>
+									</tr>
+								{else}
+									{* JPO 入力リセット （複数タブ対応） *}
+									{* ジャンルコード *}
+									<input type="hidden" name="subject_code" value="{$subject_code}" />
+									{* レーベル名 *}
+									<input type="hidden" name="imprint_name" value="{$imprint_name}" />
+									<input type="hidden" name="imprint_collationkey" value="{$imprint_collationkey}" />
+									{* 配本回数 *}
+									<input type="hidden" name="extent_value" value="{$extent_value}" />
+									{* セット商品分売可否 *}
+									<input type="hidden" name="unpriced_item_type" value="{$unpriced_item_type}" />
+									{* 発売協定日 *}
+									<input type="hidden" name="on_sale_date_year" value="{$on_sale_date_year}" />
+									<input type="hidden" name="on_sale_date_month" value="{$on_sale_date_month}" />
+									<input type="hidden" name="on_sale_date_day" value="{$on_sale_date_day}" />
+									{* 注文・申込締切 *}
+									<input type="hidden" name="pre_order_limit_year" value="{$pre_order_limit_year}" />
+									<input type="hidden" name="pre_order_limit_month" value="{$pre_order_limit_month}" />
+									<input type="hidden" name="pre_order_limit_day" value="{$pre_order_limit_day}" />
+									{* 発売情報解禁日 *}
+									<input type="hidden" name="announcement_date_year" value="{$announcement_date_year}" />
+									<input type="hidden" name="announcement_date_month" value="{$announcement_date_month}" />
+									<input type="hidden" name="announcement_date_day" value="{$announcement_date_day}" />
+									{* 対象読者 *}
+									<input type="hidden" name="audience_code_value" value="{$audience_code_value}" />
+									{* 成人指定 *}
+									<input type="hidden" name="audience_description" value="{$audience_description}" />
+									{* 内容紹介2 *}
+									<input type="hidden" name="long_description" value="{$long_description}" />
+									{* 付録の有無 *}
+									<input type="hidden" name="containeditem" value="{$containeditem}" />
+									{* 付録の内容 *}
+									<input type="hidden" name="product_form_description" value="{$product_form_description}" />
+									{* その他出版社記入欄 *}
+									<input type="hidden" name="promotional_text" value="{$promotional_text}" />
+									{* 言語 *}
+									<input type="hidden" name="language" value="{$language}" />
+									{* 再販 *}
+									<input type="hidden" name="reselling" value="{$reselling}" />
+									<input type="hidden" name="reselling_date_year" value="{$reselling_date_year}" />
+									<input type="hidden" name="reselling_date_month" value="{$reselling_date_month}" />
+									<input type="hidden" name="reselling_date_day" value="{$reselling_date_day}" />
+									<input type="hidden" name="resellingdatecheck" value="{$resellingdatecheck}" />
+									{* 特価本体価格 *}
+									<input type="hidden" name="price_amount" value="{$price_amount}" />
+									{* 特価期限 *}
+									<input type="hidden" name="price_effective_from_year" value="{$price_effective_from_year}" />
+									<input type="hidden" name="price_effective_from_month" value="{$price_effective_from_month}" />
+									<input type="hidden" name="price_effective_from_day" value="{$price_effective_from_day}" />
+									<input type="hidden" name="price_effective_until_year" value="{$price_effective_until_year}" />
+									<input type="hidden" name="price_effective_until_month" value="{$price_effective_until_month}" />
+									<input type="hidden" name="price_effective_until_day" value="{$price_effective_until_day}" />
+									{* 販売条件 *}
+									<input type="hidden" name="supply_restriction_detail" value="{$supply_restriction_detail}" />
+									{* 内容確定 *}
+									<input type="hidden" name="notification_type" value="{$notification_type}" />
+									{* 著者表示 *}
+									<input type="hidden" name="recent_publication_author" value="{$recent_publication_author}" />
+									{* 「分類」 *}
+									<input type="hidden" name="recent_publication_type" value="{$recent_publication_type}" />
+									{* 「読者対象」 *}
+									<input type="hidden" name="recent_publication_reader" value="{$recent_publication_reader}" />
+									{* 「これ本掲載時期」 *}
+									<input type="hidden" name="recent_publication_date_year" value="{$recent_publication_date_year}" />
+									<input type="hidden" name="recent_publication_date_month" value="{$recent_publication_date_month}" />
+									<input type="hidden" name="recent_publication_date_day" value="{$recent_publication_date_day}" />
+									{* 「内容紹介」 *}
+									<input type="hidden" name="recent_publication_content" value="{$recent_publication_content|escape}">
+								{/if}
+
+{if $publisher.yondemill_book_sales}
+								<tr class="RoleTypeYondemill">
+									<th colspan="4" class="title">試し読み</th>
+								</tr>
+								<tr class="RoleTypeYondemill">
+									<th>試し読みURL</th>
+									<td colspan="3">{$yondemill_book_sales_url|escape}</td>
+								</tr>
+{/if}
+								<tr class="RelatedNote">
+									<th colspan="4" class="title">関連ファイル管理</th>
+								</tr>
+								<tr>
+									<th>epubデータ</th>
+									<td colspan="3">
+										{$note_epub|escape}
+										<input type="hidden" name="note_epub" value="{$note_epub|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>画像データ</th>
+									<td colspan="3">
+										{$note_image|escape}
+										<input type="hidden" name="note_image" value="{$note_image|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>ロゴデータ</th>
+									<td colspan="3">
+										{$note_logo|escape}
+										<input type="hidden" name="note_logo" value="{$note_logo|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>テキストデータ</th>
+									<td colspan="3">
+										{$note_text|escape}
+										<input type="hidden" name="note_text" value="{$note_text|escape}" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" value="戻る" name="back" />&nbsp;<input type="submit" name="process" value="変更" /></p>
+						<input type="hidden" name="new_status" value="{$new_status}" />
+						<input type="hidden" name="next_book" value="{$next_book}" />
+						<input type="hidden" name="recommend_status" value="{$recommend_status}" />
+					</form>
+			</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

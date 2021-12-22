@@ -1,0 +1,12 @@
+{*lock tables book write;*}
+
+
+update book
+set
+	recommend_status = 1
+where book_no
+	in({$book_no_list|@join:","})
+	and publisher_no = {$publisher_no};
+
+
+{*unlock tables;*}

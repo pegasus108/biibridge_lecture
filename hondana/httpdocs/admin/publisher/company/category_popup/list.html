@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower_popup.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>会社情報カテゴリ管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common_popup.css" rel="stylesheet" type="text/css" media="all" />
+
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="../../../js/common_popup.js"></script>
+<script type="text/javascript" src="../../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>会社情報カテゴリ管理</strong></h1></div>
+					<form method="post" id="listForm">
+						<div class="tableWrapper">
+							<p class="button buttonTop"><input type="button" name="changeItem" value="選択" /></p>
+							<table>
+								<tr>
+									<th>&nbsp;</th>
+									<th>カテゴリ</th>
+									<th>表示順</th>
+									<th>新規登録</th>
+								</tr>
+								{foreach name=companyCategory from=$companyCategoryList item=companyCategory}
+								{if $companyCategory.lft != $companyCategory.rgt - 1}
+								{/if}
+								<tr>
+									<td>
+										<input type="radio" name="item" />
+										<table class="none">
+											<tr>
+
+												<td><input type="hidden" name="company_category_no" value="{$companyCategory.company_category_no}" />{$companyCategory.name}</td>
+												<td><input type="button" onclick="unSelectItem(this);" value="削除" /></td>
+											</tr>
+										</table>
+									</td>
+									<td>
+										{section name=space loop=$companyCategory.depth-1}&nbsp;&nbsp;{/section}
+										{if $companyCategory.rgt+1 == $companyCategory.parent_rgt}└{else}├{/if}
+											<a href="edit/index.php?company_category_no={$companyCategory.company_category_no}">
+												{$companyCategory.name}
+											</a>
+									</td>
+									<td>
+										{section name=space loop=$companyCategory.depth-1}&nbsp;&nbsp;{/section}
+										<a {if $companyCategory.lft-1 == $companyCategory.parent_lft}class="hidden" {/if}href="sort/?company_category_no={$companyCategory.company_category_no}&order=up"><img src="../../../images/common/icon_order_up.gif" /></a>&nbsp;
+										<a {if $companyCategory.rgt+1 == $companyCategory.parent_rgt}class="hidden" {/if}href="sort/?company_category_no={$companyCategory.company_category_no}&order=down"><img src="../../../images/common/icon_order_down.gif" /></a>
+									</td>
+									<td>
+										{if $companyCategory.add_flag == '1'}
+										{section name=space loop=$companyCategory.depth-1}&nbsp;&nbsp;{/section}
+										<a href="new/?target_category={$companyCategory.company_category_no}">子カテゴリを登録</a>
+										{else}
+										&nbsp;
+										{/if}
+									</td>
+								</tr>
+								{if	$smarty.foreach.companyCategory.last}
+								<tr>
+									<td>&nbsp;</td>
+									<td> ─ <a href="new/">新規カテゴリを登録</a></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+								{/if}
+								{foreachelse}
+								<tr>
+									<td>&nbsp;</td>
+									<td> ─ <a href="new/">新規カテゴリを登録</a></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+								{/foreach}
+							</table>
+							<input type="hidden" name="actionTarget" value="category" />
+							<p class="button"><input type="button" name="changeItem" value="選択" /></p>
+						</div>
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

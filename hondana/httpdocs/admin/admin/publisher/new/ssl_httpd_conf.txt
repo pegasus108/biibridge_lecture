@@ -1,0 +1,1 @@
+ProxyPass /{$id}/ http://{$id}.hondana.jp/

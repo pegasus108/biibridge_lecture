@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+
+<title>TRC - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../../js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="../../../../js/common_lower.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../../">書誌情報管理</a>&nbsp;&gt;&nbsp;<a href="../">データ連携一覧</a>&nbsp;&gt;&nbsp;TRC</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>TRC</strong></h1></div>
+					<form action="./" method="post">
+						<input type="hidden" name="action" value="process">
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr>
+									<th colspan="2" class="title">送信データ</th>
+								</tr>
+								<tr>
+									<th>発行所</th>
+									<td>{$issuer_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>発行所（カナ）</th>
+									<td>{$issuer_kana_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>発売所</th>
+									<td>{$publisher_2|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>発売所（カナ）</th>
+									<td>{$publisher_kana_2|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>書名</th>
+									<td>{$name_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+								    <th>書名カナ</th>
+								    <td>{$kana_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>巻次</th>
+								    <td>{$volume_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>サブタイトル</th>
+									<td>{$sub_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+								    <th>サブタイトルカナ</th>
+								    <td>{$sub_kana_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者名1</th>
+									<td>{$author_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者名カナ1</th>
+									<td>{$author_kana_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者紹介1</th>
+									<td>{$author_note_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>著者名2</th>
+									<td>{$author_2|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者名カナ2</th>
+									<td>{$author_kana_2|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者紹介2</th>
+									<td>{$author_note_2|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>シリーズ</th>
+									<td>{$series_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>発売予定日</th>
+									<td>
+										{if $release_date_1_year}
+										{$release_date_1_year}年&nbsp;
+										{$release_date_1_month}月&nbsp;
+										{$release_date_1_day}{if !$release_date_1_ismb}日{/if}
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>内容紹介</th>
+									<td>{$content_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>本体価格</th>
+									<td>{$price_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>特価本体価格</th>
+									<td>{$price_special_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>特価期限</th>
+									<td>
+										{if $price_special_policy_1_year}
+										{$price_special_policy_1_year}年&nbsp;
+										{$price_special_policy_1_month}月&nbsp;
+										{$price_special_policy_1_day}日
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>ISBN</th>
+									<td>{$isbn_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>雑誌コード</th>
+									<td>{if $magazine_code_1_1}{$magazine_code_1_1|strip_tags|escape}-{$magazine_code_1_2|strip_tags|escape}{/if}</td>
+								</tr>
+								<tr>
+									<th>分売不可区分</th>
+									<td>
+										{if $distribution_type_1=='0'}
+										分売可
+										{elseif $distribution_type_1=='1'}
+										分売不可
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>判型</th>
+									<td>
+										{if '1'==$book_size_1}
+										菊判（218mm×152mm）
+										{elseif '2'==$book_size_1}
+										ＡＢ判（257mm×210mm）
+										{elseif '10'==$book_size_1}
+										ｐ判 Ａ７判（105mm×74mm）
+										{elseif '11'==$book_size_1}
+										Ａ６（文庫）判 Ａ6判 148mm×105mm　文庫本など
+										{elseif '12'==$book_size_1}
+										Ｂ４０（新書）判 Ｂ４０取 182mm×103mm　新書判
+										{elseif '13'==$book_size_1}
+										Ｂ６（四六）判 Ｂ６判 182mm×128mm　一般書籍、雑誌など
+										{elseif '14'==$book_size_1}
+										Ａ５判 Ａ５判 210mm×148mm　学術・専門書、教科書、雑誌など
+										{elseif '15'==$book_size_1}
+										Ｂ５判 Ｂ５判 257mm×182mm　事典、技術書、地図、雑誌など
+										{elseif '16'==$book_size_1}
+										Ａ４判 A4判 297mm×210mm 美術書、地図、雑誌など
+										{elseif '17'==$book_size_1}
+										Ｂ４ Ｂ４判 364mm×257mm 美術書、地図、雑誌など
+										{elseif '18'==$book_size_1}
+										A3 A3判420ｍｍ×297ｍｍ
+										{elseif '19'==$book_size_1}
+										規格外　その他の版型
+										{elseif '20'==$book_size_1}
+										セット
+										{elseif '21'==$book_size_1}
+										Ｂ７ 127mm×91mm
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>ページ数</th>
+									<td>{$page_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>注文・申し込み締切り</th>
+									<td>
+										{if $order_status_1_year}
+										{$order_status_1_year}年&nbsp;
+										{$order_status_1_month}月&nbsp;
+										{$order_status_1_day}日
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>発行部数</th>
+									<td>{$circulation_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>ジャンル</th>
+									<td>
+										{if '1'==$genre_1}
+										文芸
+										{elseif '2'==$genre_1}
+										哲学・宗教
+										{elseif '3'==$genre_1}
+										歴史・地理
+										{elseif '4'==$genre_1}
+										社会科学
+										{elseif '5'==$genre_1}
+										教育・福祉
+										{elseif '6'==$genre_1}
+										社会一般
+										{elseif '7'==$genre_1}
+										ビジネス
+										{elseif '8'==$genre_1}
+										パソコン
+										{elseif '9'==$genre_1}
+										インターネット
+										{elseif '10'==$genre_1}
+										自然科学
+										{elseif '11'==$genre_1}
+										工業・工学
+										{elseif '12'==$genre_1}
+										医学書
+										{elseif '13'==$genre_1}
+										健康書
+										{elseif '14'==$genre_1}
+										趣味実用
+										{elseif '15'==$genre_1}
+										芸術
+										{elseif '16'==$genre_1}
+										テレビ・映画
+										{elseif '17'==$genre_1}
+										スポーツ
+										{elseif '18'==$genre_1}
+										ゲーム
+										{elseif '19'==$genre_1}
+										語学・辞書
+										{elseif '20'==$genre_1}
+										学参・問題集
+										{elseif '21'==$genre_1}
+										資格試験
+										{elseif '22'==$genre_1}
+										ノンフィクション
+										{elseif '23'==$genre_1}
+										ヤングアダルト
+										{elseif '24'==$genre_1}
+										全集
+										{elseif '25'==$genre_1}
+										児童書
+										{elseif '26'==$genre_1}
+										ムック
+										{elseif '27'==$genre_1}
+										文庫・新書
+										{elseif '28'==$genre_1}
+										コミック
+										{elseif '29'==$genre_1}
+										コミック文庫
+										{elseif '30'==$genre_1}
+										その他
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>児童書ジャンル</th>
+									<td>
+										{if '1'==$genre_2}
+										幼児向
+										{elseif '2'==$genre_2}
+										絵本
+										{elseif '3'==$genre_2}
+										しかけ絵本
+										{elseif '4'==$genre_2}
+										フィクション
+										{elseif '5'==$genre_2}
+										ノンフィクション
+										{elseif '6'==$genre_2}
+										まんが
+										{elseif '7'==$genre_2}
+										その他
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>読者対象</th>
+									<td>
+										{if '1'==$target_1}
+										0～2歳
+										{elseif '2'==$target_1}
+										3～5歳
+										{elseif '3'==$target_1}
+										小学校低学年
+										{elseif '4'==$target_1}
+										小学校中学年
+										{elseif '5'==$target_1}
+										小学校高学年
+										{elseif '6'==$target_1}
+										中学生
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>ルビの有無</th>
+									<td>
+										{if $rubi_status_1=='0'}
+										無し
+										{elseif $rubi_status_1=='1'}
+										あり
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>刊行形態</th>
+									<td>
+										{if $version_release_1=='1'}
+										復刊
+										{elseif $version_release_1=='2'}
+										復刻
+										{elseif $version_release_1=='3'}
+										大活字
+										{elseif $version_release_1=='4'}
+										オンデマンド
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>その他特記事項</th>
+									<td>
+										{if $note_1=='1'}
+										改題
+										{elseif $note_1=='2'}
+										新装版
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>付属資料有無</th>
+									<td>
+										{if $appendices_status_1=='0'}
+										なし
+										{elseif $appendices_status_1=='1'}
+										あり
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>付属資料種類</th>
+									<td>
+										{if $appendices_type_1=='1'}
+										CD
+										{elseif $appendices_type_1=='2'}
+										CD-ROM
+										{elseif $appendices_type_1=='3'}
+										DVD
+										{elseif $appendices_type_1=='4'}
+										その他
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>付属資料その他</th>
+									<td>{$appendices_other_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>付属資料の館外貸出し</th>
+									<td>
+										{if $appendices_loan_1=='1'}
+										可
+										{elseif $appendices_loan_1=='2'}
+										不可
+										{elseif $appendices_loan_1=='3'}
+										館内のみ
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>付録</th>
+									<td>
+										{if $appendix_1=='1'}
+										切り取り式
+										{elseif $appendix_1=='2'}
+										別冊
+										{elseif $appendix_1=='3'}
+										その他
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>受賞情報</th>
+									<td>{$win_info_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>読者書き込み</th>
+									<td>
+										{if $reader_page_status_1=='0'}
+										なし
+										{elseif $reader_page_status_1=='1'}
+										あり
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>読者書き込みページ数</th>
+									<td>{$reader_page_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>別送資料</th>
+									<td>{$unaccompanied_status_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>目次情報</th>
+									<td>{$explain_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>装丁者</th>
+									<td>{$by_format_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>オビ内容</th>
+									<td>{$by_obi_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>担当編集者</th>
+									<td>{$representative_editor_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>担当者コメント</th>
+									<td>{$representative_comment_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>類書・競合書</th>
+									<td>{$conflicts_1|strip_tags|escape|nl2br}</td>
+								</tr>
+								<tr>
+									<th>原稿入力者名</th>
+									<td>{$typist_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>原稿入力者連絡先電話番号</th>
+									<td>{$typist_tel_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>原稿入力年月日</th>
+									<td>
+										{if $type_date_1_year}
+										{$type_date_1_year}年&nbsp;
+										{$type_date_1_month}月&nbsp;
+										{$type_date_1_day}日
+										{/if}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button">
+							<input type="button" value="戻る" onclick="location.href='./?action=input&back=true'" />&nbsp;
+							<input type="submit" name="confirm" value="登録" />&nbsp;
+						</p>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

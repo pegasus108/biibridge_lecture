@@ -1,0 +1,12 @@
+<h1 id="logo"><a href="/admin/publisher/">hondana管理システム</a></h1>
+<div id="hnavi">
+	<p id="hnaviLogout"><a href="/admin/logout/">ログアウト</a></p>
+	<div class="clear">&nbsp;</div>
+</div>
+<div class="clear">&nbsp;</div>
+<p id="hnaviPublisherName">
+	{if $smarty.session.publisher_account_name != $smarty.session.publisher_name}
+		アカウント：{$smarty.session.publisher_account_name|escape}&nbsp;&nbsp;
+	{/if}
+</p>
+<div class="clear">&nbsp;</div>

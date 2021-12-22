@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>お知らせ登録カテゴリ変更 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../">お知らせ管理</a>&nbsp;&gt;&nbsp;お知らせ登録カテゴリ変更</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/news.html" -->
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>お知らせ登録カテゴリ変更</strong></h1></div>
+					<form action="./" method="post">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>
+									{if !$setCategoryList}
+										カテゴリ「{$categoryName}」を設定できるお知らせがありません
+									{elseif count($publicList)==0}
+										以下のお知らせの登録カテゴリを変更します。
+									{else}
+										現在公開中のお知らせが含まれています。すべての登録カテゴリを変更してもよろしいですか？
+									{/if}
+									{if $check_set_category}
+									<br />※既にカテゴリが設定されているお知らせを除外しました
+									{/if}
+								</strong>
+							</div>
+						</div>
+						{if $setCategoryList}
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>お知らせ</th>
+									<td>
+									<input type="hidden" name="news_no_list" value="" />
+									{foreach name=news from=$setCategoryList item=news}
+										{$news.name}<br />
+										<input type="hidden" name="news_no_list[]" value="{$news.news_no|escape}" />
+									{/foreach}
+									</td>
+								</tr>
+								<tr>
+									<th>変更先カテゴリ</th>
+									<td>
+										{$categoryName}
+										<input type="hidden" name="add_category_no" value="{$add_category_no|escape}" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						{/if}
+						<p class="button"><input type="submit" name="submit" value="変更"{if !$setCategoryList} disabled="disabled"{/if} /></p>
+						<input type="hidden" name="action" value="process" />
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

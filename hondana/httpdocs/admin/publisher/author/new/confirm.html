@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>著者情報登録 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../">著者情報管理</a>&nbsp;&gt;&nbsp;著者情報登録</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+					<dl>
+						<dt>著者情報管理</dt>
+						<dd>
+							<ul>
+								<li><a href="../">著者情報一覧</a></li>
+								<li><a href="../new/">著者情報登録</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>著者情報登録</strong></h1>
+					</div>
+					<form action="./" method="post">
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>著者名</th>
+									<td>{$name|escape}</td>
+								</tr>
+								<tr>
+									<th>著者名カナ</th>
+									<td>{$kana|escape}</td>
+								</tr>
+								<tr>
+									<th>著者画像</th>
+									<td>
+										{if $author.http_path}
+										<img src="{$author.http_path}?stamp={$smarty.now}" alt="{$name}" />
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>著者プロフィール</th>
+									<td>{$value|escape|nl2br}</td>
+									<!--<td class="hasLink">
+										<p class="link"><a href="../preview/">プレビュー</a></p>
+									</td>-->
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="button" name="submit" value="戻る" onclick="location.href='?back=true'" />&nbsp;<input type="submit" name="submit" value="登録" /></p>
+						<input type="hidden" name="action" value="process" />
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

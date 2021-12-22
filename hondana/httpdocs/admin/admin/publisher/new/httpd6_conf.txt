@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+DocumentRoot /home/hondana/public_html/publisher/{$design}
+ServerName {$id}.hondana.jp
+ErrorLog /home/hondana/public_html/publisher/{$id}/logs/error_log
+Options -Indexes
+
+ErrorDocument 404 /error/
+
+#AliasMatch ^/rss/newbook/(.+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/rss/newbook/$1
+#AliasMatch ^/search/(.+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/search/$1
+#AliasMatch ^/news/(.+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/news/$1
+#AliasMatch ^/magazine/(.+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/magazine/$1
+#AliasMatch ^/([^/]+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/$1
+#AliasMatch ^/mb/(.+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/mb/$1
+AliasMatch ^/smp/(.+\.php)$ /home/hondana/public_html/publisher/core/smp/$1
+AliasMatch ^(.+\.php)$ /home/hondana/public_html/publisher/{$basetemplate}/$1
+
+Alias /files/ "/home/hondana/public_html/publisher/{$id}/files/"
+Alias /images/custom/ "/home/hondana/public_html/publisher/{$id}/images/custom/"
+Alias /images/book/ "/home/hondana/public_html/publisher/{$id}/images/book/"
+Alias /images/banner/ "/home/hondana/public_html/publisher/{$id}/images/banner/"
+Alias /images/author/ "/home/hondana/public_html/publisher/{$id}/images/author/"
+Alias /smp/ "/home/hondana/public_html/publisher/core/smp/"
+
+SetEnv HONDANA_PUBLISHER_NUMBER {$publisher_no}
+
+<directory /home/hondana/public_html/publisher/{$design}>
+	Include /home/hondana/etc/httpd/conf.d/extends.d/mod_rewrite.conf
+{literal}
+	RewriteRule ^top.html$ http://%{HTTP_HOST}/ [R=301,L]
+	RewriteRule ^search/([0-9]{4})([0-9]{2})\.html search/?book_date=$1-$2 [L]
+{/literal}
+</directory>
+<Directory /home/hondana/public_html/publisher/core>
+Include /home/hondana/etc/httpd/conf.d/extends.d/mod_rewrite.conf
+</Directory>
+<Directory /home/hondana/public_html/publisher/core/smp>
+ErrorDocument 404 /smp/error/
+</Directory>
+Include /home/hondana/etc/httpd/conf.d/env/{$id}.env.conf
+
+</VirtualHost>
+

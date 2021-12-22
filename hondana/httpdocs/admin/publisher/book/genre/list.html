@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報ジャンル管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../../js/jquery.nestable.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書誌情報ジャンル管理</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>書誌情報ジャンル一覧</strong></h1></div>
+					<form method="post" id="listForm" action="delete/">
+						<div class="btnWrap top">
+							<div class="delete">
+								<div class="dummy"><input type="checkbox" name="dummy" value="" checked="checked" onclick="return false;" />で選択したジャンルを削除出来ます。</div>
+								<div class="btn">
+									<input type="submit" name="" value="削除を実行" />
+								</div>
+							</div>
+							<div class="sort">
+								<div class="dummy">
+									<div class="dd-handle dd3-handle">Drag</div>をドラッグ＆ドロップで並び替えが出来ます。
+									<div class="note">
+										※階層がある場合は、<div class="sample">-</div><div class="sample">+</div>で階層を開閉すると並び替えが容易です。<br />
+										※「並び順を保存」を押さないと、変更が保存されません。
+									</div>
+								</div>
+								<div class="btn">
+									<div class="saveWrap">
+										<button class="save">並び順を保存</button>
+										<p class="msg"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+{if $errors.sort}
+						<p class="error" style="padding-bottom: 10px;"><strong>{$errors.sort|escape}</strong></p>
+{/if}
+						<div class="dd" id="nestable3">
+							<ol class="dd-list">
+								{foreach name=genre from=$genreList key=key item=genre}
+
+								{assign var=prev value=$key-1}
+								{assign var=next value=$key+1}
+
+								{if !$smarty.foreach.genre.first && $genre.depth > $genreList[$prev].depth}
+								<ol class="dd-list">
+								{/if}
+									<li class="dd-item dd3-item" data-id="{$genre.genre_no|escape}">
+										<div class="dd-handle dd3-handle">Drag</div>
+										<div class="dd3-content">
+											<div class="left">
+												<input type="checkbox" name="genre_no_list[]" value="{$genre.genre_no|escape}" />
+												<a href="edit/index.php?genre_no={$genre.genre_no|escape}">{$genre.name}</a>
+											</div>
+											<div class="right">
+												{if $genre.add_flag == '1'}
+												<a href="new/?new_entry=true&target_genre={$genre.genre_no|escape}">子ジャンルを登録</a>
+												{/if}
+											</div>
+										</div>
+								{if !$smarty.foreach.genre.last}
+
+									{if $genre.depth == $genreList[$next].depth}
+									</li>
+									{/if}
+								{if $genre.depth > $genreList[$next].depth}
+								{section name=close1 loop=$genre.depth-$genreList[$next].depth}
+									</li>
+								</ol>
+								{/section}
+								{/if}
+
+								{else}
+
+								{if $genre.depth == 1}
+									</li>
+								{else}
+								{section name=close2 loop=$genre.depth-1}
+									</li>
+								</ol>
+								{/section}
+								{/if}
+
+								{/if}
+								{/foreach}
+							</ol>
+						</div>
+						<p class="add-item"><a href="new/?new_entry=true">新規ジャンルを登録</a></p>
+						<div class="btnWrap bottom">
+							<div class="sort">
+								<div class="dummy">
+									<div class="dd-handle dd3-handle">Drag</div>をドラッグ＆ドロップで並び替えが出来ます。
+									<div class="note">
+										※階層がある場合は、<div class="sample">-</div><div class="sample">+</div>で階層を開閉すると並び替えが容易です。<br />
+										※「並び順を保存」を押さないと、変更が保存されません。
+									</div>
+								</div>
+								<div class="btn">
+									<div class="saveWrap">
+										<button class="save">並び順を保存</button>
+										<p class="msg"></p>
+									</div>
+								</div>
+							</div>
+							<div class="delete">
+								<div class="dummy"><input type="checkbox" name="dummy" value="" checked="checked" onclick="return false;" />で選択したジャンルを削除出来ます。</div>
+								<div class="btn">
+									<input type="submit" name="" value="削除を実行" />
+								</div>
+							</div>
+						</div>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

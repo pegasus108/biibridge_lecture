@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+
+<title>取次 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../../js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="../../../../js/common_lower.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../../">書誌情報管理</a>&nbsp;&gt;&nbsp;<a href="../">データ連携一覧</a>&nbsp;&gt;&nbsp;取次</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>取次</strong></h1></div>
+					<form action="./" method="post">
+						<input type="hidden" name="action" value="process">
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr {if !$uFields.cancell_type_1[$cType]}class="none"{/if}>
+									<th>取消区分</th>
+									<td>
+										{if $cancell_type_1}取り消し
+										{elseif '0'==$cancell_type_1}通常（新設、修正）
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.category_code_1[$cType]}class="none"{/if}>
+									<th>ジャンル</th>
+									<td>
+										{if in_array($category_code_1,array('51','81','86','71'))}雑誌
+										{elseif in_array($category_code_1,array('44','41','42','43'))}コミックス
+										{elseif in_array($category_code_1,array('31','36'))}文庫・コミック文庫
+										{elseif '2'==$category_code_1}新書
+										{elseif '30'==$category_code_1}全集
+										{elseif !in_array($category_code_1,array('','51','81','86','71','44','41','42','43','31','36','2','30'))||'23'==$category_code_1}一般書籍
+										{/if}
+										&nbsp;
+										{if '1'==$category_code_1}文芸
+										{elseif '2'==$category_code_1}新書
+										{elseif '3'==$category_code_1}社会一般
+										{elseif '4'==$category_code_1}資格・試験
+										{elseif '5'==$category_code_1}ビジネス
+										{elseif '6'==$category_code_1}スポーツ・健康
+										{elseif '7'==$category_code_1}趣味・実用
+										{elseif '9'==$category_code_1}ゲーム
+										{elseif '10'==$category_code_1}芸能・タレント
+										{elseif '11'==$category_code_1}テレビ・映画化
+										{elseif '12'==$category_code_1}芸術
+										{elseif '13'==$category_code_1}哲学・宗教
+										{elseif '14'==$category_code_1}歴史・地理
+										{elseif '15'==$category_code_1}社会科学
+										{elseif '16'==$category_code_1}教育
+										{elseif '17'==$category_code_1}自然科学
+										{elseif '18'==$category_code_1}医学
+										{elseif '19'==$category_code_1}工業・工学
+										{elseif '20'==$category_code_1}コンピュータ
+										{elseif '21'==$category_code_1}語学・辞事典
+										{elseif '22'==$category_code_1}学参
+										{elseif '23'==$category_code_1}児童図書
+										{elseif '24'==$category_code_1}ヤングアダルト
+										{elseif '29'==$category_code_1}新刊セット
+										{elseif '30'==$category_code_1}全集
+										{elseif '31'==$category_code_1}文庫
+										{elseif '36'==$category_code_1}コミック文庫
+										{elseif '41'==$category_code_1}コミックス（欠番扱）
+										{elseif '42'==$category_code_1}コミックス（雑誌扱）
+										{elseif '43'==$category_code_1}コミックス（書籍）
+										{elseif '44'==$category_code_1}コミックス（廉価版）
+										{elseif '51'==$category_code_1}ムック
+										{elseif '71'==$category_code_1}雑誌
+										{elseif '81'==$category_code_1}増刊
+										{elseif '86'==$category_code_1}別冊
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.trade_code_1[$cType]}class="none"{/if}>
+									<th>取引コード</th>
+									<td>
+										{$trade_code_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.trade_code_branch_1[$cType]}class="none"{/if}>
+									<th>取引コード（枝番）</th>
+									<td>
+										{$trade_code_branch_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.issuer_1[$cType]}class="none"{/if}>
+									<th>発売所</th>
+									<td>
+										{$issuer_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.issuer_kana_1[$cType]}class="none"{/if}>
+									<th>発売所（カナ）</th>
+									<td>
+										{$issuer_kana_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.publisher_2[$cType]}class="none"{/if}>
+									<th>発行所</th>
+									<td>
+										{$publisher_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.publisher_kana_2[$cType]}class="none"{/if}>
+									<th>発行所（カナ）</th>
+									<td>
+										{$publisher_kana_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.handling_company_1[$cType]}class="none"{/if}>
+									<th>扱い社</th>
+									<td>
+										{$handling_company_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.handling_type_1[$cType]}class="none"{/if}>
+									<th>扱い区分</th>
+									<td>
+										{if '0'==$handling_type_1}取次
+										{elseif '1'==$handling_type_1}直販
+										{elseif '2'==$handling_type_1}通販
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.series_1[$cType]}class="none"{/if}>
+									<th>新書・文庫・コミック・<br />ムックシリーズ名</th>
+									<td>
+										{$series_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.series_kana_1[$cType]}class="none"{/if}>
+									<th>新書・文庫・コミック・<br />ムックシリーズ名読み</th>
+									<td>
+										{$series_kana_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.series_volume_1[$cType]}class="none"{/if}>
+									<th>新書・文庫・コミック・<br />ムックシリーズ名巻次</th>
+									<td>
+										{$series_volume_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.sub_series_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='30'}全集名
+										{else}サブタイトル・シリーズ名
+										{/if}
+									</th>
+									<td>
+										{$sub_series_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.sub_series_kana_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='30'}全集名読み
+										{else}サブタイトル・シリーズ名読み
+										{/if}
+									</th>
+									<td>
+										{$sub_series_kana_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.sub_series_volume_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='30'}全集名巻次
+										{else}サブタイトル・シリーズ名巻次
+										{/if}
+									</th>
+									<td>
+										{$sub_series_volume_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.total_volume_1[$cType]}class="none"{/if}>
+									<th>全巻数</th>
+									<td>
+										{$total_volume_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.total_other_volume_1[$cType]}class="none"{/if}>
+									<th>別巻数</th>
+									<td>
+										{$total_other_volume_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.distribution_count_1[$cType]}class="none"{/if}>
+									<th>配本回数</th>
+									<td>
+										{$distribution_count_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.name_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='86'||$cType=='81'}本誌名
+										{else}書名
+										{/if}
+									</th>
+									<td>
+										{$name_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.kana_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='86'||$cType=='81'}本誌名読み
+										{else}書名読み
+										{/if}
+									</th>
+									<td>
+										{$kana_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.volume_2[$cType]}class="none"{/if}>
+									<th>巻次</th>
+									<td>
+										{$volume_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.sub_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='86'}別冊タイトル
+										{elseif $cType=='81'}増刊タイトル
+										{else}後サブタイトル
+										{/if}
+									</th>
+									<td>
+										{$sub_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.sub_kana_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='86'}別冊タイトルカナ
+										{elseif $cType=='81'}増刊タイトルカナ
+										{else}後サブタイトルカナ
+										{/if}
+									</th>
+									<td>
+										{$sub_kana_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.sub_volume_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='86'||$cType=='81'}巻次
+										{else}後サブタイトル巻次
+										{/if}
+									</th>
+									<td>
+										{$sub_volume_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.end_1[$cType]}class="none"{/if}>
+									<th>完結</th>
+									<td>
+										{if $end_1=='0'}未完結
+										{elseif $end_1=='1'}完結
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.present_volume_1[$cType]}class="none"{/if}>
+									<th>
+										{if $cType=='86'||$cType=='81'}本誌月号・号数表記
+										{else}月号・号数表記
+										{/if}
+									</th>
+									<td>
+										{$present_volume_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_1[$cType]}class="none"{/if}>
+									<th>著者名１</th>
+									<td>
+										{$author_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_kana_1[$cType]}class="none"{/if}>
+									<th>著者名１読み</th>
+									<td>
+										{$author_kana_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_type_1[$cType]}class="none"{/if}>
+									<th>著作の種類を表す語１</th>
+									<td>
+										{$author_type_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_2[$cType]}class="none"{/if}>
+									<th>著者名２</th>
+									<td>
+										{$author_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_kana_2[$cType]}class="none"{/if}>
+									<th>著者名２読み</th>
+									<td>
+										{$author_kana_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_type_2[$cType]}class="none"{/if}>
+									<th>著作の種類を表す語２</th>
+									<td>
+										{$author_type_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_3[$cType]}class="none"{/if}>
+									<th>著者名３</th>
+									<td>
+										{$author_3|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_kana_3[$cType]}class="none"{/if}>
+									<th>著者名３読み</th>
+									<td>
+										{$author_kana_3|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.author_type_3[$cType]}class="none"{/if}>
+									<th>著作の種類を表す語３</th>
+									<td>
+										{$author_type_3|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.content_1[$cType]}class="none"{/if}>
+									<th>内容紹介</th>
+									<td>
+										{$content_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.content_2[$cType]}class="none"{/if}>
+									<th>内容紹介（予備）</th>
+									<td>
+										{$content_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.preliminary_5[$cType]}class="none"{/if}>
+									<th>対象読者</th>
+									<td>
+										{if '1'==$preliminary_5}０・１・２歳
+										{elseif '2'==$preliminary_5}３・４・５歳
+										{elseif '3'==$preliminary_5}小学校低学年
+										{elseif '4'==$preliminary_5}小学校中学年
+										{elseif '5'==$preliminary_5}小学校高学年
+										{elseif '6'==$preliminary_5}小学生全般
+										{elseif '7'==$preliminary_5}中学生以上
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.book_size_2[$cType]}class="none"{/if}>
+									<th>判型</th>
+									<td>
+										{$book_size_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.book_size_3[$cType]}class="none"{/if}>
+									<th>判型（実寸）</th>
+									<td>
+										{$book_size_3|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.page_1[$cType]}class="none"{/if}>
+									<th>ページ数</th>
+									<td>
+										{$page_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.bound_1[$cType]}class="none"{/if}>
+									<th>綴じ</th>
+									<td>{$bound_1|escape}</td>
+								</tr>
+								<tr {if !$uFields.release_date_1[$cType]}class="none"{/if}>
+									<th>発売予定日</th>
+									<td>
+										{$release_date_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.return_date_1[$cType]}class="none"{/if}>
+									<th>返品期限・L表記</th>
+									<td>
+										{$return_date_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.notation_price_1[$cType]}class="none"{/if}>
+									<th>予価表記の有無</th>
+									<td>
+										{if '0'==$notation_price_1}
+											決定価格
+										{elseif '1'==$notation_price_1}
+											予価表記
+										{elseif '2'==$notation_price_1}
+											非再販（価格表記）
+										{elseif '3'==$notation_price_1}
+											予定価格
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.price_1[$cType]}class="none"{/if}>
+									<th>本体価格・<br />セット本体価格</th>
+									<td>
+										{$price_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.price_tax_1[$cType]}class="none"{/if}>
+									<th>税込価格（定価）・<br />セット税込価格</th>
+									<td>
+										{$price_tax_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.price_special_1[$cType]}class="none"{/if}>
+									<th>特価本体価格・<br />セット特別本体価格</th>
+									<td>
+										{$price_special_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.price_special_tax_1[$cType]}class="none"{/if}>
+									<th>特価税込価格（特別定価）・<br />セット特別税込価格</th>
+									<td>
+										{$price_special_tax_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.price_special_policy_1[$cType]}class="none"{/if}>
+									<th>特価期限</th>
+									<td>
+										{$price_special_policy_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.distribution_type_1[$cType]}class="none"{/if}>
+									<th>分売不可区分</th>
+									<td>
+										{if $distribution_type_1=='0'}
+										分売可
+										{elseif $distribution_type_1=='1'}
+										分売不可
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.distribut_1[$cType]}class="none"{/if}>
+									<th>販売条件</th>
+									<td>
+										{$distribut_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.isbn_1[$cType]}class="none"{/if}>
+									<th>ISBN</th>
+									<td>
+										{$isbn_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.category_1[$cType]}class="none"{/if}>
+									<th>Ｃコード</th>
+									<td>
+										{$category_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.magazine_code_2[$cType]}class="none"{/if}>
+									<th>雑誌コード</th>
+									<td>
+										{$magazine_code_2|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.magazine_code_1[$cType]}class="none"{/if}>
+									<th>雑誌コード(表４表記）</th>
+									<td>
+										{$magazine_code_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.adult_1[$cType]}class="none"{/if}>
+									<th>成人指定</th>
+									<td>
+										{if $adult_1=='0'}成人指定なし
+										{elseif $adult_1=='1'}成人指定
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.pre_order_1[$cType]}class="none"{/if}>
+									<th>事前注文</th>
+									<td>
+										{if $pre_order_1=='0'}不可
+										{elseif $pre_order_1=='1'}可
+										{/if}
+									</td>
+								</tr>
+								<tr {if !$uFields.order_status_1[$cType]}class="none"{/if}>
+									<th>注文・申し込み締切り</th>
+									<td>
+										{$order_status_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.circulation_1[$cType]}class="none"{/if}>
+									<th>発行部数</th>
+									<td>
+										{$circulation_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.fix_1[$cType]}class="none"{/if}>
+									<th>修正内容</th>
+									<td>
+										{$fix_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.typist_1[$cType]}class="none"{/if}>
+									<th>原稿入力者名</th>
+									<td>
+										{$typist_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.typist_tel_1[$cType]}class="none"{/if}>
+									<th>原稿入力者連絡先電話番号</th>
+									<td>
+										{$typist_tel_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.type_date_1[$cType]}class="none"{/if}>
+									<th>原稿入力年月日</th>
+									<td>
+										{$type_date_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.edit_time_stamp_1[$cType]}class="none"{/if}>
+									<th>原稿入力時刻</th>
+									<td>
+										{$edit_time_stamp_1|escape}
+									</td>
+								</tr>
+								<tr {if !$uFields.win_info_1[$cType]}class="none"{/if}>
+									<th>受賞情報</th>
+									<td>
+										{$win_info_1|escape}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button">
+							<input type="button" value="戻る" onclick="location.href='./?action=input&back=true'" />&nbsp;
+							<input type="submit" name="confirm" value="登録" />&nbsp;
+						</p>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

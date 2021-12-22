@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+#header #hnavi {
+	width:122px;
+}
+#freeItem .free .add,
+#freeItem .free .delete {
+	display:none;
+}
+#freeItem .first .add {
+	display:inline;
+}
+#freeItem .last .add,
+#freeItem .last .delete {
+	display:inline;
+}

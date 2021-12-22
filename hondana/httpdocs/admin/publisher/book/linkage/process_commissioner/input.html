@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>取次入稿用データ送信 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../../js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="../../../../js/common_linkage.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../../">書誌情報管理</a>&nbsp;&gt;&nbsp;<a href="../">データ連携一覧</a>&nbsp;&gt;&nbsp;取次入稿用データ送信</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>取次入稿用データ送信</strong></h1></div>
+					<form action="./" method="post">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong class="error">
+								{if count($bookList)==count($statusList)}
+									取次入稿用データをデータ連携担当者へ送信してもよろしいですか？
+								{elseif !count($bookList)}
+									有効な取次入稿用データがありません。
+								{elseif count($bookList)!=count($statusList)}
+									取次入稿用データをデータ連携担当者へ送信してもよろしいですか？
+									<br />送信情報が未登録の書誌は送信されません。
+								{elseif !$publisher.linkage_person_mail}
+									データ連携担当者のメールアドレスが設定されていません。
+								{/if}
+								</strong>
+							</div>
+						</div>
+						{if processFlag}
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>データ連携担当者名</th>
+									<td>
+									{if $publisher.linkage_person_name}{$publisher.linkage_person_name}{else}設定なし{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>データ連携担当者メールアドレス</th>
+									<td>
+									{$publisher.linkage_person_mail}
+									</td>
+								</tr>
+								<tr>
+									<th>取次入稿用データ</th>
+									<td>
+									{foreach name=book from=$statusList item=book}
+										{$book.name}
+										{if $book.volume}&nbsp;{$book.volume}{/if}
+										{if !$book.status}&nbsp;<span class="error">未登録</span>{/if}<br />
+									{/foreach}
+									</td>
+								</tr>
+							</table>
+						</div>
+						{/if}
+						<p class="button"><input type="button" onclick="location.href='../'" value="一覧へ戻る" />{if $processFlag}&nbsp;<input type="submit" name="submit" value="送信" />{/if}</p>
+						<input type="hidden" name="action" value="process" />
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

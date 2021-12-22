@@ -1,0 +1,17 @@
+.id-slide {
+  overflow-x: hidden; }
+  .id-slide .slick-slide {
+    border: 1px solid #fff;
+    border-width: 20px 10px 10px; }
+  @media screen and (max-width: 960px) {
+    .id-slide {
+      margin: 0px; }
+      .id-slide .slick-slide {
+        border-width: 0 5px 5px; }
+        .id-slide .slick-slide img {
+          height: 240px; } }
+  @media screen and (max-width: 480px) {
+    .id-slide .slick-slide {
+      border-width: 0 1px 1px; }
+      .id-slide .slick-slide img {
+        height: 160px; } }

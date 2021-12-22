@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報一括取込v2 UTF-8 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../../js/common_lower.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<style>
+{literal}
+	.download {
+		margin-top: 15px;
+		margin-left: 22px;
+	}
+	ul.notes {
+		margin-top: 15px;
+		margin-left: 22px;
+	}
+	ul.notes li:before {
+		content: '※';
+	}
+{/literal}
+</style>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書誌情報一括取込v2 UTF-8</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+			</td>
+			<td id="main">
+					<div class="title"><h1><strong>書誌情報一括取込v2 UTF-8</strong></h1></div>
+					<p class="text">書誌情報をCSV形式のファイルで一括登録します。</p>
+					<form action="./" method="post" enctype="multipart/form-data">
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr>
+									<th>書誌情報</th>
+									<td colspan="3">
+										{if $error}
+										<p class="error">
+											{foreach from=$error item=v name=n key=k}
+												{$v|escape}<br />
+											{/foreach}
+										</p>
+										{/if}
+
+										{if $smarty.get.db_crash}
+										<p class="error">{$smarty.get.db_crash|escape}</p>
+										{/if}
+
+										<input type="file" name="tsv" /><br />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" name="confirm" value="確認" /></p>
+						<input type="hidden" name="action" value="confirm" />
+					</form>
+					<p class="download"><a href="import_template.csv">CSVテンプレート ダウンロード</a></p>
+					<ul class="notes">
+						<li>ジャンル、シリーズは「>」を使用し、階層構造にてご指摘ください</li>
+						<li>ジャンル、シリーズは「|」を使用し、複数設定可能です</li>
+						<li>UTF-8のCSVを取り込みます。中国語の取り込み等にご利用ください。</li>
+						<li>著者は15名まで設定可能です。</li>
+					</ul>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+#contents form {
+	padding:16px 25px 30px 25px;
+}
+#contents form th,
+#contents form td {
+	padding:5px 10px;
+	/*border:1px solid #DECCB4;*/
+	border:1px solid #DDDDDD;
+	text-align:left;
+}
+#contents form th {
+	/*background-color:#EDE9E0;*/
+	background-color:#FFFFFF;
+}
+#contents form .button {
+	padding-top:10px;
+}
+#contents .text {
+	padding:30px 20px;
+}
+#contents .text {
+	padding:30px 20px;
+}
+#contents p.error {
+	color:#FF0000;
+	margin:0pt;
+	padding:0pt;
+}

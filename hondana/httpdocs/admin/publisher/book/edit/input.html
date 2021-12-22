@@ -1,0 +1,1793 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報変更 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<link href="/admin/js/jquery-ui/css/custom-theme/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-ui/js/jquery-ui-1.8.6.custom.min.js"></script>
+<script type="text/javascript" src="/admin/js/common_lower.js"></script>
+<script type="text/javascript" src="/admin/js/common_public.js"></script>
+<script type="text/javascript" src="/admin/js/book_jpo.js"></script>
+<script type="text/javascript" src="/admin/js/unload.js"></script>
+<script type="text/javascript" src="/admin/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="/admin/js/book_sort.js"></script>
+<script type="text/javascript" src="/admin/js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript" src="/admin/js/wysiwyg.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script>
+<style type="text/css">
+{literal}
+#main #twBook.tableWrapper table table#newsRelate,
+#main #twBook.tableWrapper table table#bookFormat,
+#main #twBook.tableWrapper table table#cvRelate {
+	border-top: 1px solid #DECCB4;
+	border-right: 1px solid #DECCB4;
+}
+#main #twBook.tableWrapper table table#newsRelate td,
+#main #twBook.tableWrapper table table#bookFormat td,
+#main #twBook.tableWrapper table table#cvRelate td {
+	border-bottom: 1px solid #DECCB4;
+	border-left: 1px solid #DECCB4;
+}
+.sortable tr:hover {
+	background-color: #FFC94D;
+	cursor: move;
+}
+#main #twBook.tableWrapper table table#newsRelate thead th,
+#main #twBook.tableWrapper table table#bookFormat thead th,
+#main #twBook.tableWrapper table table#cvRelate thead th {
+	padding:5px 10px;
+	background-color:#EDE9E0;
+	background-image:none;
+}
+#main #twBook.tableWrapper table table#newsRelate thead th.header,
+#main #twBook.tableWrapper table table#bookFormat thead th.header,
+#main #twBook.tableWrapper table table#cvRelate thead th.header {
+	padding-right:20px;
+	background-repeat:no-repeat;
+	background-position:right center;
+	background-image:url(/admin/images/new_sort/bg.gif);
+	cursor: pointer;
+}
+#main #twBook.tableWrapper table table#newsRelate thead th.headerSortUp,
+#main #twBook.tableWrapper table table#bookFormat thead th.headerSortUp,
+#main #twBook.tableWrapper table table#cvRelate thead th.headerSortUp {
+	background-image:url(/admin/images/new_sort/desc.gif);
+}
+#main #twBook.tableWrapper table table#newsRelate thead th.headerSortDown,
+#main #twBook.tableWrapper table table#bookFormat thead th.headerSortDown,
+#main #twBook.tableWrapper table table#cvRelate thead th.headerSortDown {
+	background-image:url(/admin/images/new_sort/asc.gif);
+}
+{/literal}
+</style>
+</head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書誌情報変更</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!--#include virtual="/admin/publisher/include/lnavi/book.html" --></td>
+			<td id="main">
+					<div class="title"><h1><strong>書誌情報変更</strong></h1></div>
+{if $publisher.hondanaec_status}
+					<div class="hondanaeclink" style="margin-bottom:20px; text-align: right;"><a href="{$smarty.const.HONDANAEC_DOMAIN}/products/add/{$book_no|escape}">販売用データを編集する</a></div>
+{/if}
+					<form action="./" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="book_no" value="{$book_no|escape}" />
+						<input type="hidden" name="upkey" value="{$upkey}" />
+{assign var=alist value=$stockStatusList}
+{if $alist}
+{foreach name='stockStatusList' from=$alist key=id item=list}
+{foreach name='stockStatusListinner' from=$list key=k item=v}
+<input type="hidden" name="stockStatusList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="stockStatusList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookLabelList}
+{if $alist}
+{foreach name='oldBookLabelList' from=$alist key=id item=list}
+{foreach name='oldBookLabelListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookLabelList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookLabelList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookGenreList}
+{if $alist}
+{foreach name='oldBookGenreList' from=$alist key=id item=list}
+{foreach name='oldBookGenreListinner' from=$list key=k item=v}
+<input type="hidden" name="{$aname}[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="{$aname}" value="" />
+{/if}
+
+{assign var=alist value=$oldBookSeriesList}
+{if $alist}
+{foreach name='oldBookSeriesList' from=$alist key=id item=list}
+{foreach name='oldBookSeriesListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookSeriesList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookSeriesList" value="" />
+{/if}
+
+{assign var=alist value=$oldOpusList}
+{if $alist}
+{foreach name='oldOpusList' from=$alist key=id item=list}
+{foreach name='oldOpusListinner' from=$list key=k item=v}
+<input type="hidden" name="oldOpusList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldOpusList" value="" />
+{/if}
+
+{assign var=alist value=$oldBookRelateList}
+{if $alist}
+{foreach name='oldBookRelateList' from=$alist key=id item=list}
+{foreach name='oldBookRelateListinner' from=$list key=k item=v}
+<input type="hidden" name="oldBookRelateList[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldBookRelateList" value="" />
+{/if}
+
+{assign var=alist value=$oldSpsite}
+{if $alist}
+{foreach name='oldSpsite' from=$alist key=id item=list}
+{foreach name='oldSpsiteinner' from=$list key=k item=v}
+<input type="hidden" name="oldSpsite[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldSpsite" value="" />
+{/if}
+
+{assign var=alist value=$oldCpsite}
+{if $alist}
+{foreach name='oldCpsite' from=$alist key=id item=list}
+{foreach name='oldCpsiteinner' from=$list key=k item=v}
+<input type="hidden" name="oldCpsite[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="oldCpsite" value="" />
+{/if}
+
+{foreach name=old from=$old key=k item=v}
+<input type="hidden" name="old[{$k}]" value="{$v}" />
+{/foreach}
+						<div id="twBook" class="tableWrapper">
+							<table>
+								{if $publisher.jpo}
+									<tr class="RoleTypeJpo">
+										<th colspan="4" class="title">
+											JPO連携&nbsp;&nbsp;<strong class="jpoOnlyItems">ステータス:
+											{if $r_stamp=='0000/00/00' || !$r_stamp}
+												未連携
+											{elseif $jpoBeforeRelease}
+												{if $sa_stamp}
+													連携待ち
+												{else}
+													未連携
+												{/if}
+											{else}
+												{if $sa_stamp && $publisher.transaction_code && $publisher.publisher_prefix && $publisher.from_person_unit}
+													連携中
+												{else}
+													未連携
+												{/if}
+											{/if}</strong>
+										</th>
+									</tr>
+
+									<tr class="RoleTypeJpo">
+										<th>JPO連携</th>
+										<td colspan="3">
+											<label>
+												<input id="radioJpoSync1" type="radio" name="jpoSync" value="1" {if $sync_allowed || $jpoSync=="1"}checked="checked"{/if} />&nbsp;連携する
+											</label>
+											&nbsp;&nbsp;
+											<label>
+												<input id="radioJpoSync0" type="radio" name="jpoSync" value="0" {if !$sync_allowed && $jpoSync!="1"}checked="checked"{/if} />&nbsp;連携しない
+											</label>
+										</td>
+									</tr>
+								{/if}
+								<tr>
+									<th colspan="4" class="title">概要</th>
+								</tr>
+								<tr>
+									<th>書名 <img src="/admin/images/common/icon_must.gif" alt="必須" />{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td>
+										<p class="error">{$errors.name|escape}</p>
+										{if $errors_jpo.name}<p class="errorJPO">{$errors_jpo.name|escape}</p>{/if}
+										<input type="text" name="name" value="{$name|escape}" size="40" />
+									</td>
+									<th>書名カナ{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td>
+										<p class="error">{$errors.kana|escape}</p>
+										{if $errors_jpo.kana}<p class="errorJPO">{$errors_jpo.kana|escape}</p>{/if}
+										<strong>全角カタカナでご入力ください。</strong><br />
+										<input type="text" name="kana" value="{$kana|escape}" size="40" />
+									</td>
+								</tr>
+								<tr>
+									<th>巻次</th>
+									<td colspan="3">
+										<p class="error">{$errors.volume|escape}</p>
+										{if $errors_jpo.volume}<p class="errorJPO">{$errors_jpo.volume|escape}</p>{/if}
+										<input type="text" name="volume" value="{$volume|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>サブタイトル</th>
+									<td>
+										<p class="error">{$errors.sub_name|escape}</p>
+										{if $errors_jpo.sub_name}<p class="errorJPO">{$errors_jpo.sub_name|escape}</p>{/if}
+										<input type="text" name="sub_name" value="{$sub_name|escape}" size="40" />
+									</td>
+									<th>サブタイトルカナ</th>
+									<td>
+										<p class="error">{$errors.sub_kana|escape}</p>
+										{if $errors_jpo.sub_kana}<p class="errorJPO">{$errors_jpo.sub_kana|escape}</p>{/if}
+										<strong>全角カタカナでご入力ください。</strong><br />
+										<input type="text" name="sub_kana" value="{$sub_kana|escape}" size="40" />
+									</td>
+								</tr>
+								<tr class="RoleTypeLabel">
+									<th>レーベル</th>
+									<td colspan="3" class="hasLink">
+										<p class="error">{$errors.label}</p>
+										{if $errors_jpo.label}<p class="errorJPO">{$errors_jpo.label}</p>{/if}
+										<table id="booklabel">
+										{if $book_label_list}
+										{foreach name=book_label from=$book_label_list item=book_label}
+											<tr>
+												<td><input name="book_label_list[]" value="{$book_label}" type="hidden">{foreach name=label from=$labelList item=label}{if $label.label_no==$book_label}{$label.name}{/if}{/foreach}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{else}
+										{foreach name=booklabel from=$viewOldBookLabelList item=booklabel}
+											<tr>
+												<td><input name="book_label_list[]" value="{$booklabel.label_no}" type="hidden">{$booklabel.label_name}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{/if}
+										</table>
+										<p class="link"><a class="popupOpen" href="../label_popup/">レーベルを選択</a></p>
+									</td>
+								</tr>
+								<tr class="RoleTypeGenre">
+									<th>ジャンル</th>
+									<td colspan="3" class="hasLink">
+										<p class="error">{$errors.genre}</p>
+										{if $errors_jpo.genre}<p class="errorJPO">{$errors_jpo.genre}</p>{/if}
+										<table id="bookGenre">
+										{if $book_genre_list}
+										{foreach name=book_genre from=$book_genre_list item=book_genre}
+											<tr>
+												<td><input name="book_genre_list[]" value="{$book_genre}" type="hidden">{foreach name=genre from=$genreList item=genre}{if $genre.genre_no==$book_genre}{$genre.name}{/if}{/foreach}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{else}
+										{foreach name=bookGenre from=$viewOldBookGenreList item=bookGenre}
+											<tr>
+												<td><input name="book_genre_list[]" value="{$bookGenre.genre_no}" type="hidden">{$bookGenre.genre_name}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{/if}
+										</table>
+										<p class="link"><a class="popupOpen" href="../genre_popup/">ジャンルを選択</a></p>
+									</td>
+								</tr>
+								<tr class="RoleTypeSeries">
+									<th>シリーズ</th>
+									<td colspan="3" class="hasLink">
+										<p class="error">{$errors.series}</p>
+										{if $errors_jpo.series}<p class="errorJPO">{$errors_jpo.series}</p>{/if}
+										<table id="bookSeries">
+										{if $book_series_list}
+										{foreach name=book_series from=$book_series_list item=book_series}
+											<tr>
+												<td><input name="book_series_list[]" value="{$book_series}" type="hidden">{foreach name=series from=$seriesList item=series}{if $series.series_no==$book_series}{$series.name}{/if}{/foreach}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{else}
+										{foreach name=bookSeries from=$viewOldBookSeriesList item=bookSeries}
+											<tr>
+												<td><input name="book_series_list[]" value="{$bookSeries.series_no}" type="hidden">{$bookSeries.series_name}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{/if}
+										</table>
+										<p class="link"><a class="popupOpen" href="../series_popup/">シリーズを選択</a></p>
+									</td>
+								</tr>
+								<tr>
+									<th colspan="4" class="title">詳細</th>
+								</tr>
+								<tr class="RoleTypeImage">
+									<th>書影<br>{if $publisher.great_img_status == 1}（グレートサイズ書き出し可）{/if}</th>
+									<td colspan="3">
+										<p class="error">{$errors.book|escape}</p>
+										{if $errors_jpo.book}<p class="errorJPO">{$errors_jpo.book|escape}</p>{/if}
+										{if $book_httppath}
+										<img src="{$book_httppath}?stamp={$smarty.now}" alt="{$name}" /><br />
+										{elseif $image}
+										<img src="{$image}" alt="{$name}" /><br />
+										{/if}
+										{if $book_httppath || $image}
+										<input type="checkbox" name="clear_image" value="1" {if $clear_image}checked{/if} />&nbsp;削除する<br />
+										{/if}
+										<input type="hidden" name="image" value="{$image}" />
+										<input type="file" name="book{$upkey}" /><br />
+									</td>
+								</tr>
+								<tr>
+									<th>著者名</th>
+									<td colspan="3" class="hasLink">
+										<p class="error">{$errors.author}</p>
+										{if $errors_jpo.author}<p class="errorJPO">{$errors_jpo.author}</p>{/if}
+										<strong>著者を選択した場合、著者区分は必須入力です。</strong><br />
+										<table id="opus">
+										{if $opus_list}
+										{foreach name=opus from=$opus_list item=opus}
+											<tr>
+												<td><input name="opus_list[]" value="{$opus}" type="hidden">{$author_data_list[$opus].name|escape}</td>
+												<td>
+													<select name="author_type_list[]" onchange="otherText(this);">
+														<option value=""></option>
+														{foreach name=authorType from=$authorTypeList item=authorType}
+														<option value="{$authorType.author_type_no}" {if $authorType.author_type_no==$author_type_list[$smarty.foreach.opus.index]}selected{/if}>{$authorType.name}</option>
+														{/foreach}
+													</select>
+													<input type="text" name="author_type_other[]" value="{$author_type_other[$smarty.foreach.opus.index]}" size="10" {if $author_type_list[$smarty.foreach.opus.index]!='16'}style="display:none;"{/if}/>
+												</td>
+												<td>
+													<a href="javascript:void(0)" onclick="orderOpus(this,'up')"><img src="../../../images/common/icon_order_up.gif" /></a>
+													<a href="javascript:void(0)" onclick="orderOpus(this,'down')"><img src="../../../images/common/icon_order_down.gif" /></a>
+												</td>
+												<td>
+													<input type="button" onclick="unSelectItem(this);" value="削除" />
+												</td>
+											</tr>
+										{/foreach}
+										{else}
+										{foreach name=opus from=$viewOldOpusList item=opus}
+											<tr>
+												<td><input name="opus_list[]" value="{$opus.author_no}" type="hidden">{$opus.author_name}</td>
+												<td>
+													<select name="author_type_list[]"  onchange="otherText(this);">
+														<option value=""></option>
+														{foreach name=authorType from=$authorTypeList item=authorType}
+														<option value="{$authorType.author_type_no}" {if $authorType.author_type_no==$opus.author_type_no}selected{/if}>{$authorType.name}</option>
+														{/foreach}
+													</select>
+													<input type="text" name="author_type_other[]" value="{$opus.author_type_other}" size="10" {if $opus.author_type_no!='16'}style="display:none;"{/if}/>
+												</td>
+												<td>
+													<a href="javascript:void(0)" onclick="orderOpus(this,'up')"><img src="../../../images/common/icon_order_up.gif" /></a>
+													<a href="javascript:void(0)" onclick="orderOpus(this,'down')"><img src="../../../images/common/icon_order_down.gif" /></a>
+												</td>
+												<td>
+													<input type="button" onclick="unSelectItem(this);" value="削除" />
+												</td>
+											</tr>
+										{/foreach}
+										{/if}
+										</table>
+										<p class="link"><a class="popupOpen" href="../../author/author_popup/">著者を選択</a></p>
+									</td>
+								</tr>
+								<tr>
+									<th><div class="inner">商品コード</div></th>
+									<td><div class="inner">
+										<p class="error">{$errors.product_code|escape}</p>
+										<strong>半角英数でご入力ください。</strong><br />
+										<input type="text" name="product_code" value="{$product_code|escape}" size="35" />
+									</div></td>
+									<th><div class="inner">JANコード</div></th>
+									<td><div class="inner">
+										<p class="error">{$errors.jan_code|escape}</p>
+										<strong>半角数字13桁、ハイフンなしでご入力ください。</strong><br />
+										<input type="text" name="jan_code" value="{$jan_code|escape}" maxlength="13" />
+									</div></td>
+								</tr>
+								<tr>
+									<th>ISBN{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td>
+										<p class="error">{$errors.isbn|escape}</p>
+										{if $errors_jpo.isbn}<p class="errorJPO">{$errors_jpo.isbn|escape}</p>{/if}
+										<strong>半角数字10桁または13桁、ハイフンなしでご入力ください。</strong><br />
+										<input type="text" name="isbn" value="{$isbn|escape}" maxlength="13" />
+									</td>
+									<th>eISBN</th>
+									<td>
+										<p class="error">{$errors.e_isbn|escape}</p>
+										<strong>半角数字ハイフンなしでご入力ください。</strong><br />
+										<input type="text" name="e_isbn" value="{$e_isbn|escape}" size="13" />
+									</td>
+								</tr>
+								<tr>
+									<th>雑誌コード</th>
+									<td class="shortTextWrapper">
+										<p class="error">{$errors.magazine_code|escape}</p>
+										{if $errors_jpo.magazine_code}<p class="errorJPO">{$errors_jpo.magazine_code|escape}</p>{/if}
+										<strong>半角数字、使用誌名5桁＋号数2桁でご入力ください。</strong><br />
+										<input type="text" name="magazine_code_1" value="{$magazine_code_1|escape}" maxlength="5" />
+										<input type="text" name="magazine_code_2" value="{$magazine_code_2|escape}" maxlength="2" />
+									</td>
+									<th>Cコード{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td>
+										<p class="error">{$errors.c_code|escape}</p>
+										{if $errors_jpo.c_code}<p class="errorJPO">{$errors_jpo.c_code|escape}</p>{/if}
+										<strong>半角数字4桁でご入力ください。</strong><br />
+										<input type="text" name="c_code" value="{$c_code|escape}" />
+									</td>
+{*
+									<th><div class="inner">JANコード</div></th>
+									<td><div class="inner">
+										<p class="error">{$errors.jan_code|escape}</p>
+										<strong>半角数字13桁、ハイフンなしでご入力ください。</strong><br />
+										<input type="text" name="jan_code" value="{$jan_code|escape}" maxlength="13" />
+									</div></td>
+*}
+								</tr>
+								<tr class="RoleTypeReleaseDate">
+									<th>出版年月日（搬入日）</th>
+									<td class="shortTextWrapper">
+										<p class="error">{$errors.book_date|escape}</p>
+										{if $errors_jpo.book_date}<p class="errorJPO">{$errors_jpo.book_date|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="book_year" value="{if $book_year!='0000'}{$book_year}{/if}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="book_month" value="{if $book_month!='00'}{$book_month}{/if}" maxlength="2"/>&nbsp;月&nbsp;
+										<input type="text" name="book_day" value="{if $book_day!='00'}{$book_day}{/if}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										入力例)2008年 09月 30日
+									</td>
+									<th>書店発売日{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td class="shortTextWrapper">
+										<p class="error">{$errors.release_date|escape}</p>
+										{if $errors_jpo.release_date}<p class="errorJPO">{$errors_jpo.release_date|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="release_year" value="{if $release_year!='0000'}{$release_year}{/if}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="release_month" value="{if $release_month!='00'}{$release_month}{/if}" maxlength="2"/>&nbsp;月&nbsp;
+										<input type="text" name="release_day" value="{if $release_day!='00'}{$release_day}{/if}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										入力例)2008年 09月 30日
+										{if $publisher.jpo}<p class="errorJPO">※JPO連携期間： ～{$jpo_outside_end|date_format:"%Y年%m月%d日"}</p>{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>初版発行日（奥付日）</th>
+									<td class="shortTextWrapper">
+										<p class="error">{$errors.fei_date|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="fei_year" value="{if $fei_year!='0000'}{$fei_year}{/if}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="fei_month" value="{if $fei_month!='00'}{$fei_month}{/if}" maxlength="2"/>&nbsp;月&nbsp;
+										<input type="text" name="fei_day" value="{if $fei_day!='00'}{$fei_day}{/if}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										入力例)2008年 09月 30日
+									</td>
+									<th>初版発行部数</th>
+									<td>
+										<p class="error">{$errors.first_edition_circulation_number|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="first_edition_circulation_number" value="{$first_edition_circulation_number|escape}" size="13" />
+									</td>
+								</tr>
+								<tr>
+									<th>印刷所</th>
+									<td>
+										<p class="error">{$errors.printoffice|escape}</p>
+										<input type="text" name="printoffice" value="{$printoffice|escape}" size="40" />
+									</td>
+									<th>特殊印刷所</th>
+									<td>
+										<p class="error">{$errors.sp_printoffice|escape}</p>
+										<input type="text" name="sp_printoffice" value="{$sp_printoffice|escape}" size="40" />
+									</td>
+								</tr>
+								<tr class="RoleTypeVersion">
+									<th>版</th>
+									<td colspan="3">
+										<p class="error">{$errors.version|escape}</p>
+										{if $errors_jpo.version}<p class="errorJPO">{$errors_jpo.version|escape}</p>{/if}
+										<input type="text" name="version" value="{$version|escape}" size="40" />
+									</td>
+								</tr>
+								<tr>
+									<th>判型</th>
+									<td>
+										<p class="error">{$errors.book_size|escape}</p>
+										{if $errors_jpo.book_size_no}<p class="errorJPO">{$errors_jpo.book_size_no|escape}</p>{/if}
+										<select name="book_size_no">
+											<option value=""></option>
+											{foreach name=bookSize from=$bookSizeList item=bookSize}
+											<option value="{$bookSize.book_size_no}"{if $bookSize.book_size_no==$book_size_no} selected{/if}>{$bookSize.name|escape}</option>
+											{/foreach}
+										</select>
+									</td>
+									<th><div class="inner">判型（実寸）</div></th>
+									<td>
+										<p class="error">{$errors.measure|escape}</p>
+										{if $errors_jpo.measure}<p class="errorJPO">{$errors_jpo.measure|escape}</p>{/if}
+										<p class="error">{$errors.measur_height|escape}</p>
+										{if $errors_jpo.measure_height}<p class="errorJPO">{$errors_jpo.measure_height|escape}</p>{/if}
+										<p class="error">{$errors.measure_width|escape}</p>
+										{if $errors_jpo.measure_width}<p class="errorJPO">{$errors_jpo.measure_width|escape}</p>{/if}
+										<p class="error">{$errors.measure_thickness|escape}</p>
+										{if $errors_jpo.measure_thickness}<p class="errorJPO">{$errors_jpo.measure_thickness|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										タテ：<input type="text" name="measure_height" value="{$measure_height|escape}" size="1" maxlength="6" />&nbsp;mm&nbsp;&nbsp;
+										ヨコ：<input type="text" name="measure_width" value="{$measure_width|escape}" size="1" maxlength="6" />&nbsp;mm
+										厚さ：<input type="text" name="measure_thickness" value="{$measure_thickness|escape}" size="1" maxlength="6" />&nbsp;mm
+									</td>
+								</tr>
+								<tr>
+									<th>束幅</th>
+									<td>
+										<p class="error">{$errors.book_width|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="book_width" value="{$book_width|escape}" /> mm
+									</td>
+									<th>ページ数</th>
+									<td>
+										<p class="error">{$errors.page|escape}</p>
+										{if $errors_jpo.page}<p class="errorJPO">{$errors_jpo.page|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="page" value="{$page|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>カバー有無</th>
+									<td>
+										<p class="error">{$errors.book_cover|escape}</p>
+										<label for="bookcoverTrue"><input type="radio" name="book_cover"  value=1 id="bookcoverTrue" {if $book_cover == '1'}checked {/if}> 有</label>
+										<label for="bookcoverFalse"><input type="radio" name="book_cover"  value=0 id="bookcoverFalse" {if $book_cover == '0'}checked {/if}> 無</label>
+									</td>
+									<th>オビ有無</th>
+									<td>
+										<p class="error">{$errors.book_band|escape}</p>
+										<label for="bookbandTrue"><input type="radio" name="book_band"  value=1 id="bookbandTrue" {if $book_band == '1'}checked {/if}> 有</label>
+										<label for="bookbandFalse"><input type="radio" name="book_band"  value=0 id="bookbandFalse" {if $book_band == '0'}checked {/if}> 無</label>
+									</td>
+								</tr>
+								<tr>
+									<th>スリップ有無</th>
+									<td colspan="3">
+										<p class="error">{$errors.book_slip|escape}</p>
+										<label for="bookslipTrue"><input type="radio" name="book_slip"  value=1 id="bookslipTrue" {if $book_slip == '1'}checked {/if}> 有</label>
+										<label for="bookslipFalse"><input type="radio" name="book_slip"  value=0 id="bookslipFalse" {if $book_slip == '0'}checked {/if}> 無</label>
+									</td>
+								</tr>
+								<tr>
+									<th>コピーライト</th>
+									<td colspan="3">
+										<p class="error">{$errors.copyright|escape}</p>
+										<strong>〇文字以内でご入力ください。</strong><br />
+										<input type="text" name="copyright" value="{$copyright|escape}" size="110" />
+									</td>
+								</tr>
+								<tr>
+									<th>本体価格{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</th>
+									<td>
+										<p class="error">{$errors.price|escape}</p>
+										{if $errors_jpo.price}<p class="errorJPO">{$errors_jpo.price|escape}</p>{/if}
+										<strong>税抜を半角数字でご入力ください。</strong><br />
+										<input type="text" name="price" value="{$price|escape}" />（税抜）
+									</td>
+									<th>電子版価格</th>
+									<td>
+										<p class="error">{$errors.ebook_price|escape}</p>
+										<strong>税抜を半角数字でご入力ください。</strong><br />
+										<input type="text" name="ebook_price" value="{$ebook_price|escape}" />（税抜）
+									</td>
+								</tr>
+								<tr>
+									<th colspan="4" class="title">内容紹介</th>
+								</tr>
+								<tr>
+									<th>概要（長文）</th>
+									<td colspan="3">
+										<p class="error">{$errors.outline|escape}</p>
+										{if $errors_jpo.outline}<p class="errorJPO">{$errors_jpo.outline|escape}</p>{/if}
+										<strong>62文字以内でご入力ください。</strong><br />
+										<input type="text" name="outline" value="{$outline|escape}" size="110" />
+									</td>
+								</tr>
+								<tr>
+									<th>概要（短文）</th>
+									<td colspan="3">
+										<p class="error">{$errors.outline_abr|escape}</p>
+										{if $errors_jpo.outline_abr}<p class="errorJPO">{$errors_jpo.outline_abr|escape}</p>{/if}
+										<strong>20文字以内でご入力ください。</strong><br />
+										<input type="text" name="outline_abr" value="{$outline_abr|escape}" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<th>目次</th>
+									<td colspan="3">
+										<p class="error">{$errors.explain|escape}</p>
+										{if $errors_jpo.explain}<p class="errorJPO">{$errors_jpo.explain|escape}</p>{/if}
+										<textarea name="explain" rows="7" cols="100">{$explain|escape}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>内容説明</th>
+									<td colspan="3" id="tinyMCE">
+										<p class="error">{$errors.content|escape}</p>
+										{if $errors_jpo.content}<p class="errorJPO">{$errors_jpo.content|escape}</p>{/if}
+										<textarea name="content" rows="7" cols="100" class="textArea">{$content}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>特設サイトリンク</th>
+									<td colspan="3">
+										<input type="hidden" name="spsite_delete{$upkey}" value="" />
+										<input type="hidden" name="spsiteimg{$upkey}" value=""  />
+										<input type="hidden" name="spsitename{$upkey}" value=""  />
+										<input type="hidden" name="spsite{$upkey}" value=""  />
+										{if $oldSpsite}
+										{foreach name=spsite_e from=$oldSpsite item=v}
+										<div class="setwrap">
+											{if $v.imagefile}
+											<img src="/web/img/uploads/specialsiteimg/{$book_no}/{$v.imagefile|escape}" alt="" style="max-width: 200px;" />
+											{/if}
+											<p>
+												[タイトル] <br />
+												{$v.name|escape}
+											</p>
+											<p>
+												[URL] <br />
+												{$v.url|escape}
+											</p>
+											<label><input type="checkbox" name="spsite_delete{$upkey}[{$v.special_site_link_no}]" value="{$v.special_site_link_no|escape}" /> 削除する</label>
+										</div>
+										{/foreach}
+										{/if}
+										<p class="error">{$errors.spsite|escape}</p>
+										<div data-set-wrap="1">
+											{foreach name=spsite from=$spsite{$upkey} key=k item=v}
+											<div data-set="1">
+												<div>
+													<input type="file" name="spsiteimg{$upkey}[]" /><br />
+													<label>タイトル</label>
+													<input name="spsitename{$upkey}[]" value="{$spsitename{$upkey}[$k]}" />
+													<label>URL</label>
+													<input name="spsite{$upkey}[]" value="{$v|escape}" />
+												</div>
+												<div data-set-delete="1">－</div>
+											</div>
+											{foreachelse}
+											<div data-set="1">
+												<div>
+													<input type="file" name="spsiteimg{$upkey}[]" /><br />
+													<label>タイトル</label>
+													<input name="spsitename{$upkey}[]" value="" />
+													<label>URL</label>
+													<input name="spsite{$upkey}[]" value="" />
+												</div>
+												<div data-set-delete="1">－</div>
+											</div>
+											{/foreach}
+											<div data-set-add="1">＋</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>キャンペーンサイトURL</th>
+									<td colspan="3">
+										<input type="hidden" name="cpsite_delete{$upkey}" value="" />
+										<input type="hidden" name="cpsite{$upkey}" value=""  />
+										{if $oldCpsite}
+										{foreach name=cpsite_e from=$oldCpsite item=v}
+										<div class="setwrap">
+											<p>
+												{$v.url|escape}
+											</p>
+											<label><input type="checkbox" name="cpsite_delete{$upkey}[{$v.campaign_site_link_no}]" value="{$v.campaign_site_link_no|escape}" /> 削除する</label>
+										</div>
+										{/foreach}
+										{/if}
+										<p class="error">{$errors.cpsite|escape}</p>
+										<div data-set-wrap="1">
+											{foreach name=cpsite from=$cpsite{$upkey} key=k item=v}
+											<div data-set="1">
+												<div>
+													<input name="cpsite{$upkey}[]" value="{$v|escape}" />
+												</div>
+												<div data-set-delete="1">－</div>
+											</div>
+											{foreachelse}
+											<div data-set="1">
+												<div>
+													<input name="cpsite{$upkey}[]" value="" />
+												</div>
+												<div data-set-delete="1">－</div>
+											</div>
+											{/foreach}
+											<div data-set-add="1">＋</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>アンケートURL</th>
+									<td colspan="3">
+										<p class="error">{$errors.questionnaire_url|escape}</p>
+										<input type="text" name="questionnaire_url" value="{$questionnaire_url|escape}" size="40" />
+									</td>
+								</tr>
+								<tr>
+									<th colspan="4" class="title">設定</th>
+								</tr>
+
+								<tr class="RoleTypeKeyword">
+									<th>キーワード</th>
+									<td colspan="3" class="longTextWrapper">
+										<p class="error">{$errors.keyword|escape}</p>
+										{if $errors_jpo.keyword}<p class="errorJPO">{$errors_jpo.keyword|escape}</p>{/if}
+										<strong>キーワードをスペースで区切って130文字以内でご入力ください。</strong><br />
+										<input type="text" name="keyword" value="{$keyword|escape}" /><br />
+										入力例)キーワード１ キーワード２
+										{if $publisher.jpo}<p class="errorJPO">※JPO連携をする場合は100文字以内でご入力ください。</p>{/if}
+									</td>
+								</tr>
+
+								<tr class="RoleTypePublishDate">
+									<th>公開の状態</th>
+									<td>
+										<p class="error">{$errors.public_status|escape}</p>
+										{if $errors_jpo.public_status}<p class="errorJPO">{$errors_jpo.public_status|escape}</p>{/if}
+										<select name="public_status">
+											<option value="0"{if $public_status=="0"} selected{/if}>非公開</option>
+											<option value="1"{if $public_status} selected{/if}>公開</option>
+										</select>
+									</td>
+									<th>公開日指定</th>
+									<td class="shortTextWrapper">
+										<p class="error">{$errors.public_date|escape}</p>
+										{if $errors_jpo.public_date}<p class="errorJPO">{$errors_jpo.public_date|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="public_year" value="{$public_year}" maxlength="4" />&nbsp;年&nbsp;
+										<input type="text" name="public_month" value="{$public_month}" maxlength="2" />&nbsp;月&nbsp;
+										<input type="text" name="public_day" value="{$public_day}" maxlength="2" />&nbsp;日&nbsp;<br />
+										入力例)2008年 09月 30日<br />
+										<input type="text" name="public_hour" value="{$public_hour}" maxlength="2" />&nbsp;時&nbsp;
+										<input type="text" name="public_minute" value="{$public_minute}" maxlength="2" />&nbsp;分&nbsp;
+										<input type="text" name="public_second" value="{$public_second}" maxlength="2" />&nbsp;秒&nbsp;<br />
+										入力例)09時 12時 00秒
+									</td>
+								</tr>
+								<!--
+								<tr>
+									<th>同一日付表示順</th>
+									<td colspan="3">
+										<p class="error">{$errors.public_date_order|escape}</p>
+										{if $errors_jpo.public_date_order}<p class="errorJPO">{$errors_jpo.public_date_order|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="public_date_order" value="{if $public_date_order!=2147483647}{$public_date_order|escape}{/if}" />
+									</td>
+								</tr>
+								-->
+								<tr class="RoleTypeNew">
+									<th>新刊設定</th>
+									<td>
+										<p class="error">{$errors.new_status|escape}</p>
+										{if $errors_jpo.new_status}<p class="errorJPO">{$errors_jpo.new_status|escape}</p>{/if}
+										<input type="checkbox" name="new_status" {if $new_status}checked {/if} value="1" />&nbsp;新刊に設定する
+									</td>
+									<th>これから出る本設定</th>
+									<td>
+										<p class="error">{$errors.next_book|escape}</p>
+										{if $errors_jpo.next_book}<p class="errorJPO">{$errors_jpo.next_book|escape}</p>{/if}
+										<input type="checkbox" name="next_book" {if $next_book}checked {/if} value="1" />&nbsp;これから出る本に設定する
+									</td>
+								</tr>
+								<tr class="RoleTypeRecommend">
+									<th>おすすめ設定</th>
+									<td>
+										<p class="error">{$errors.recommend_status|escape}</p>
+										{if $errors_jpo.recommend_status}<p class="errorJPO">{$errors_jpo.recommend_status|escape}</p>{/if}
+										<input type="checkbox" name="recommend_status" {if $recommend_status}checked {/if} value="1" />&nbsp;おすすめに設定する
+									</td>
+									<th>おすすめ表示順</th>
+									<td>
+										<p class="error">{$errors.recommend_order|escape}</p>
+										{if $errors_jpo.recommend_order}<p class="errorJPO">{$errors_jpo.recommend_order|escape}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="recommend_order" value="{if $recommend_order!=2147483647}{$recommend_order|escape}{/if}" />
+									</td>
+								</tr>
+								<tr class="RoleTypeEbook">
+									<th>電子書籍設定</th>
+									<td colspan="3">
+{if $ebook_store_status}
+										<p class="error">{$errors.ebook_status|escape}</p>
+										<input type="hidden" name="ebook_status" value="" />
+										<label for="ebook_status"><input type="checkbox" id="ebook_status" name="ebook_status" {if $ebook_status}checked {/if} value="1" />&nbsp;電子書籍に設定する</label>
+{else}
+										<p style="padding-left: 10px; font-size: 110%; font-weight: bold;">
+											※ご利用を希望する場合はHONDANA担当者にお問い合わせ下さい。
+										</p>
+{/if}
+									</td>
+								</tr>
+								<tr class="RoleTypeEbook" id="ebookStoreSetting">
+									<th>電子書籍書店設定</th>
+									<td colspan="3">
+										<ul>
+{foreach name=ebookstoreList from=$ebookstoreList item=v}
+											{assign var=index value=$smarty.foreach.ebookstoreList.index}
+											<li{if !$smarty.foreach.ebookstoreList.last} style="margin-bottom: 8px; padding-bottom: 5px;border-bottom: 1px solid #ccc;"{/if}>
+												<input type="hidden" name="ebookstoreList[{$index}][name]" value="{$v.name}" />
+												<input type="hidden" name="ebookstoreList[{$index}][be_id]" value="{$v.be_id}" />
+												<input type="hidden" name="ebookstoreList[{$index}][be_status]" value="-1" />
+												<input type="hidden" name="ebookstoreList[{$index}][id]" value="{$v.id}" />
+												<p>
+													<label for="ebookStatus{$smarty.foreach.ebookstoreList.iteration}">
+													<input type="checkbox" name="ebookstoreList[{$index}][be_status]" id="ebookStatus{$smarty.foreach.ebookstoreList.iteration}" value="1"{if $v.be_status == 1} checked="checked"{/if} />
+													{$v.name}</label></p>
+												<p class="url">URL: <input type="text" name="ebookstoreList[{$index}][url]" id="ebookUrl{$smarty.foreach.ebookstoreList.iteration}" value="{$v.url}" /></p>
+											</li>
+{/foreach}
+										</ul>
+									</td>
+								</tr>
+								<tr class="RoleTypeRecommend">
+									<th>おすすめ紹介文</th>
+									<td colspan="3">
+										<p class="error">{$errors.recommend_sentence|escape}</p>
+										{if $errors_jpo.recommend_sentence}<p class="errorJPO">{$errors_jpo.recommend_sentence|escape}</p>{/if}
+										<strong>未入力の場合、概要（長文）が表示されます。</strong><br />
+										<textarea name="recommend_sentence" rows="7" cols="100">{$recommend_sentence|escape}</textarea>
+									</td>
+								</tr>
+								{if $publisher.recommend_type == 2}
+								<tr>
+									<th>おすすめ表示用画像</th>
+									<td colspan="3">
+										<p class="error">{$errors.recommend_image|escape}</p>
+										{if $errors_jpo.recommend_image}<p class="errorJPO">{$errors_jpo.recommend_image|escape}</p>{/if}
+										{if $recommend_image.http_path}
+										<img src="{$recommend_image.http_path}?stamp={$smarty.now}" alt="{$name}" /><br />
+										<input type="hidden" name="recommend_image_httppath" value="{$recommend_image.http_path}" />
+										{elseif $old_recommend_image}
+										<img src="{$old_recommend_image}" alt="{$name}" /><br />
+										{/if}
+										<input type="file" name="recommend_image" /><br />
+									</td>
+								</tr>
+								{/if}
+								<tr class="RoleTypeCart">
+									<th>在庫ステータス</th>
+									<td{if !$publisher.cart} colspan="3"{/if}>
+										<p class="error">{$errors.stock_status|escape}</p>
+										{if $errors_jpo.stock_status}<p class="errorJPO">{$errors_jpo.stock_status|escape}</p>{/if}
+										<select name="stock_status_no">
+											<option value=""></option>
+											{foreach name=stock_status from=$stockStatusList item=stock_status}
+											<option value="{$stock_status.stock_status_no}"{if $stock_status_no == $stock_status.stock_status_no} selected{/if}>
+												{$stock_status.name}
+											</option>
+											{/foreach}
+										</select>
+									</td>
+									{if $publisher.cart}
+									<th>カート</th>
+									<td>
+										<p class="error">{$errors.cart_status|escape}</p>
+										{if $errors_jpo.cart_status}<p class="errorJPO">{$errors_jpo.cart_status|escape}</p>{/if}
+										<select name="cart_status">
+											<option value="0"{if $cart_status=='0'} selected{/if}>無効</option>
+											<option value="1"{if $cart_status} selected{/if}>有効</option>
+										</select>
+									</td>
+									{/if}
+								</tr>
+{*
+								<tr class="RoleTypeHonzuki">
+									<th>本が好き！ 連携</th>
+									<td colspan="3">
+										<p class="error">{$errors.honzuki|escape}</p>
+										{if $errors_jpo.honzuki}<p class="errorJPO">{$errors_jpo.honzuki|escape}</p>{/if}
+										<input type="checkbox" name="honzuki" {if $honzuki}checked {/if} value="1" />&nbsp;有効にする
+									</td>
+								</tr>
+*}
+								<tr>
+									<th>関連書誌</th>
+									<td colspan="3">
+										<p class="error">{$errors.book_relate}</p>
+										{if $errors_jpo.book_relate}<p class="errorJPO">{$errors_jpo.book_relate}</p>{/if}
+										<p class="message" style="padding-bottom:10px;">ドラッグ＆ドロップで並び替えが出来ます。</p>
+										<table id="newsRelate">
+										<thead>
+											<tr>
+												<th>書影</th>
+												<th>書籍名</th>
+												<th>出版年月日</th>
+												<th>&nbsp;</th>
+											</tr>
+										</thead>
+										<tbody class="sortable">
+										{if $news_relate_list}
+										{foreach name=news_relate from=$bookviewlist item=thisbook}
+											<tr>
+												<td><img src="{if $thisbook.image}{'/\.(.+?)$/'|@preg_replace:'_sml.$1':$thisbook.image}{else}/web/img/common/now_printing_78x97.gif{/if}" alt="" style="max-height:50px;" /></td>
+												<td><input name="news_relate_list[]" value="{$thisbook.book_no}" type="hidden">{$thisbook.name|escape}</td>
+												<td>{$thisbook.book_date|escape|date_format:"%Y/%m/%d"}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{else}
+										{foreach name=bookRelate from=$viewOldBookRelateList item=bookRelate}
+											<tr>
+												<td><img src="{if $bookRelate.image}{'/\.(.+?)$/'|@preg_replace:'_sml.$1':$bookRelate.image}{else}/web/img/common/now_printing_78x97.gif{/if}" alt="" style="max-height:50px;" /></td>
+												<td><input name="news_relate_list[]" value="{$bookRelate.book_relate_book_no}" type="hidden">{$bookRelate.relate_book_name}</td>
+												<td>{$bookRelate.book_date|escape|date_format:"%Y/%m/%d"}</td>
+												<td><input onclick="unSelectItem(this);" value="削除" type="button"></td>
+											</tr>
+										{/foreach}
+										{/if}
+										</tbody>
+										</table>
+										<p class="link"><a class="popupOpen" href="../book_popup/">関連書誌の選択</a></p>
+									</td>
+								</tr>
+								<tr>
+									<th>フォーマットの紐付け</th>
+									<td colspan="3" id="setFormat">
+										<p class="error">{$errors.book_relate}</p>
+										<input type="hidden" name="this_format" value="" />
+										<input type="hidden" name="book_format_l" value="" />
+										<input type="hidden" name="book_format_other_l" value="" />
+										<div class="info" style="margin-bottom: 10px;">
+											<p>以下のフォーマットを紐付けます。</p>
+											<div>この本 ： <select name="this_format" id="this_format">
+{foreach name=book_format from=$bookFormat item=v}
+													<option value="{$v.id}"{if $this_format == $v.id} selected="selected"{/if}>{$v.name|escape}</option>
+{/foreach}
+												</select> <input type="text" name="this_format_other" value="{$this_format_other}" />
+											</div>
+										</div>
+										<table id="bookFormat">
+										<thead>
+											<tr>
+												<th>フォーマット</th>
+												<th>書籍名</th>
+												<th>&nbsp;</th>
+											</tr>
+										</thead>
+										<tbody class="sortable">
+										{if $book_format_list}
+										{foreach name=book_format from=$book_format_list key=key item=bf}
+											<tr>
+												<td>
+													<select name="book_format_l[]">
+{foreach name=book_format from=$bookFormat item=v}
+														<option value="{$v.id}"{if $book_format_l[$key] == $v.id} selected="selected"{/if}>{$v.name|escape}</option>
+{/foreach}
+													</select>
+													<input type="text" name="book_format_other_l[]" value="{$book_format_other_l[$key]|escape}" style="width: 100px;" />
+												</td>
+												<td>
+													<input type="hidden" name="book_format_list[]" value="{$bf}" />{$book_format_data.name[$key]}
+													<input type="hidden" name="book_format_data[name][]" value="{$book_format_data.name[$key]}" />
+												</td>
+{*												<td>{$book_format_data.isbn[$key]}<input type="hidden" name="book_format_data[isbn][]" value="{$book_format_data.isbn[$key]}" /></td>
+												<td>{$book_format_data.price[$key]}<input type="hidden" name="book_format_data[price][]" value="{$book_format_data.price[$key]}" /></td>
+												<td>{$book_format_data.book_date[$key]|date_format:"%Y/%m/%d"}<input type="hidden" name="book_format_data[book_date][]" value="{$book_format_data.book_date[$key]}" /></td>
+*}												<td><input type="button" onclick="unSelectItem(this);" value="削除" /></td>
+											</tr>
+										{/foreach}
+										{else}
+										{foreach name=book_format from=$viewBookFormatBook item=bf}
+											<tr>
+												<td>
+													<select name="book_format_l[]">
+{foreach name=book_format from=$bookFormat item=v}
+														<option value="{$v.id}"{if $bf.book_format == $v.id} selected="selected"{/if}>{$v.name|escape}</option>
+{/foreach}
+													</select>
+													<input type="hidden" name="book_format_list[]" value="{$bf.book_no_other}" />
+													<input type="text" name="book_format_other_l[]" value="{$bf.book_format_other|escape}" style="width: 100px;" />
+												</td>
+												<td>
+													{$bf.name}
+													<input type="hidden" name="book_format_data[name][]" value="{$bf.name}" />
+												</td>
+{*												<td>{$bf.isbn}<input type="hidden" name="book_format_data[isbn][]" value="{$bf.isbn}" /></td>
+												<td>{$bf.price}<input type="hidden" name="book_format_data[price][]" value="{$bf.price}" /></td>
+												<td>{$bf.book_date|date_format:"%Y/%m/%d"}<input type="hidden" name="book_format_data[book_date][]" value="{$bf.book_date}" /></td>
+*}												<td><input type="button" onclick="unSelectItem(this);" value="削除" /></td>
+											</tr>
+										{/foreach}
+										{/if}
+										</tbody>
+										</table>
+										<p class="link"><a class="popupOpen" href="../book_format/">紐付けする書籍を検索</a></p>
+									</td>
+								</tr>
+								{foreach from=$publisher.free item=itemname name=freeList}
+								<tr class="RoleTypeFree{$smarty.foreach.freeList.index}">
+									<th>{$itemname|escape}</th>
+									<td colspan="3">
+										<textarea name="free[{$smarty.foreach.freeList.index}]" cols="100" rows="7">{$free[$smarty.foreach.freeList.index]|escape}</textarea>
+									</td>
+								</tr>
+								{/foreach}
+
+								{if $publisher.jpo}
+									<tr class="jpoOnlyItems RoleTypeJpo">
+										<th colspan="4" class="title">
+											JPO
+										</th>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">ジャンルコード</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.subject_code|escape}</p>
+										{if $errors_jpo.subject_code}<p class="errorJPO">{$errors_jpo.subject_code|escape}</p>{/if}
+											<select name="subject_code" id="subject_code">
+												<option value=""></option>
+												{foreach name=subject_codes from=$subject_codes item=v key=k}
+													<option value="{$k|escape}"{if $subject_code == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">レーベル名</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.imprint_name|escape}</p>
+										{if $errors_jpo.imprint_name}<p class="errorJPO">{$errors_jpo.imprint_name|escape}</p>{/if}
+											<p class="error">{$errors.imprint_collationkey|escape}</p>
+										{if $errors_jpo.imprint_collationkey}<p class="errorJPO">{$errors_jpo.imprint_collationkey|escape}</p>{/if}
+											<input type="text" name="imprint_name" value="{$imprint_name|escape}" size="30" maxlength="100" />&nbsp;&nbsp;
+											カナ：<input type="text" name="imprint_collationkey" value="{$imprint_collationkey|escape}" size="30" maxlength="100" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">各巻書名</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.each_volume_name|escape}</p>
+											<p class="error">{$errors.each_volume_kana|escape}</p>
+											<input type="text" name="each_volume_name" value="{$each_volume_name|escape}" size="30" maxlength="100" />&nbsp;&nbsp;
+											カナ：<input type="text" name="each_volume_kana" value="{$each_volume_kana|escape}" size="30" maxlength="100" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">刊行形態</div></th>
+										<td><div class="inner">
+											<select name="publication_form">
+												<option value=""></option>
+												{foreach name=publication_forms from=$publication_forms item=v key=k}
+													<option value="{$k|escape}"{if $publication_form == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+										<th><div class="inner">月号・号数表記</div></th>
+										<td><div class="inner">
+											<p class="error">{$errors.monthly_issue|escape}</p>
+											<input type="text" name="monthly_issue" value="{$monthly_issue|escape}" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">配本回数</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.extent_value|escape}</p>
+										{if $errors_jpo.extent_value}<p class="errorJPO">{$errors_jpo.extent_value|escape}</p>{/if}
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="extent_value" value="{$extent_value|escape}" size="10" maxlength="10" />&nbsp;回
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">配本の有無</div></th>
+										<td colspan="3"><div class="inner">
+											<select name="extent">
+												<option value=""></option>
+												{foreach name=extents from=$extents item=v key=k}
+													<option value="{$k|escape}"{if isset($extent) && $extent != '' && $extent == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">完結フラグ</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.completion|escape}</p>
+											<select name="completion">
+												<option value=""></option>
+												{foreach name=completions from=$completions item=v key=k}
+													<option value="{$k|escape}"{if isset($completion) && $completion != '' && $completion == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">セット商品分売可否 {if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</div></th>
+										<td colspan="3">
+											<div class="inner">
+												<p class="error">{$errors.unpriced_item_type|escape}</p>
+												{if $errors_jpo.unpriced_item_type}<p class="errorJPO">{$errors_jpo.unpriced_item_type|escape}</p>{/if}
+
+												{foreach name=unpriced_item_types from=$unpriced_item_types item=v key=k}
+													<label>
+														<input type="radio" name="unpriced_item_type" value="{$k|escape}" {if $unpriced_item_type == $k} checked{elseif !$unpriced_item_type && $k == '00'} checked{elseif $unpriced_item_type=='05' && $k == '10'} checked{/if} />&nbsp;{$v|escape}
+													</label>
+												   &nbsp;&nbsp;
+												{/foreach}
+
+											</div>
+										</td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">発行年月日</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+											<p class="error">{$errors.Issued_date|escape}</p>
+										{if $errors_jpo.Issued_date}<p class="errorJPO">{$errors_jpo.Issued_date|escape}</p>{/if}
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="Issued_date_year" value="{$Issued_date_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="Issued_date_month" value="{$Issued_date_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="Issued_date_day" value="{$Issued_date_day}" maxlength="2" />&nbsp;日&nbsp;
+											<br />入力例)2008年 09月 30日
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">発売協定日</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+											<p class="error">{$errors.on_sale_date|escape}</p>
+										{if $errors_jpo.on_sale_date}<p class="errorJPO">{$errors_jpo.on_sale_date|escape}</p>{/if}
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="on_sale_date_year" value="{$on_sale_date_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="on_sale_date_month" value="{$on_sale_date_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="on_sale_date_day" value="{$on_sale_date_day}" maxlength="2" />&nbsp;日&nbsp;
+											<br />入力例)2008年 09月 30日
+
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">注文・申込締切</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+											<p class="error">{$errors.pre_order_limit|escape}</p>
+										{if $errors_jpo.pre_order_limit}<p class="errorJPO">{$errors_jpo.pre_order_limit|escape}</p>{/if}
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="pre_order_limit_year" value="{$pre_order_limit_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="pre_order_limit_month" value="{$pre_order_limit_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="pre_order_limit_day" value="{$pre_order_limit_day}" maxlength="2" />&nbsp;日&nbsp;
+											<br />入力例)2008年 09月 30日
+
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">発売情報解禁日</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+											<p class="error">{$errors.announcement_date|escape}</p>
+										{if $errors_jpo.announcement_date}<p class="errorJPO">{$errors_jpo.announcement_date|escape}</p>{/if}
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="announcement_date_year" value="{$announcement_date_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="announcement_date_month" value="{$announcement_date_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="announcement_date_day" value="{$announcement_date_day}" maxlength="2" />&nbsp;日&nbsp;
+											<br />入力例)2008年 09月 30日
+
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">対象読者 <img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.audience_code_value|escape}</p>
+										{if $errors_jpo.audience_code_value}<p class="errorJPO">{$errors_jpo.audience_code_value|escape}</p>{/if}
+											<select name="audience_code_value">
+												<option value=""></option>
+												{foreach name=audience_code_values from=$audience_code_values item=v key=k}
+													<option value="{$k|escape}"{if $audience_code_value == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">成人指定 {if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.audience_description|escape}</p>
+										{if $errors_jpo.audience_description}<p class="errorJPO">{$errors_jpo.audience_description|escape}</p>{/if}
+											<select name="audience_description">
+												{foreach name=audience_descriptions from=$audience_descriptions item=v key=k}
+													<option value="{$k|escape}"{if $audience_description == $k} selected{elseif $audience_description==1 && $k == '01'} selected{elseif $audience_description==2 && $k == '00'} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">内容紹介2</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.long_description|escape}</p>
+										{if $errors_jpo.long_description}<p class="errorJPO">{$errors_jpo.long_description|escape}</p>{/if}
+											<strong>1300文字以内でご入力ください。</strong><br />
+											<textarea name="long_description" rows="4" cols="100">{$long_description|escape}</textarea>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">付録の有無</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.containeditem|escape}</p>
+										{if $errors_jpo.containeditem}<p class="errorJPO">{$errors_jpo.containeditem|escape}</p>{/if}
+											<select name="containeditem">
+												<option value=""></option>
+												{foreach name=containeditems from=$containeditems item=v key=k}
+													<option value="{$k|escape}"{if $containeditem!="" && $containeditem == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">付録の内容</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.product_form_description|escape}</p>
+										{if $errors_jpo.product_form_description}<p class="errorJPO">{$errors_jpo.product_form_description|escape}</p>{/if}
+											<strong>200文字以内でご入力ください。</strong><br />
+											<input type="text" name="product_form_description" value="{$product_form_description|escape}" size="110" />
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">その他出版社記入欄</div></th>
+										<td colspan="3"><div class="inner">
+											<p>※廃止項目です。他の項目へ入力内容を移してください</p>
+											<p class="error">{$errors.promotional_text|escape}</p>
+										{if $errors_jpo.promotional_text}<p class="errorJPO">{$errors_jpo.promotional_text|escape}</p>{/if}
+											<textarea name="promotional_text" rows="4" cols="100">{$promotional_text|escape}</textarea>
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">言語{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.language|escape}</p>
+										{if $errors_jpo.language}<p class="errorJPO">{$errors_jpo.language|escape}</p>{/if}
+											<select name="language">
+												{foreach name=languages from=$languages item=v key=k}
+													<option value="{$k|escape}"{if $language == $k} selected{elseif !$language&&$k=="jpn"} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">再販{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" class="jpoOnlyItems" alt="JPO必須" />{/if}</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.reselling|escape}</p>
+										{if $errors_jpo.reselling}<p class="errorJPO">{$errors_jpo.reselling|escape}</p>{/if}
+											<select name="reselling" id="reselling">
+												{foreach name=resellings from=$resellings item=v key=k}
+													<option value="{$k|escape}"{if $reselling == $k||!$reselling&&$k==1} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+											<div id="resellingDate" class="shortTextWrapper" style="padding-top: 10px;">
+												切り替え日
+												<input type="text" name="reselling_date_year" value="{$reselling_date_year}" maxlength="4" />&nbsp;年&nbsp;
+												<input type="text" name="reselling_date_month" value="{$reselling_date_month}" maxlength="2" />&nbsp;月&nbsp;
+												<input type="text" name="reselling_date_day" value="{$reselling_date_day}" maxlength="2" />&nbsp;日&nbsp;&nbsp;
+											</div>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">特価本体価格</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.price_amount|escape}</p>
+										{if $errors_jpo.price_amount}<p class="errorJPO">{$errors_jpo.price_amount|escape}</p>{/if}
+											<strong>税抜を半角数字でご入力ください。</strong><br />
+											<input type="text" name="price_amount" value="{$price_amount|escape}" maxlength="12" />&nbsp;（税抜）
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">特価期限</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+{* JPROフェーズ2で不要になった？？
+											<p class="error">{$errors.price_effective_from|escape}</p>
+										{if $errors_jpo.price_effective_from}<p class="errorJPO">{$errors_jpo.price_effective_from|escape}</p>{/if}
+*}
+											<p class="error">{$errors.price_effective_until|escape}</p>
+										{if $errors_jpo.price_effective_until}<p class="errorJPO">{$errors_jpo.price_effective_until|escape}</p>{/if}
+{* JPROフェーズ2で不要になった？？
+											<div id="resellingControll" style="padding-bottom: 10px;">
+												<span class="date"></span>(時限再販切り替え日)より<br />
+												<label for="resellingdatebefore"><input type="radio" name="resellingdatecheck" value="before" id="resellingdatebefore"{if $resellingdatecheck == 'before' || !$resellingdatecheck} checked="checked"{/if} /> 前</label>
+												<label for="resellingdateafter"><input type="radio" name="resellingdatecheck" value="after" id="resellingdateafter"{if $resellingdatecheck == 'after'} checked="checked"{/if} /> 後</label>
+											</div>
+*}
+											<strong>半角数字でご入力ください。</strong><br />
+{* JPROフェーズ2で不要になった？？
+											開始日：
+											<input type="text" name="price_effective_from_year" value="{$price_effective_from_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="price_effective_from_month" value="{$price_effective_from_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="price_effective_from_day" value="{$price_effective_from_day}" maxlength="2" />&nbsp;日&nbsp;&nbsp;
+											終了日：
+*}
+											<input type="text" name="price_effective_until_year" value="{$price_effective_until_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="price_effective_until_month" value="{$price_effective_until_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="price_effective_until_day" value="{$price_effective_until_day}" maxlength="2" />&nbsp;日&nbsp;<br />
+											入力例)2008年 09月 30日<br />
+
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">販売条件</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.supply_restriction_detail|escape}</p>
+											{if $errors_jpo.supply_restriction_detail}<p class="errorJPO">{$errors_jpo.supply_restriction_detail|escape}</p>{/if}
+											<select name="supply_restriction_detail">
+												<option value=""></option>
+												{foreach name=supply_restriction_details from=$supply_restriction_details item=v key=k}
+													<option value="{$k|escape}"{if $supply_restriction_detail == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">取次会社取扱い</div></th>
+										<td colspan="3"><div class="inner">
+											{foreach name=Intermediary_company_handlings from=$Intermediary_company_handlings item=v key=k}
+												<label>
+													<input type="radio" name="Intermediary_company_handling" value="{$k|escape}" {if $Intermediary_company_handling == $k} checked{elseif !$Intermediary_company_handling && $k == '0'} checked{/if} />&nbsp;{$v|escape}
+												</label>
+											   &nbsp;&nbsp;
+											{/foreach}
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">内容確定</div></th>
+										<td colspan="3"><div class="inner">
+											<p style="padding-bottom: 5px;">
+												一度 「内容確定」で連携した後、「確定前」に戻してもデータを戻すことはできません。<br />
+												発売日以降で「確定前」のデータは 既刊として連携されません。<br />
+											</p>
+											{foreach name=notification_types from=$notification_types item=v key=k}
+												<label>
+													<input type="radio" name="notification_type" value="{$k|escape}" {if $notification_type == $k} checked{elseif !$notification_type && $k == '02'} checked{/if} />&nbsp;{$v|escape}
+												</label>
+											   &nbsp;&nbsp;
+											{/foreach}
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th colspan="4" class="title"><div class="inner">JPO 図書館選書情報</div></th>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">受賞情報</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.award|escape}</p>
+											<strong>30文字以内でご入力ください。</strong><br />
+											<input type="text" name="award" value="{$award|escape}" size="80" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">読者書き込み</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.readers_write|escape}</p>
+											<select name="readers_write" id="readers_write">
+												<option value=""></option>
+												{foreach name=readers_writes from=$readers_writes item=v key=k}
+													<option value="{$k|escape}"{if isset($readers_write) && $readers_write != '' && $readers_write == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+											<div class="shortTextWrapper" style="padding-top: 10px;">
+												読者書き込みありの場合のページ数：
+												<input type="text" name="readers_write_page" value="{$readers_write_page|escape}" />&nbsp;※半角数字でご入力ください&nbsp;&nbsp;
+											</div>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">制作特記項目</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.production_notes_item|escape}</p>
+											<select name="production_notes_item">
+												<option value=""></option>
+												{foreach name=production_notes_items from=$production_notes_items item=v key=k}
+													<option value="{$k|escape}"{if $production_notes_item == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">付属資料（CD／DVD）の<br />館内外貸出可否</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.cd_dvd|escape}</p>
+											<select name="cd_dvd">
+												<option value=""></option>
+												{foreach name=cd_dvds from=$cd_dvds item=v key=k}
+													<option value="{$k|escape}"{if $cd_dvd == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">内容紹介 図書館選書用</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.library_selection_content|escape}</p>
+											<strong>105文字以内でご入力ください。</strong><br />
+											<textarea name="library_selection_content" rows="4" cols="100">{$library_selection_content|escape}</textarea>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">担当者コメント</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.comments|escape}</p>
+											<strong>200文字以内でご入力ください。</strong><br />
+											<textarea name="comments" rows="4" cols="100">{$comments|escape}</textarea>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">帯内容</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.band_contents|escape}</p>
+											<strong>100文字以内でご入力ください。</strong><br />
+											<textarea name="band_contents" rows="4" cols="100">{$band_contents|escape}</textarea>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">類書・競合書</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.competition|escape}</p>
+											<strong>100文字以内でご入力ください。</strong><br />
+											<textarea name="competition" rows="4" cols="100">{$competition|escape}</textarea>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">別送資料</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.separate_material|escape}</p>
+											<strong>100文字以内でご入力ください。</strong><br />
+											<textarea name="separate_material" rows="4" cols="100">{$separate_material|escape}</textarea>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">装丁者名</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.bond_name|escape}</p>
+											<strong>10文字以内でご入力ください。</strong><br />
+											<input type="text" name="bond_name" value="{$bond_name|escape}" />
+										</div></td>
+									</tr>
+
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">児童書詳細ジャンル <img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.childrens_book_genre|escape}</p>
+											<select name="childrens_book_genre">
+												<option value=""></option>
+												{foreach name=childrens_book_genres from=$childrens_book_genres item=v key=k}
+													<option value="{$k|escape}"{if $childrens_book_genre == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">ルビの有無 <img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.ruby|escape}</p>
+											<select name="ruby">
+												<option value=""></option>
+												{foreach name=rubys from=$rubys item=v key=k}
+													<option value="{$k|escape}"{if isset($ruby) && $ruby != '' && $ruby == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">本文活字の大きさ （級数）<img src="/admin/images/common/icon_must_jpo.gif" class="jpochildren jpoOnlyItems" alt="JPO必須" /></div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.font_size|escape}</p>
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="font_size" value="{$font_size|escape}" size="10" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">マンガの割合 （ページ数）</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.percentage_of_manga|escape}</p>
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="percentage_of_manga" value="{$percentage_of_manga|escape}" size="10" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">特殊な装丁</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.special_binding|escape}</p>
+											<strong>100文字以内でご入力ください。</strong><br />
+											<input type="text" name="special_binding" value="{$special_binding|escape}" size="110" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">しかけの有無</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.trick|escape}</p>
+											<strong>100文字以内でご入力ください。</strong><br />
+											<input type="text" name="trick" value="{$trick|escape}" size="110" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">その他特記事項</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.other_notices|escape}</p>
+											<select name="other_notices">
+												<option value=""></option>
+												{foreach name=other_noticess from=$other_noticess item=v key=k}
+													<option value="{$k|escape}"{if $other_notices == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th colspan="4" class="title"><div class="inner">JPO 仕入れ情報</div></th>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">初版予定部数</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.number_of_first_edition|escape}</p>
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="number_of_first_edition" value="{$number_of_first_edition|escape}" size="10" />&nbsp;部&nbsp;&nbsp;
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">取次搬入予定日</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+											<p class="error">{$errors.delivery_date|escape}</p>
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="delivery_date_year" value="{$delivery_date_year|escape}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="delivery_date_month" value="{$delivery_date_month|escape}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="delivery_date_day" value="{$delivery_date_day|escape}" maxlength="2" />&nbsp;日&nbsp;
+											<br />入力例)2008年 09月 30日
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">返品期限・L表記</div></th>
+										<td colspan="3" class="shortTextWrapper"><div class="inner">
+											<p class="error">{$errors.return_deadline|escape}</p>
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="return_deadline_year" value="{$return_deadline_year|escape}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="return_deadline_month" value="{$return_deadline_month|escape}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="return_deadline_day" value="{$return_deadline_day|escape}" maxlength="2" />&nbsp;日&nbsp;
+											<br />入力例)2008年 09月 30日
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">帯（ムック）</div></th>
+										<td><div class="inner">
+											<p class="error">{$errors.band|escape}</p>
+											<select name="band">
+												<option value=""></option>
+												{foreach name=bands from=$bands item=v key=k}
+													<option value="{$k|escape}"{if isset($band) && $band != '' && $band == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+										<th><div class="inner">カバー（ムック）</div></th>
+										<td><div class="inner">
+											<p class="error">{$errors.cover|escape}</p>
+											<select name="cover">
+												<option value=""></option>
+												{foreach name=covers from=$covers item=v key=k}
+													<option value="{$k|escape}"{if isset($cover) && $cover != '' && $cover == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">製本所</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.binding_place|escape}</p>
+											<strong>100文字以内でご入力ください。</strong><br />
+											<input type="text" name="binding_place" value="{$binding_place|escape}" size="110" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">重量 （グラム）</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.weight|escape}</p>
+											<strong>半角数字でご入力ください。</strong><br />
+											<input type="text" name="weight" value="{$weight|escape}" size="10" />&nbsp;g&nbsp;&nbsp;
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">結束数</div></th>
+										<td colspan="3"><div class="inner">
+											<p class="error">{$errors.number_of_cohesions|escape}</p>
+											<strong>半角数字2文字でご入力ください。</strong><br />
+											<input type="text" name="number_of_cohesions" value="{$number_of_cohesions|escape}" size="10" />
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th colspan="4" class="title"><div class="inner">JPO 日本書籍出版協会「これから出る本」用項目　※書協会員のみ・有料</div></th>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">著者表示(全角40文字以内)</div></th>
+										<td><div class="inner">
+											{if $errors.recent_publication_author}<p class="error">{$errors.recent_publication_author|escape}</p>{/if}
+											<input type="text" name="recent_publication_author" value="{$recent_publication_author}" size="40" />
+										</div></td>
+										<th><div class="inner">「分類」</div></th>
+										<td><div class="inner">
+											<select name="recent_publication_type">
+												<option value=""></option>
+												{foreach name=recent_publication_types from=$recent_publication_types item=v key=k}
+													<option value="{$k|escape}"{if $recent_publication_type == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">「読者対象」</div></th>
+										<td><div class="inner">
+											<select name="recent_publication_reader">
+												<option value=""></option>
+												{foreach name=recent_publication_readers from=$recent_publication_readers item=v key=k}
+													<option value="{$k|escape}"{if $recent_publication_reader == $k} selected{/if}>
+														{$v|escape}
+													</option>
+												{/foreach}
+											</select>
+										</div></td>
+										<th><div class="inner">「これ本掲載時期」</div></th>
+										<td><div class="inner shortTextWrapper">
+											{if $errors.recent_publication_date}<p class="error">{$errors.recent_publication_date|escape}</p>{/if}
+											<input type="text" name="recent_publication_date_year" value="{$recent_publication_date_year}" maxlength="4" />&nbsp;年&nbsp;
+											<input type="text" name="recent_publication_date_month" value="{$recent_publication_date_month}" maxlength="2" />&nbsp;月&nbsp;
+											<input type="text" name="recent_publication_date_day" value="{$recent_publication_date_day}" maxlength="2" />&nbsp;日&nbsp;&nbsp;
+										</div></td>
+									</tr>
+									<tr class="JPOInput RoleTypeJpo">
+										<th><div class="inner">「内容紹介」(全角63文字以内)</div></th>
+										<td colspan="3"><div class="inner">
+											{if $errors.recent_publication_content}<p class="error">{$errors.recent_publication_content|escape}</p>{/if}
+											<input type="text" name="recent_publication_content" value="{$recent_publication_content}" size="100" />
+										</div></td>
+									</tr>
+
+								{/if}
+
+								<tr class="RoleTypeYondemill">
+									<th colspan="4" class="title">試し読み</th>
+								</tr>
+								<tr class="RoleTypeYondemill">
+									<th>試し読みURL</th>
+									<td colspan="3">
+{if $publisher.yondemill_book_sales}
+										<input type="text" name="yondemill_book_sales_url" value="{$yondemill_book_sales_url|escape}" size="110" />
+{else}
+										<p style="padding-left: 10px; font-size: 110%; font-weight: bold;">
+											※ご利用いただくにはYONDEMILL電子書籍販売システムへの登録が必要です。
+										</p>
+{/if}
+									</td>
+								</tr>
+								<tr class="RelatedNote">
+									<th colspan="4" class="title">関連ファイル管理</th>
+								</tr>
+								<tr>
+									<th>epubデータ</th>
+									<td colspan="3">
+										<input type="text" name="note_epub" value="{$note_epub|escape}" size="110" />
+									</td>
+								</tr>
+								<tr>
+									<th>画像データ</th>
+									<td colspan="3">
+										<input type="text" name="note_image" value="{$note_image|escape}" size="110" />
+									</td>
+								</tr>
+								<tr>
+									<th>ロゴデータ</th>
+									<td colspan="3">
+										<input type="text" name="note_logo" value="{$note_logo|escape}" size="110" />
+									</td>
+								</tr>
+								<tr>
+									<th>テキストデータ</th>
+									<td colspan="3">
+										<input type="text" name="note_text" value="{$note_text|escape}" size="110" />
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button">
+							&nbsp;<input type="submit" name="new" value="データを複製する" />
+							&nbsp;<input type="submit" name="confirm" value="確認" />
+							&nbsp;<input type="button" name="submit" value="削除" onclick="location.href='../delete/index.php?book_no_list[]={$book_no|escape}'" />
+{*
+							&nbsp;<input type="button" name="submit" value="データ連携設定" onclick="location.href='../linkage/index.php?book_no={$book_no|escape}'" />
+*}
+						</p>
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

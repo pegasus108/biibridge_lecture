@@ -1,0 +1,13 @@
+				<dl>
+					<dt>システム設定管理</dt>
+					<dd>
+						<ul>
+							<li><a href="/admin/publisher/system/">システム設定一覧</a></li>
+							<li><a href="/admin/publisher/system/netshop/">ネット書店設定</a></li>
+							{if $smarty.session.publisher_cart=='1'}
+							<li><a href="/admin/publisher/system/payment_option/">決済方法設定</a></li>
+							{/if}
+							<li><a href="/admin/publisher/system/ebookstores/">電子書籍書店設定</a></li>
+						</ul>
+					</dd>
+				</dl>

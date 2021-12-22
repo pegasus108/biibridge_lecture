@@ -1,0 +1,24 @@
+<footer>
+  {if $banners && isset($banners.2)}
+  <div class="footer-logo-bg">
+    <div class="footer-logo-bg-inner">
+    {foreach item=banner from=$banners.2}
+      <a href="{$banner.url}"{if $banner.target} target="_blank"{/if}><img src="{$smarty.const.BOOKDB_DOMAIN}{$banner.image}" alt="{$banner.name}"></a>
+    {/foreach}
+    </div>
+  </div>
+  {/if}
+  <div class="footer-links">
+    <div class="footer-site-name"><img src="{$commonPublisher.url|escape}images/common/logo_white.png" alt=""></div>
+    <nav class="footer-links-nav">
+      <ul class="footer-links-ul">
+        <li><a href="{$commonPublisher.url|escape}recruit/">採用情報</a></li>
+        <li><a href="{$commonPublisher.url|escape}privacy/">プライバシーポリシー</a></li>
+        <li><a href="{$commonPublisher.url|escape}company/">会社概要</a></li>
+        <li><a href="{$commonPublisher.url|escape}contact/">お問い合わせ</a></li>
+      </ul>
+    </nav>
+    <small class="footer-company-name">(C) everiGo-WEB系システム開発プログラマ育成科事業実施委員会</small>
+  </div>
+  <div id="copyright">{$commonPublisher.copyright}</div>
+</footer>

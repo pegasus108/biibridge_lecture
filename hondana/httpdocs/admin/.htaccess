@@ -1,0 +1,8 @@
+#order deny,allow
+#deny from all
+#allow from 59.146.75.44
+#allow from 115.179.207.253
+#allow from 119.243.178.209
+#allow from 124.110.39.226
+
+#ErrorDocument 403 /admin/mainte/index.html

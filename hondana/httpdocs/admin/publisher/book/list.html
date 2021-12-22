@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;書誌情報管理</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+			</td>
+			<td id="main">
+				<div id="helpTextDisplay">
+						<div class="helpTextDisplayInner">
+							<div class="contentsWrapper">
+								<div class="contents">&nbsp;</div>
+							</div>
+						</div>
+					</div>
+					<div class="helpText">
+						<p>公開</p>
+						<p>新刊</p>
+						<p>これから出る本</p>
+						<p>おすすめ</p>
+						<p>在庫</p>
+						<p>カート</p>
+					</div>
+					<div class="title"><h1><strong>書誌情報管理</strong></h1></div>
+					{if $smarty.session.simpleMessageSender}<p class="error">{$smarty.session.simpleMessageSender|escape}</p>{/if}
+					<div class="searchWrapper">
+						<form action="./" method="post">
+							<input type="hidden" name="action" value="list" />
+							<div class="tableWrapper">
+								<table>
+									<tr>
+										<th>公開フラグ</th>
+										<td colspan="3">
+											<select name="search_display">
+												<option value=""{if !$search_display} selected{/if}></option>
+												<option value="0"{if $search_display=='0'} selected{/if}>非公開</option>
+												<option value="1"{if $search_display=='1'} selected{/if}>公開</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>タイトル</th>
+										<td><input type="text" name="search_title" value="{$search_title}" /></td>
+										<th>著者名</th>
+										<td><input type="text" name="search_author" value="{$search_author}" /></td>
+									</tr>
+									<tr>
+										<th>ISBN</th>
+										<td><input type="text" name="search_isbn" value="{$search_isbn}" /></td>
+										<th>雑誌コード</th>
+										<td><input type="text" name="search_magazine_code" value="{$search_magazine_code}" /></td>
+									</tr>
+									<tr>
+										<th>ジャンル</th>
+										<td colspan="3">
+											<select name="search_genre">
+												<option value=""></option>
+												{foreach name=genre from=$genreList item=genre}
+												<option value="{$genre.genre_no|escape}"{if $search_genre == $genre.genre_no} selected{/if}>
+													{section name=space loop=$genre.depth-1}&nbsp;&nbsp;{/section}
+													{if $genre.rgt+1 == $genre.parent_rgt}└{else}├{/if}
+													{$genre.name}
+												</option>
+												{/foreach}
+												<option value="not"{if $search_genre == 'not'} selected{/if}>未設定</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>シリーズ</th>
+										<td colspan="3">
+											<select name="search_series">
+												<option value=""></option>
+												{foreach name=series from=$seriesList item=series}
+												<option value="{$series.series_no|escape}"{if $search_series == $series.series_no} selected{/if}>
+													{section name=space loop=$series.depth-1}&nbsp;&nbsp;{/section}
+													{if $series.rgt+1 == $series.parent_rgt}└{else}├{/if}
+													{$series.name}
+												</option>
+												{/foreach}
+												<option value="not"{if $search_series == 'not'} selected{/if}>未設定</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>レーベル</th>
+										<td colspan="3">
+											<select name="search_label">
+												<option value=""></option>
+												{foreach name=label from=$labelList item=label}
+												<option value="{$label.label_no|escape}"{if $search_label == $label.label_no} selected{/if}>
+													{section name=space loop=$series.depth-1}&nbsp;&nbsp;{/section}
+													{if $series.rgt+1 == $series.parent_rgt}└{else}├{/if}
+													{$label.name}
+												</option>
+												{/foreach}
+												<option value="not"{if $search_label == 'not'} selected{/if}>未設定</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>在庫</th>
+										<td>
+											<select name="search_stock_status">
+												<option value=""></option>
+												<option value="not"{if $search_stock_status == 'not'} selected{/if}>未設定</option>
+												{foreach name=stock_status from=$stockStatusList item=stock_status}
+												<option value="{$stock_status.stock_status_no}"{if $search_stock_status == $stock_status.stock_status_no} selected{/if}>
+													{$stock_status.name}
+												</option>
+												{/foreach}
+											</select>
+										</td>
+										<th>書誌イメージ</th>
+										<td>
+											<input type="radio" name="search_image" value="1"{if $search_image=='1'} checked{/if} />&nbsp;あり&nbsp;
+											<input type="radio" name="search_image" value="0"{if $search_image=='0'} checked{/if} />&nbsp;なし&nbsp;
+											<input type="radio" name="search_image" value=""{if $search_image==''} checked{/if} />&nbsp;問わない
+										</td>
+									</tr>
+									<tr>
+										<th>おすすめ</th>
+										<td>
+											<input type="radio" name="search_recommend_status" value="1"{if $search_recommend_status=='1'} checked{/if} />&nbsp;あり&nbsp;
+											<input type="radio" name="search_recommend_status" value="0"{if $search_recommend_status=='0'} checked{/if} />&nbsp;なし&nbsp;
+											<input type="radio" name="search_recommend_status" value=""{if $search_recommend_status==''} checked{/if} />&nbsp;問わない
+										</td>
+										<th>新刊</th>
+										<td>
+											<input type="radio" name="search_new_status" value="1"{if $search_new_status=='1'} checked{/if} />&nbsp;あり&nbsp;
+											<input type="radio" name="search_new_status" value="0"{if $search_new_status=='0'} checked{/if} />&nbsp;なし&nbsp;
+											<input type="radio" name="search_new_status" value=""{if $search_new_status==''} checked{/if} />&nbsp;問わない
+										</td>
+									</tr>
+{if $publisher.jpo}
+										<tr>
+											<th>JPO同期</th>
+											<td colspan="3">
+												<input type="radio" name="search_sync_type" id="search_sync_type4" value="4"{if $search_sync_type=='4'} checked{/if} />&nbsp;<label for="search_sync_type4">連携待ち</label>&nbsp;
+												<input type="radio" name="search_sync_type" id="search_sync_type2" value="2"{if $search_sync_type=='2'} checked{/if} />&nbsp;<label for="search_sync_type2">未連携</label>&nbsp;
+												<input type="radio" name="search_sync_type" id="search_sync_type1" value="1"{if $search_sync_type=='1'} checked{/if} />&nbsp;<label for="search_sync_type1">連携中</label>&nbsp;
+												<input type="radio" name="search_sync_type" id="search_sync_type0" value=""{if $search_sync_type==''} checked{/if} />&nbsp;<label for="search_sync_type0">問わない</label>
+											</td>
+										</tr>
+{/if}
+{if $publisher.ebook_store_status}
+									<tr>
+										<th>紙/電子</th>
+										<td colspan="3">
+											<label for="format1"><input type="radio" name="format" id="format1" value="0" class="radio"{if !$format} checked="checked"{/if} />すべて</label>
+											<label for="format2"><input type="radio" name="format" id="format2" value="2" class="radio"{if $format==2} checked="checked"{/if} />紙の本のみ</label>
+											<label for="format3"><input type="radio" name="format" id="format3" value="1" class="radio"{if $format==1} checked="checked"{/if} />電子書籍のみ</label>
+										</td>
+									</tr>
+{/if}
+									<tr>
+										<th>表示件数</th>
+										<td colspan="3">
+											<select name="amount">
+												<option value="10"{if $amount=='10'} selected{/if}>10件</option>
+												<option value="20"{if $amount=='20'} selected{/if}>20件</option>
+												<option value="50"{if $amount=='50'} selected{/if}>50件</option>
+												<option value="100"{if $amount=='100'} selected{/if}>100件</option>
+												<option value="500"{if $amount=='500'} selected{/if}>500件</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+{if !$publisher.ebook_store_status}
+<input type="hidden" name="format" value="0" />
+{/if}
+							</div>
+							<p class="button"><input type="submit" name="search_submit" value="検索" /></p>
+						</form>
+					</div>
+					{if $pageInfo.total}
+					<form method="post" id="listForm">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>選択した書誌情報を</strong>
+								<select id="selectSlime">
+									<option value=""></option>
+									<option value="delete">削除する</option>
+									<option value="display">公開する</option>
+									<option value="display_none">非公開にする</option>
+									<option value="new_status">新刊に設定する</option>
+									<option value="new_status_none">新刊から除外する</option>
+									<option value="set_label">レーベルに登録する</option>
+									<option value="delete_label">レーベルから除外する</option>
+									<option value="set_genre">ジャンルに登録する</option>
+									<option value="delete_genre">ジャンルから除外する</option>
+									<option value="set_series">シリーズに登録する</option>
+									<option value="delete_series">シリーズから除外する</option>
+									<option value="next_book">これから出る本にする</option>
+									<option value="next_book_none">これから出る本から除外する</option>
+									<option value="recommend_status">おすすめに設定する</option>
+									<option value="recommend_status_none">おすすめから除外する</option>
+{*
+									<option value="set_stock_status">在庫ステータスを登録する</option>
+									<option value="delete_stock_status">在庫ステータスを削除する</option>
+*}
+									{if $publisher.cart}
+										<option value="cart">カートを有効にする</option>
+										<option value="cart_none">カートを無効にする</option>
+									{/if}
+{*
+									<option value="honzuki">本が好き！連携　有効にする</option>
+									<option value="honzuki_none">本が好き！連携　無効にする</option>
+*}
+								</select>
+								<input type="submit" name="" value="実行" />
+							</div>
+							<div class="slime">
+								<strong>レーベル</strong>
+								<select name="add_label_no">
+									<option value=""></option>
+									{foreach name=label2 from=$labelList item=label}
+									<option value="{$label.label_no|escape}">
+									<!--<option value="{$label.label_no|escape}"{if $add_label_no == $label.book_label_no} selected{/if}>-->
+										{section name=space loop=$label.depth-1}&nbsp;&nbsp;{/section}
+										{if $label.rgt+1 == $label.parent_rgt}└{else}├{/if}
+										{$label.name}
+									</option>
+									{/foreach}
+								</select>
+							</div>
+							<div class="slime">
+								<strong>ジャンル</strong>
+								<select name="add_genre_no">
+									<option value=""></option>
+									{foreach name=genre2 from=$genreList item=genre}
+									<option value="{$genre.genre_no|escape}">
+									<!--<option value="{$genre.genre_no|escape}"{if $add_genre_no == $genre.book_genre_no} selected{/if}>-->
+										{section name=space loop=$genre.depth-1}&nbsp;&nbsp;{/section}
+										{if $genre.rgt+1 == $genre.parent_rgt}└{else}├{/if}
+										{$genre.name}
+									</option>
+									{/foreach}
+								</select>
+							</div>
+							<div class="slime">
+								<strong>シリーズ</strong>
+								<select name="add_series_no">
+									<option value=""></option>
+									{foreach name=series2 from=$seriesList item=series}
+									<option value="{$series.series_no|escape}">
+									<!--<option value="{$series.book_series_no}"{if $add_series_no == $series.book_series_no} selected{/if}>-->
+										{section name=space loop=$series.depth-1}&nbsp;&nbsp;{/section}
+										{if $series.rgt+1 == $series.parent_rgt}└{else}├{/if}
+										{$series.name}
+									</option>
+									{/foreach}
+								</select>
+							</div>
+							<div class="slime">
+								<strong>在庫ステータス</strong>
+								<select name="add_stock_status_no">
+									<option value=""></option>
+									{foreach name=stock_status2 from=$stockStatusList item=stock_status}
+									<option value="{$stock_status.stock_status_no}">
+										{$stock_status.name}
+									</option>
+									{/foreach}
+								</select>
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+							<table class="help">
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>
+										<a href="./?order=display_{if $order=='display_asc'}desc{else}asc{/if}" class="help">
+											{if $order=='display_asc'}▲{elseif $order=='display_desc'}▼{/if}<img src="../../images/common/icon_book_list_public.gif" />
+										</a>
+									</th>
+									<th>
+										<a href="./?order=new_status_{if $order=='new_status_asc'}desc{else}asc{/if}" class="help">
+											{if $order=='new_status_asc'}▲{elseif $order=='new_status_desc'}▼{/if}<img src="../../images/common/icon_book_list_new.gif" />
+										</a>
+									</th>
+									<th>
+										<a href="./?order=next_book_{if $order=='next_book_asc'}desc{else}asc{/if}" class="help">
+											{if $order=='next_book_asc'}▲{elseif $order=='next_book_desc'}▼{/if}<img src="../../images/common/icon_book_list_next.gif" />
+										</a>
+									</th>
+									<th>
+										<a href="./?order=recommend_status_{if $order=='recommend_status_asc'}desc{else}asc{/if}" class="help">
+											{if $order=='recommend_status_asc'}▲{elseif $order=='recommend_status_desc'}▼{/if}<img src="../../images/common/icon_recommend_status.gif" />
+										</a>
+									</th>
+									<th>
+										<a href="./?order=stock_status_{if $order=='stock_status_asc'}desc{else}asc{/if}" class="help">
+											{if $order=='stock_status_asc'}▲{elseif $order=='stock_status_desc'}▼{/if}<img src="../../images/common/icon_book_list_stock.gif" />
+										</a>
+									</th>
+									{if $publisher.cart}
+									<th>
+										<a href="./?order=cart_status_{if $order=='cart_status_asc'}desc{else}asc{/if}" class="help">
+											{if $order=='cart_status_asc'}▲{elseif $order=='cart_status_desc'}▼{/if}<img src="../../images/common/icon_book_list_cart.gif" />
+										</a>
+									</th>
+									{/if}
+									<th>
+										<a href="./?order=title_{if $order=='title_asc'}desc{else}asc{/if}">
+											{if $order=='title_asc'}▲{elseif $order=='title_desc'}▼{/if}タイトル
+										</a>
+									</th>
+									<th>
+										表示サイト
+									</th>
+									<th>
+										<a href="./?order=isbn_{if $order=='isbn_asc'}desc{else}asc{/if}">
+											{if $order=='isbn_asc'}▲{elseif $order=='isbn_desc'}▼{/if}ISBN<br />
+										</a>
+									</th>
+									<th>
+										{*<a href="./?order=genre_{if $order=='genre_asc'}desc{else}asc{/if}">
+											{if $order=='genre_asc'}▲{elseif $order=='genre_desc'}▼{/if}ジャンル
+										</a>*}
+										ジャンル
+									</th>
+									<th>
+										{*<a href="./?order=label_{if $order=='label_asc'}desc{else}asc{/if}">
+											{if $order=='label_asc'}▲{elseif $order=='label_desc'}▼{/if}レーベル
+										</a>*}
+										レーベル
+									</th>
+									<th>
+										<a href="./?order=book_date_{if $order=='book_date_asc'}desc{else}asc{/if}">
+											{if $order=='book_date_asc'}▲{elseif $order=='book_date_desc'}▼{/if}出版年月日
+										</a>
+									</th>
+									{if $publisher.jpo}
+									<th>
+										<a href="./?order=synced_{if $order=='synced_asc'}desc{else}asc{/if}">
+											{if $order=='synced_asc'}▲{elseif $order=='synced_desc'}▼{/if}JPO連携
+										</a>
+									</th>
+									{/if}
+{*
+									<th>
+										<a href="./?order=honzuki_{if $order=='honzuki_asc'}desc{else}asc{/if}">
+											{if $order=='honzuki_asc'}▲{elseif $order=='honzuki_desc'}▼{/if}本が好き！連携
+										</a>
+									</th>
+*}
+								</tr>
+								{foreach name=book from=$bookList item=book}
+								<tr>
+									<td><input type="checkbox" name="book_no_list[]" value="{$book.book_no|escape}" class="slimeCheck" /></td>
+									<td class="icon">{if $book.public_status}○{else}&nbsp;{/if}</td>
+									<td class="icon">{if $book.new_status}○{else}&nbsp;{/if}</td>
+									<td class="icon">{if $book.next_book}○{else}&nbsp;{/if}</td>
+									<td class="icon">{if $book.recommend_status}○{else}&nbsp;{/if}</td>
+									<td class="nowrap">
+										{if $book.stock_status_no=='1'}あり
+										{elseif $book.stock_status_no=='2'}僅少
+										{elseif $book.stock_status_no=='3'}重版
+										{elseif $book.stock_status_no=='4'}未刊
+										{elseif $book.stock_status_no=='5'}品切
+										{elseif $book.stock_status_no=='6'}絶版
+										{elseif $book.stock_status_no=='7'}オンデマンド
+										{/if}
+									</td>
+									{if $publisher.cart}
+									<td class="icon">{if $book.cart_status}○{else}&nbsp;{/if}</td>
+									{/if}
+									<td><a href="edit/?book_no={$book.book_no|escape}">{$book.name}</a></td>
+									<td>{$book.sitename}</td>
+									<td>{$book.isbn}</td>
+									<td>
+										{foreach name=bookGenre from=$bookGenreList item=bookGenre}
+										{if $bookGenre.book_no==$book.book_no}
+										{$bookGenre.name}<br />
+										{/if}
+										{/foreach}
+									</td>
+									<td>
+										{foreach name=bookLabel from=$bookLabelList item=bookLabel}
+										{if $bookLabel.book_no==$book.book_no}
+										{$bookLabel.name}<br />
+										{/if}
+										{/foreach}
+									</td>
+									<td>{if $book.b_stamp!='0000/00/00'}{$book.b_stamp}{/if}</td>
+									{if $publisher.jpo}
+									<td>
+										{if $book.r_stamp=='0000/00/00' || !$book.r_stamp}
+											未連携
+										{elseif $book.is_sync_before}
+											{if $book.sa_stamp}
+												連携待ち
+											{else}
+												未連携
+											{/if}
+										{else}
+											{if $book.s_stamp}
+												{if $book.sa_stamp && $publisher.transaction_code && $publisher.publisher_prefix && $publisher.from_person_unit}
+													連携中
+												{else}
+													未連携
+												{/if}
+											{else}
+												{if $book.sa_stamp && $publisher.transaction_code && $publisher.publisher_prefix && $publisher.from_person_unit}
+													連携中
+												{else}
+													未連携
+												{/if}
+											{/if}
+										{/if}
+									</td>
+									{/if}
+{*
+									<td>
+										{if $book.honzuki}有効{else}無効{/if}
+									</td>
+*}
+								</tr>
+								{/foreach}
+							</table>
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+						</div>
+					</form>
+					{elseif $pageInfo.total==0 && $search_submit}
+					<div class="slimeWrapper">
+						<div class="slime">
+							<strong>ご指定の検索条件に該当する書誌情報はございません。</strong>
+						</div>
+						<p class="link"><a href="new/">新規書誌情報の追加</a></p>
+					</div>
+					{/if}
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

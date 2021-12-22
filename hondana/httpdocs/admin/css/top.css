@@ -1,0 +1,126 @@
+@charset "utf-8";
+
+#gnavi {
+	background-image:url(../images/top/bg_gnavi.jpg);
+}
+
+
+#contents .section {
+	padding:0 0 50px 0;
+	margin:0 25px;
+}
+#contents .section.hidden {
+	display: none;
+}
+#contents .section ul {
+	padding-left:22px;
+}
+#contents .section ul li {
+	display:inline;
+	padding:0 50px 0 16px;
+	background-image:url(../images/common/icon_list.jpg);
+	background-position:left center;
+	background-repeat:no-repeat;
+	font-weight:bold;
+}
+#contents .section .title {
+	background-image:url(../images/top/bg_subtit_body.jpg);
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+
+#contents .section h2 {
+	margin-bottom:20px;
+	background-position:left top;
+	background-repeat:no-repeat;
+	font-size:14px;
+}
+#contents .section h2 strong {
+	display:block;
+	padding-left:34px;
+	background-image:url(../images/top/bg_subtit_end.jpg);
+	background-position:right top;
+	background-repeat:no-repeat;
+	line-height:34px;
+}
+
+#contents .helpText {
+	display:none;
+}
+
+#contents table .switch {
+	cursor:pointer;
+	color:#52441D;
+	font-weight:bold;
+
+}
+
+#contents  table td .area {
+	display:none;
+	padding-bottom:5px;
+}
+
+
+@charset "utf-8";
+
+#gnavi {
+	background-image:url(../images/top/bg_gnavi.jpg);
+}
+
+
+#contents .section {
+	padding:0 0 50px 0;
+	margin:0 25px;
+}
+#contents .section.hidden {
+	display: none;
+}
+#contents .section ul {
+	padding-left:22px;
+}
+#contents .section ul li {
+	display:inline;
+	padding:0 50px 0 16px;
+	background-image:url(../images/common/icon_list.jpg);
+	background-position:left center;
+	background-repeat:no-repeat;
+	font-weight:bold;
+}
+#contents .section .title {
+	background-image:url(../images/top/bg_subtit_body.jpg);
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+
+#contents .section h2 {
+	margin-bottom:20px;
+	background-position:left top;
+	background-repeat:no-repeat;
+	font-size:14px;
+}
+#contents .section h2 strong {
+	display:block;
+	padding-left:34px;
+	background-image:url(../images/top/bg_subtit_end.jpg);
+	background-position:right top;
+	background-repeat:no-repeat;
+	line-height:34px;
+}
+
+#contents .helpText {
+	display:none;
+}
+
+#contents table .switch {
+	cursor:pointer;
+	color:#52441D;
+	font-weight:bold;
+
+}
+
+#contents  table td .area {
+	display:none;
+	padding-bottom:5px;
+}
+
+

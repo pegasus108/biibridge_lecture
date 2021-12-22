@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_admin_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>インフォメーション管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header">
+				<td colspan="2">
+					<div id="logo"><a href="../../admin/">hondana管理システム</a></div>
+					<div id="hnavi">
+						<p id="hnaviLogout"><a href="../../logout/">ログアウト</a></p>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+					<ul>
+						<li id="gnavi01"><a href="../info/">インフォメーション</a></li>
+						<li id="gnavi02"><a href="../publisher/">出版社</a></li>
+						<li id="gnavi03"><a href="../import_images/">書影一括取込</a></li>
+					</ul>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../admin/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" -->インフォメーション管理</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+					<dl>
+						<dt class="title">インフォメーション管理</dt>
+						<dd>
+							<ul>
+								<li><a href="./">インフォメーション一覧</a></li>
+								<li><a href="new/">インフォメーション登録</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</td>
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>インフォメーション管理</strong></h1></div>
+					<form method="post" id="listForm">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>選択したインフォメーションを</strong>
+								<select id="selectSlime">
+									<option value=""></option>
+									<option value="delete">削除する</option>
+									<option value="display">公開する</option>
+									<option value="display_none">非公開にする</option>
+								</select>
+								<input type="submit" name="" value="実行" />
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>
+										<a href="./?order=display_{if $order=='display_asc'}desc{else}asc{/if}">
+											{if $order=='display_asc'}▲{elseif $order=='display_desc'}▼{/if}公開
+										</a>
+									</th>
+									<th>
+										<a href="./?order=title_{if $order=='title_asc'}desc{else}asc{/if}">
+											{if $order=='title_asc'}▲{elseif $order=='title_desc'}▼{/if}タイトル
+										</a>
+									</th>
+									<th>
+										<a href="./?order=public_date_{if $order=='public_date_asc'}desc{else}asc{/if}">
+											{if $order=='public_date_asc'}▲{elseif $order=='public_date_desc'}▼{/if}公開の日時
+										</a>
+									</th>
+								</tr>
+								{foreach name=info from=$infoList item=info}
+								<tr>
+									<td><input type="checkbox" name="info_no_list[]" value="{$info.info_no}" class="slimeCheck" /></td>
+									<td class="icon">
+									{if $info.public_status}○{else}&nbsp;{/if}
+									</td>
+									<td><a href="edit/?info_no={$info.info_no}">{$info.name}</a></td>
+									<td>{$info.p_stamp}</td>
+								</tr>
+								{/foreach}
+							</table>
+						</div>
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

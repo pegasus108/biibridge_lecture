@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>お知らせ管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" -->お知らせ管理</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/news.html" -->
+			</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>お知らせ管理</strong></h1></div>
+					<div class="searchWrapper">
+						<form action="./" method="post">
+							<input type="hidden" name="action" value="list" />
+							<div class="tableWrapper">
+								<table>
+									<tr>
+										<th>公開フラグ</th>
+										<td>
+											<select name="search_display">
+												<option value=""></option>
+												<option value="0"{if $search_display=='0'} selected{/if}>非公開</option>
+												<option value="1"{if $search_display=='1'} selected{/if}>公開</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>ナビ表示</th>
+										<td>
+											<select name="search_navi_display">
+												<option value=""></option>
+												<option value="0"{if $search_navi_display=='0'} selected{/if}>非表示</option>
+												<option value="1"{if $search_navi_display=='1'} selected{/if}>表示</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>タイトル</th>
+										<td><input type="text" name="search_title" value="{$search_title}" /></td>
+									</tr>
+									<tr>
+										<th>カテゴリ</th>
+										<td>
+											<select name="search_category">
+												<option value=""></option>
+												{foreach name=newsCategory from=$newsCategoryList item=newsCategory}
+												<option value="{$newsCategory.news_category_no}"{if $search_category == $newsCategory.news_category_no} selected{/if}>
+													{section name=space loop=$newsCategory.depth-1}&nbsp;&nbsp;{/section}
+													{if $newsCategory.rgt+1 == $newsCategory.parent_rgt}└{else}├{/if}
+													{$newsCategory.name}
+												</option>
+												{/foreach}
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>表示件数</th>
+										<td>
+											<select name="amount">
+												<option value="10"{if $amount=='10'} selected{/if}>10件</option>
+												<option value="20"{if $amount=='20'} selected{/if}>20件</option>
+												<option value="50"{if $amount=='50'} selected{/if}>50件</option>
+												<option value="100"{if $amount=='100'} selected{/if}>100件</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<p class="button"><input type="submit" name="search_submit" value="検索" /></p>
+						</form>
+					</div>
+					{if $pageInfo.total}
+					<form method="post" id="listForm">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>選択したお知らせを</strong>
+								<select id="selectSlime">
+									<option value=""></option>
+									<option value="delete">削除する</option>
+									<option value="display">公開する</option>
+									<option value="display_none">非公開にする</option>
+									<option value="navi_display">ナビ部分で表示する</option>
+									<option value="navi_display_none">ナビ部分で非表示にする</option>
+									<option value="set_category">カテゴリに登録する</option>
+								</select>
+								<input type="submit" name="" value="実行" />
+							</div>
+							<div class="slime">
+								<strong>カテゴリ</strong>
+								<select name="add_category_no">
+									<option value=""></option>
+									{foreach name=newsCategory2 from=$newsCategoryList item=newsCategory}
+									<option value="{$newsCategory.news_category_no}"{if $add_category_no == $newsCategory.news_category_no} selected{/if}>
+										{section name=space loop=$newsCategory.depth-1}&nbsp;&nbsp;{/section}
+										{if $newsCategory.rgt+1 == $newsCategory.parent_rgt}└{else}├{/if}
+										{$newsCategory.name}
+									</option>
+									{/foreach}
+								</select>
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+							<table>
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>
+										<a href="./?order=display_{if $order=='display_asc'}desc{else}asc{/if}">
+											{if $order=='display_asc'}▲{elseif $order=='display_desc'}▼{/if}公開
+										</a>
+									</th>
+									<th>
+										<a href="./?order=navi_display_{if $order=='navi_display_asc'}desc{else}asc{/if}">
+											{if $order=='navi_display_asc'}▲{elseif $order=='navi_display_desc'}▼{/if}ナビ表示
+										</a>
+									</th>
+									<th>
+										<a href="./?order=title_{if $order=='title_asc'}desc{else}asc{/if}">
+											{if $order=='title_asc'}▲{elseif $order=='title_desc'}▼{/if}タイトル
+										</a>
+									</th>
+									<th>
+										<a href="./?order=category_{if $order=='category_asc'}desc{else}asc{/if}">
+											{if $order=='category_asc'}▲{elseif $order=='category_desc'}▼{/if}カテゴリ
+										</a>
+									</th>
+									<th>
+										<a href="./?order=public_date_{if $order=='public_date_asc'}desc{else}asc{/if}">
+											{if $order=='public_date_asc'}▲{elseif $order=='public_date_desc'}▼{/if}公開の日時
+										</a>
+									</th>
+								</tr>
+								{foreach name=news from=$newsList item=news}
+								<tr>
+									<td><input type="checkbox" name="news_no_list[]" value="{$news.news_no}" class="slimeCheck" /></td>
+									<td class="icon">
+									{if $news.public_status}○{else}&nbsp;{/if}
+									</td>
+									<td class="icon">
+									{if $news.navi_display}○{else}&nbsp;{/if}
+									</td>
+									<td><a href="edit/?news_no={$news.news_no}">{$news.name}</a></td>
+									<td>
+										{if $publisher.news_category_edit}
+											{* news category 複数登録 *}
+											{foreach name=newsNewsCategoryList from=$newsNewsCategoryList item=v}
+											{if $v.news_no==$news.news_no}
+											{$v.name}<br />
+											{/if}
+											{/foreach}
+										{else}
+											{$news.c_name}
+										{/if}
+									</td>
+									<td>{$news.p_stamp}</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+						</div>
+					</form>
+					{elseif $pageInfo.total==0 && $search_submit}
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>ご指定の検索条件に該当するお知らせはございません。</strong>
+							</div>
+							<p class="link"><a href="new/">新規お知らせの追加</a></p>
+						</div>
+					{/if}
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

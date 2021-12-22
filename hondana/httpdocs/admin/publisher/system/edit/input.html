@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>システム設定変更 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/unload.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">システム設定</a>&nbsp;&gt;&nbsp;システム設定変更</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/system.html" -->
+				</td>
+				<td id="main">
+					<div class="title"><h1><strong>システム設定変更</strong></h1></div>
+					<form id="listForm" action="./" method="post">
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>会社コード</th>
+									<td>
+										{if $errors.publisher_no}<p class="error">{$errors.publisher_no}</p>{/if}
+										<input type="text" name="publisher_no" value="{$publisher_no|escape}" size="25" disabled="disabled" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社名  <img src="/admin/images/common/icon_must.gif" alt="必須" />{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" alt="JPO必須" />{/if}</th>
+									<td>
+										{if $errors.name}<p class="error">{$errors.name|escape}</p>{/if}
+										<input type="text" name="name" value="{$name|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社名カナ  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.kana}<p class="error">{$errors.kana|escape}</p>{/if}
+										<strong>全角カタカナでご入力ください。</strong><br />
+										<input type="text" name="kana" value="{$kana|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社郵便番号  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.zipcode}<p class="error">{$errors.zipcode}</p>{/if}
+										<input type="text" name="zipcode" value="{$zipcode|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社住所  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.address}<p class="error">{$errors.address|escape}</p>{/if}
+										<textarea name="address" cols="48" rows="3">{$address|escape}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>会社電話番号  <img src="/admin/images/common/icon_must.gif" alt="必須" />{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" alt="JPO必須" />{/if}</th>
+									<td>
+										{if $errors.tel}<p class="error">{$errors.tel|escape}</p>{/if}
+										<input type="text" name="tel" value="{$tel|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社FAX</th>
+									<td>
+										{if $errors.fax}<p class="error">{$errors.fax}</p>{/if}
+										<input type="text" name="fax" value="{$fax|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>ロゴ</th>
+									<td>{if $image}<img src="{$image|escape}" />{/if}</td>
+								</tr>
+								<tr>
+									<th>取引コード{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" alt="JPO必須" />{/if}</th>
+									<td>
+										{if $errors.transaction_code}<p class="error">{$errors.transaction_code}</p>{/if}
+										<input type="text" name="transaction_code" value="{$transaction_code|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>ISBN 出版社記号{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" alt="JPO必須" />{/if}</th>
+									<td>
+										{if $errors.publisher_prefix}<p class="error">{$errors.publisher_prefix}</p>{/if}
+										<input type="text" name="publisher_prefix" value="{$publisher_prefix|escape}" maxlength="7" size="10" />
+									</td>
+								</tr>
+{if $publisher.jpo}
+								<tr>
+									<th>ISBN 出版社記号 2つ目以降</th>
+									<td>
+										{if $errors.publisher_prefix_next}<p class="error">{$errors.publisher_prefix_next}</p>{/if}
+										<strong>複数設定する場合は「<span style="font-size:130%;">,</span>」区切りでご入力ください。</strong><br />
+										<input type="text" name="publisher_prefix_next" value="{$publisher_prefix_next|escape}" size="60" />
+									</td>
+								</tr>
+{/if}
+								<tr>
+									<th>部署{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" alt="JPO必須" />{/if}</th>
+									<td>
+										{if $errors.from_person_unit}<p class="error">{$errors.from_person_unit}</p>{/if}
+										<input type="text" name="from_person_unit" value="{$from_person_unit|escape}" size="10" />
+									</td>
+								</tr>
+								<tr>
+									<th>担当者  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.person_name}<p class="error">{$errors.person_name}</p>{/if}
+										<input type="text" name="person_name" value="{$person_name|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>担当者メールアドレス  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.person_mail}<p class="error">{$errors.person_mail}</p>{/if}
+										<input type="text" name="person_mail" value="{$person_mail|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>copyright</th>
+									<td>
+										{if $errors.copyright}<p class="error">{$errors.copyright}</p>{/if}
+										<input type="text" name="copyright" value="{$copyright}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>url</th>
+									<td>
+										{if $errors.url}<p class="error">{$errors.url}</p>{/if}
+										<strong>独自ドメインをご利用の場合は、<br />
+										http://で始まるURLをご入力ください。<br />
+										URLは/で終わる必要があります。</strong><br />
+										<input type="text" name="url" value="{$url|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>HONDANA用ID</th>
+									<td>
+										{if $errors.id}<p class="error">{$errors.id}</p>{/if}
+										<input type="text" name="id" value="{$id|escape}" size="25" disabled="disabled" />
+									</td>
+								</tr>
+								{if $publisher_account.is_default || !$publisher.role}
+									<tr>
+										<th>HONDANA用新パスワード</th>
+										<td>
+											{if $errors.pass_n}<p class="error">{$errors.pass_n}</p>{/if}
+											<input type="password" name="pass_n" size="25" value="{$pass_n|escape}" />
+										</td>
+									</tr>
+									<tr>
+										<th>HONDANA用新パスワード（確認）</th>
+										<td>
+											<input type="password" name="pass_c" size="25" value="{$pass_c|escape}" />
+										</td>
+									</tr>
+								{/if}
+								<tr>
+									<th>デザイン</th>
+									<td>
+										<p><a href="http://www.hondana.jp/design/" target="_blank">デザインを確認する</a></p>
+										{if $errors.design}<p class="error">{$errors.design}</p>{/if}
+										<select name="design" disabled="disabled">
+											<option value=""{if !$design} selected{/if}></option>
+											<option value="design1-1"{if $design=='design1-1'} selected{/if}>デザインパターン1　カラー1</option>
+											<option value="design1-2"{if $design=='design1-2'} selected{/if}>デザインパターン1　カラー2</option>
+											<option value="design1-3"{if $design=='design1-3'} selected{/if}>デザインパターン1　カラー3</option>
+											<option value="design1-4"{if $design=='design1-4'} selected{/if}>デザインパターン1　カラー4</option>
+											<option value="design1-5"{if $design=='design1-5'} selected{/if}>デザインパターン1　カラー5</option>
+											<option value="design2-1"{if $design=='design2-1'} selected{/if}>デザインパターン2　カラー1</option>
+											<option value="design2-2"{if $design=='design2-2'} selected{/if}>デザインパターン2　カラー2</option>
+											<option value="design2-3"{if $design=='design2-3'} selected{/if}>デザインパターン2　カラー3</option>
+											<option value="design2-4"{if $design=='design2-4'} selected{/if}>デザインパターン2　カラー4</option>
+											<option value="design2-5"{if $design=='design2-5'} selected{/if}>デザインパターン2　カラー5</option>
+											<option value="design3-1"{if $design=='design3-1'} selected{/if}>デザインパターン3　カラー1</option>
+											<option value="design3-2"{if $design=='design3-2'} selected{/if}>デザインパターン3　カラー2</option>
+											<option value="design3-3"{if $design=='design3-3'} selected{/if}>デザインパターン3　カラー3</option>
+											<option value="design3-4"{if $design=='design3-4'} selected{/if}>デザインパターン3　カラー4</option>
+											<option value="design3-5"{if $design=='design3-5'} selected{/if}>デザインパターン3　カラー5</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>データ連携担当者名  <img src="/admin/images/common/icon_must.gif" alt="必須" />{if $publisher.jpo} <img src="/admin/images/common/icon_must_jpo.gif" alt="JPO必須" />{/if}</th>
+									<td>
+										{if $errors.linkage_person_name}<p class="error">{$errors.linkage_person_name}</p>{/if}
+										<input type="text" name="linkage_person_name" value="{$linkage_person_name|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>データ連携担当者メールアドレス  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.linkage_person_mail}<p class="error">{$errors.linkage_person_mail}</p>{/if}
+										<input type="text" name="linkage_person_mail" value="{$linkage_person_mail|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>会社説明</th>
+									<td>
+										{if $errors.description}<p class="error">{$errors.description}</p>{/if}
+										<input type="text" name="description" value="{$description|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>キャッチフレーズ</th>
+									<td>
+										{if $errors.catchphrase}<p class="error">{$errors.catchphrase}</p>{/if}
+										<strong>25文字以内でご入力ください。</strong><br />
+										<input type="text" name="catchphrase" value="{$catchphrase|escape}" size="60" />
+									</td>
+								</tr>
+								<tr>
+									<th>アフィリエイト（amazon）ID</th>
+									<td>
+										{if $errors.amazon_associates_id}<p class="error">{$errors.amazon_associates_id}</p>{/if}
+										<input type="text" name="amazon_associates_id" value="{$amazon_associates_id|escape}" size="25" disabled="disabled" />
+									</td>
+								</tr>
+								<tr>
+									<th>アフィリエイト（楽天）ID</th>
+									<td>
+										{if $errors.rakuten_affiliate_id}<p class="error">{$errors.rakuten_affiliate_id}</p>{/if}
+										<input type="text" name="rakuten_affiliate_id" value="{$rakuten_affiliate_id|escape}" size="50" disabled="disabled" />
+									</td>
+								</tr>
+								<tr>
+									<th>7&amp;Y用アフィリエイト基本URL</th>
+									<td>
+										{if $errors.seven_and_y_url}<p class="error">{$errors.seven_and_y_url}</p>{/if}
+										<input type="text" name="seven_and_y_url" value="{$seven_and_y_url|escape}" size="80" disabled="disabled" />
+									</td>
+								</tr>
+								<tr>
+									<th>エルパカBOOKS用アフィリエイト基本URL</th>
+									<td>
+										{if $errors.erupakabooks_url}<p class="error">{$errors.erupakabooks_url}</p>{/if}
+										<input type="text" name="erupakabooks_url" value="{$erupakabooks_url|escape}" size="80" disabled="disabled" />
+									</td>
+								</tr>
+								<tr>
+									<th>グーグルAnalytics用タグ</th>
+									<td>
+										{if $errors.google_analytics_tag}<p class="error">{$errors.google_analytics_tag}</p>{/if}
+										<textarea name="google_analytics_tag" cols="80" rows="5" disabled="disabled">{$google_analytics_tag|escape}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>カート機能</th>
+									<td>
+										{if $errors.cart}<p class="error">{$errors.cart}</p>{/if}
+										<select name="cart" disabled="disabled">
+											<option value="0"{if !$cart || $cart=='0'} selected{/if}>使用不可</option>
+											<option value="1"{if $cart=='1'} selected{/if}>使用可（決済機能なし）</option>
+											<option value="2"{if $cart=='2'} selected{/if}>使用可</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>ブックサービス用No</th>
+									<td>
+										{if $errors.bookservice_no}<p class="error">{$errors.bookservice_no}</p>{/if}
+										<input type="text" name="bookservice_no" value="{$bookservice_no|escape}" size="10" disabled="disabled" />
+									</td>
+								</tr>
+								<tr>
+									<th>お問い合わせ用メールアドレス  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.contact_mail}<p class="error">{$errors.contact_mail}</p>{/if}
+										<input type="text" name="contact_mail" value="{$contact_mail|escape}" size="60" />
+									</td>
+								</tr>
+								{if $cart=='1'}
+								<tr>
+									<th>ショッピングカート&nbsp;メール送信先  <img src="/admin/images/common/icon_must.gif" alt="必須" /></th>
+									<td>
+										{if $errors.cart_mail}<p class="error">{$errors.cart_mail}</p>{/if}
+										<input type="text" name="cart_mail" value="{$cart_mail|escape}" size="60" />
+									</td>
+								</tr>
+								{/if}
+
+								<tr>
+									<th>Google Analytics用　アカウント</th>
+									<td>
+										{if $errors.ga_account}<p class="error">{$errors.ga_account}</p>{/if}
+										<input type="password" name="ga_account" value="{$ga_account|escape}" size="25" />
+									</td>
+								</tr>
+								<tr>
+									<th>Google Analytics用　パスワード</th>
+									<td>
+										{if $errors.ga_password_s}<p class="error">{$errors.ga_password_s}</p>{/if}
+										<input type="password" name="ga_password" size="25" value="{$ga_password|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>Google Analytics用　レポートID</th>
+									<td>
+										{if $errors.ga_report}<p class="error">{$errors.ga_report}</p>{/if}
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="password" name="ga_report" value="{$ga_report|escape}" size="25" />
+									</td>
+								</tr>
+								{if count($noticeFields)}
+								<tr>
+									<th>書誌情報変更お知らせメールアドレス</th>
+									<td>
+										{if $errors.book_notice_mail}<p class="error">{$errors.book_notice_mail}</p>{/if}
+										<strong>半角カンマ区切りで複数指定できます。</strong><br />
+										<input type="text" name="book_notice_mail" value="{$book_notice_mail|escape}" size="60" />
+									</td>
+								</tr>
+								{/if}
+								<tr>
+									<th>YONDEMILL 販売システム連携</th>
+									<td>
+										{if $errors.yondemill_book_sales}<p class="error">{$errors.yondemill_book_sales}</p>{/if}
+										<select name="yondemill_book_sales" disabled="disabled">
+											<option value="0"{if !$yondemill_book_sales || $yondemill_book_sales=='0'} selected{/if}>無効</option>
+											<option value="1"{if $yondemill_book_sales=='1'} selected{/if}>有効</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" name="confirm" value="確認" /></p>
+						<input type="hidden" name="action" value="confirm" />
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書協 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../../../js/common_lower.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../../">書誌情報管理</a>&nbsp;&gt;&nbsp;<a href="../">データ連携一覧</a>&nbsp;&gt;&nbsp;書協</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+			<td id="main">
+					<div class="title"><h1><strong>書協</strong></h1></div>
+					<form action="./" method="post">
+						<input type="hidden" name="action" value="process">
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr>
+									<th>データ区分</th>
+									<td>
+										{if $data_type_1=='1'}刊行予定情報
+										{elseif $data_type_1=='2'}長期品切情報
+										{elseif $data_type_1=='3'}本体価格改定情報
+										{elseif $data_type_1=='4'}既刊情報
+										{elseif $data_type_1=='5'}これから出る本情報
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>ISBN</th>
+									<td>{$isbn_1|strip_tags|escape}</td>
+								</tr>
+								{if $data_type_1=='1' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>分類コード（Ｃコード）</th>
+									<td>{$category_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>書名</th>
+									<td>{$name_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+								    <th>書名読み</th>
+								    <td>{$kana_1|strip_tags|escape}</td>
+								</tr>
+								{/if}{if $data_type_1=='5'}
+								<tr>
+									<th>副書名掲載区分</th>
+									<td>{if $preliminary_1=="◎"}掲載しない{else}掲載する{/if}</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>副書名（サブタイトル）</th>
+									<td>{$sub_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>版</th>
+									<td>{$version_1|strip_tags|escape}</td>
+								</tr>
+								{/if}{if $data_type_1=='5'}
+								<tr>
+									<th>シリーズ名掲載区分</th>
+									<td>{if $preliminary_2=="◎"}掲載しない{else}掲載する{/if}</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>叢書・シリーズ名</th>
+									<td>{$series_1}</td>
+								</tr>
+								<tr>
+									<th>叢書・シリーズ名読み</th>
+									<td>{$series_kana_1}</td>
+								</tr>
+								{/if}{if $data_type_1=='5'}
+								<tr>
+									<th>著者表示</th>
+									<td>{$preliminary_3}</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>著者名１</th>
+									<td>{$author_1}</td>
+								</tr>
+								<tr>
+									<th>著者名１読み</th>
+									<td>{$author_kana_1}</td>
+								</tr>
+								<tr>
+									<th>著作の種類を表す語１</th>
+									<td>{$author_type_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者名２</th>
+									<td>{$author_2}</td>
+								</tr>
+								<tr>
+									<th>著者名２読み</th>
+									<td>{$author_kana_2}</td>
+								</tr>
+								<tr>
+									<th>著作の種類を表す語２</th>
+									<td>{$author_type_2|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>著者名３</th>
+									<td>{$author_3}</td>
+								</tr>
+								<tr>
+									<th>著者名３読み</th>
+									<td>{$author_kana_3}</td>
+								</tr>
+								<tr>
+									<th>著作の種類を表す語３</th>
+									<td>{$author_type_3|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>奥付年月（発行年月）</th>
+  									<td>
+										{if $book_date_1_year}
+										{$book_date_1_year}年&nbsp;
+										{$book_date_1_month}月
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>書店発売日</th>
+									<td>
+										{if $release_date_1_year}
+										{$release_date_1_year}年&nbsp;
+										{$release_date_1_month}月&nbsp;
+										{$release_date_1_day}日
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>判型</th>
+									<td >{$book_size_2}</td>
+								</tr>
+								<tr>
+									<th>ページ数</th>
+									<td >{$page_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>セットコード</th>
+									<td >
+										{if $set_code_1=='1'}セット販売のみ
+										{elseif $set_code_1==''}それ以外
+										{/if}
+									</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='3' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>本体価格</th>
+									<td >{$price_1|strip_tags|escape}</td>
+								</tr>
+								{/if}{if $data_type_1=='3'}
+								<tr>
+									<th>価格改定日付</th>
+									<td>
+										{if $price_change_date_1_year}
+										{$price_change_date_1_year}年&nbsp;
+										{$price_change_date_1_month}月&nbsp;
+										{$price_change_date_1_day}日
+										{/if}
+									</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='4' }
+								<tr>
+									<th>特価</th>
+									<td >{$price_special_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>特価期限</th>
+									<td>
+										{if $price_special_policy_1_year}
+										{$price_special_policy_1_year}年&nbsp;
+										{$price_special_policy_1_month}月&nbsp;
+										{$price_special_policy_1_day}日
+										{/if}
+									</td>
+								</tr>
+								{/if}{if $data_type_1=='5'}
+								<tr>
+									<th>分類</th>
+									<td >
+										{if $preliminary_4=='0000'}総記
+										{elseif $preliminary_4=='0101'}哲学 心理学 思想
+										{elseif $preliminary_4=='0102'}宗教
+										{elseif $preliminary_4=='0201'}歴史
+										{elseif $preliminary_4=='0202'}地理
+										{elseif $preliminary_4=='0301'}政治 法律
+										{elseif $preliminary_4=='0302'}経済 財政 統計 経営
+										{elseif $preliminary_4=='0303'}ビジネス
+										{elseif $preliminary_4=='0304'}社会
+										{elseif $preliminary_4=='0305'}環境問題
+										{elseif $preliminary_4=='0401'}数学 物理 天文・地学
+										{elseif $preliminary_4=='0402'}化学 生物学
+										{elseif $preliminary_4=='0403'}医学 歯学 薬学
+										{elseif $preliminary_4=='0501'}情報科学
+										{elseif $preliminary_4=='0502'}建築 土木工学 都市工学
+										{elseif $preliminary_4=='0503'}電気 機械
+										{elseif $preliminary_4=='0504'}その他の工学
+										{elseif $preliminary_4=='0600'}産業
+										{elseif $preliminary_4=='0701'}芸術
+										{elseif $preliminary_4=='0702'}漫画 コミック
+										{elseif $preliminary_4=='0800'}言語 語学
+										{elseif $preliminary_4=='0901'}文学総記
+										{elseif $preliminary_4=='0902'}日本文学
+										{elseif $preliminary_4=='0903'}外国文学
+										{elseif $preliminary_4=='1001'}家庭 家事 料理
+										{elseif $preliminary_4=='1002'}旅
+										{elseif $preliminary_4=='1003'}スポーツ 趣味 娯楽
+										{elseif $preliminary_4=='1004'}資格試験
+										{elseif $preliminary_4=='1100'}学習参考書
+										{elseif $preliminary_4=='1200'}児童
+										{elseif $preliminary_4=='1300'}ヤングアダルト
+										{elseif $preliminary_4=='1401'}新書
+										{elseif $preliminary_4=='1402'}文庫
+										{/if}
+									</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>読者対象</th>
+									<td >
+										{if $data_type_1==5}
+
+										{if $preliminary_5=='01'}専門
+										{elseif $preliminary_5=='02'}教養
+										{elseif $preliminary_5=='03'}一般
+										{elseif $preliminary_5=='04'}大学
+										{elseif $preliminary_5=='05'}高校
+										{elseif $preliminary_5=='06'}中学
+										{elseif $preliminary_5=='07'}小学生
+										{elseif $preliminary_5=='08'}小学上
+										{elseif $preliminary_5=='09'}小学中
+										{elseif $preliminary_5=='10'}小学初
+										{elseif $preliminary_5=='11'}幼児
+										{/if}
+
+										{else}
+										{foreach name=preliminary_5 from=$preliminary_5 item=onePreliminary_5}
+										{if $onePreliminary_5=='01'}専門
+										{elseif $onePreliminary_5=='02'}教養
+										{elseif $onePreliminary_5=='03'}一般
+										{elseif $onePreliminary_5=='04'}大学
+										{elseif $onePreliminary_5=='05'}高校
+										{elseif $onePreliminary_5=='06'}中学
+										{elseif $onePreliminary_5=='07'}小学生
+										{elseif $onePreliminary_5=='08'}小学上
+										{elseif $onePreliminary_5=='09'}小学中
+										{elseif $onePreliminary_5=='10'}小学初
+										{elseif $onePreliminary_5=='11'}幼児
+										{/if}{if !$smarty.foreach.preliminary_5.last},{/if}
+										{/foreach}
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>出版者</th>
+									<td>{$publisher_1|strip_tags|escape}</td>
+								</tr>
+								<tr>
+									<th>発売者</th>
+									<td>{$publisher_2|strip_tags|escape}</td>
+								</tr>
+								{/if}{if $data_type_1=='5'}
+								<tr>
+									<th>内容紹介</th>
+									<td>{$preliminary_6|strip_tags:false}</td>
+								</tr>
+								{/if}{if $data_type_1=='2' }
+								<tr>
+									<th>長期品切ステータス</th>
+									<td>
+										{if $out_status_1=='33'}品切れ重版未定
+										{elseif $out_status_1=='34'}絶版
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>長期品切日付</th>
+									<td>
+										{if $out_date_1_year}
+										{$out_date_1_year}年&nbsp;
+										{$out_date_1_month}月&nbsp;
+										{$out_date_1_day}日
+										{/if}
+									</td>
+								</tr>
+								{/if}{if $data_type_1=='5'}
+								<tr>
+									<th>これ本掲載時期</th>
+									<td>
+										{if $preliminary_7_year}
+										{$preliminary_7_year}年&nbsp;
+										{$preliminary_7_month}月&nbsp;
+										{if $preliminary_7_day == '01'}上期{else}下期{/if}{/if}
+									</td>
+								</tr>
+								{/if}{if $data_type_1=='1' || $data_type_1=='4' || $data_type_1=='5' }
+								<tr>
+									<th>取引コード</th>
+									<td>{$trade_code_1}</td>
+								</tr>
+								{/if}
+							</table>
+						</div>
+						<p class="attention">
+							送信は登録した日の24時（翌日の午前0時）になります。<br />
+							「これから出る本」情報は、<strong>締め切りの前日まで</strong>に登録をお願いします。
+						</p>
+						{if $data_type_1=='5'}<p class="attention">「これから出る本」情報は書協の会員様向け限定の有料機能です</p>
+						{/if}
+						<p class="button">
+							<input type="button" value="戻る" onclick="location.href='./?action=input&back=true'" />&nbsp;
+							<input type="submit" name="confirm" value="登録" />&nbsp;
+						</p>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

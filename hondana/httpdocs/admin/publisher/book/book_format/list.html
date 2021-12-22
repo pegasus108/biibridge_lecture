@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/css/common_popup.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="/admin/js/common_popup.js"></script>
+<script type="text/javascript" src="/admin/js/common_list.js"></script>
+</head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page" class="gnavi02">
+		<table id="container">
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="main">
+					<div class="title"><h1><strong>書誌情報管理</strong></h1></div>
+					<div class="searchWrapper">
+						<form action="" method="post">
+							<input type="hidden" name="action" value="list" />
+							<div class="tableWrapper">
+								<table>
+									<tr>
+										<th>公開フラグ</th>
+										<td colspan="3">
+											<select name="search_display">
+												<option value=""{if !$search_display} selected{/if}></option>
+												<option value="0"{if $search_display=='0'} selected{/if}>非公開</option>
+												<option value="1"{if $search_display=='1'} selected{/if}>公開</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>タイトル</th>
+										<td><input type="text" name="search_title" value="{$search_title}" /></td>
+										<th>著者名</th>
+										<td><input type="text" name="search_author" value="{$search_author}" /></td>
+									</tr>
+									<tr>
+										<th>ISBN</th>
+										<td><input type="text" name="search_isbn" value="{$search_isbn}" /></td>
+										<th>雑誌コード</th>
+										<td><input type="text" name="search_magazine_code" value="{$search_magazine_code}" /></td>
+									</tr>
+									<tr>
+										<th>ジャンル</th>
+										<td colspan="3">
+											<select name="search_genre">
+												<option value=""></option>
+												{foreach name=genre from=$genreList item=genre}
+												<option value="{$genre.genre_no|escape}"{if $search_genre == $genre.genre_no} selected{/if}>
+													{section name=space loop=$genre.depth-1}&nbsp;&nbsp;{/section}
+													{if $genre.rgt+1 == $genre.parent_rgt}└{else}├{/if}
+													{$genre.name}
+												</option>
+												{/foreach}
+												<option value="not"{if $search_genre == 'not'} selected{/if}>未設定</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>シリーズ</th>
+										<td colspan="3">
+											<select name="search_series">
+												<option value=""></option>
+												{foreach name=series from=$seriesList item=series}
+												<option value="{$series.series_no|escape}"{if $search_series == $series.series_no} selected{/if}>
+													{section name=space loop=$series.depth-1}&nbsp;&nbsp;{/section}
+													{if $series.rgt+1 == $series.parent_rgt}└{else}├{/if}
+													{$series.name}
+												</option>
+												{/foreach}
+												<option value="not"{if $search_series == 'not'} selected{/if}>未設定</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>在庫</th>
+										<td>
+											<select name="search_stock_status">
+												<option value=""></option>
+												<option value="not"{if $search_stock_status == 'not'} selected{/if}>未設定</option>
+												{foreach name=stock_status from=$stockStatusList item=stock_status}
+												<option value="{$stock_status.stock_status_no}"{if $search_stock_status == $stock_status.stock_status_no} selected{/if}>
+													{$stock_status.name}
+												</option>
+												{/foreach}
+											</select>
+										</td>
+										<th>書誌イメージ</th>
+										<td>
+											<input type="radio" name="search_image" value="1"{if $search_image=='1'} checked{/if} />&nbsp;あり&nbsp;
+											<input type="radio" name="search_image" value="0"{if $search_image=='0'} checked{/if} />&nbsp;なし&nbsp;
+											<input type="radio" name="search_image" value=""{if $search_image==''} checked{/if} />&nbsp;問わない
+										</td>
+									</tr>
+									<tr>
+										<th>おすすめ</th>
+										<td>
+											<input type="radio" name="search_recommend_status" value="1"{if $search_recommend_status=='1'} checked{/if} />&nbsp;あり&nbsp;
+											<input type="radio" name="search_recommend_status" value="0"{if $search_recommend_status=='0'} checked{/if} />&nbsp;なし&nbsp;
+											<input type="radio" name="search_recommend_status" value=""{if $search_recommend_status==''} checked{/if} />&nbsp;問わない
+										</td>
+										<th>新刊</th>
+										<td>
+											<input type="radio" name="search_new_status" value="1"{if $search_new_status=='1'} checked{/if} />&nbsp;あり&nbsp;
+											<input type="radio" name="search_new_status" value="0"{if $search_new_status=='0'} checked{/if} />&nbsp;なし&nbsp;
+											<input type="radio" name="search_new_status" value=""{if $search_new_status==''} checked{/if} />&nbsp;問わない
+										</td>
+									</tr>
+									<tr>
+										<th>表示件数</th>
+										<td colspan="3">
+											<select name="amount">
+												<option value="10"{if $amount=='10'} selected{/if}>10件</option>
+												<option value="20"{if $amount=='20'} selected{/if}>20件</option>
+												<option value="50"{if $amount=='50'} selected{/if}>50件</option>
+												<option value="100"{if $amount=='100'} selected{/if}>100件</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<p class="button"><input type="submit" name="search_submit" value="検索" /></p>
+						</form>
+					</div>
+					{if $pageInfo.total}
+					<form method="post" id="listForm">
+						<div class="tableWrapper">
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+							<p class="button buttonTop"><input type="button" name="addItem" value="選択" /></p>
+							<table>
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>
+										<a href=".././?order=title_{if $order==title_asc}desc{else}asc{/if}">
+											{if $order=='title_asc'}▲{elseif $order=='title_desc'}▼{/if}タイトル
+										</a>
+									</th>
+									<th>
+										<a href=".././?order=sub_title_{if $order==sub_title_asc}desc{else}asc{/if}">
+											{if $order=='sub_title_asc'}▲{elseif $order=='sub_title_desc'}▼{/if}サブタイトル
+										</a>
+									</th>
+									<th>
+										<a href=".././?order=isbn_{if $order==isbn_asc}desc{else}asc{/if}">
+											{if $order=='isbn_asc'}▲{elseif $order=='isbn_desc'}▼{/if}ISBN
+										</a>
+									</th>
+								</tr>
+								{foreach name=book from=$bookList item=book}
+								<tr>
+									<td>
+										<input type="checkbox" name="item" value="" class="slimeCheck" />
+										<table class="none">
+											<tr>
+												<td>
+													<select name="book_format_l[]">
+{foreach name=book_format from=$bookFormat item=v}
+														<option value="{$v.id}"{if $book.book_format == $v.id} selected="selected"{elseif $v.id == 5 && $book.ebook_status} selected="selected"{/if}>{$v.name|escape}</option>
+{/foreach}
+													</select>
+													<input type="hidden" name="book_format_list[]" value="{$book.book_no|escape}" />
+													<input type="text" name="book_format_other_l[]" value="{$book.book_format_other|escape}" style="width: 100px;" />
+												</td>
+												<td>
+													{$book.name}
+													<input type="hidden" name="book_format_data[name][]" value="{$book.name}" />
+												</td>
+{*												<td>{$book.isbn}<input type="hidden" name="book_format_data[isbn][]" value="{$book.isbn}" /></td>
+												<td>{$book.price}<input type="hidden" name="book_format_data[price][]" value="{$book.price}" /></td>
+												<td>{$book.book_date|date_format:"%Y/%m/%d"}<input type="hidden" name="book_format_data[book_date][]" value="{$book.book_date}" /></td>
+*}												<td><input type="button" onclick="unSelectItem(this);" value="削除" /></td>
+											</tr>
+										</table>
+									</td>
+									<td>{$book.name}</td>
+									<td>{$book.sub_name}</td>
+									<td>{$book.isbn}</td>
+								</tr>
+								{/foreach}
+							</table>
+							<input type="hidden" name="actionTarget" value="bookFormat" />
+							<p class="button"><input type="button" name="addItem" value="選択" /></p>
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+						</div>
+					</form>
+					{elseif $pageInfo.total==0 && $search_submit}
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>ご指定の検索条件に該当する書誌情報はございません。</strong>
+							</div>
+							<p class="link"><a href="../new/">新規書誌情報の追加</a></p>
+						</div>
+					{/if}
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

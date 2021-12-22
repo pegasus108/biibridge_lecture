@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_admin_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>インフォメーション登録 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="../../../js/common_lower.js"></script>
+<script type="text/javascript" src="../../../js/common_public.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header">
+				<td colspan="2">
+					<div id="logo"><a href="../../../admin/">hondana管理システム</a></div>
+					<div id="hnavi">
+						<p id="hnaviLogout"><a href="../../../logout/">ログアウト</a></p>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+					<ul>
+						<li id="gnavi01"><a href="../../info/">インフォメーション</a></li>
+						<li id="gnavi02"><a href="../../publisher/">出版社</a></li>
+						<li id="gnavi03"><a href="../../import_images/">書影一括取込</a></li>
+					</ul>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../admin/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../">インフォメーション管理</a>&nbsp;&gt;&nbsp;インフォメーション登録</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+					<dl>
+						<dt>インフォメーション管理</dt>
+						<dd>
+							<ul>
+								<li><a href="../">インフォメーション一覧</a></li>
+								<li><a href="../new/">インフォメーション登録</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</td>
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>インフォメーション登録</strong></h1>
+					</div>
+					<form action="./" method="post">
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>タイトル</th>
+									<td>
+										<p class="error">{$errors.name|escape}</p>
+										<input type="text" name="name" value="{$name|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>内容</th>
+									<td>
+										<p class="error">{$errors.value|escape}</p>
+										<textarea name="value" rows="7" cols="100">{$value|escape}</textarea>
+									</td>
+								</tr>
+								<tr>
+									<th>公開の状態</th>
+									<td>
+										<p class="error">{$errors.public_status|escape}</p>
+										<select name="public_status">
+											<option value="0"{if $public_status=="0"} selected{/if}>非公開</option>
+											<option value="1"{if $public_status=="1"} selected{/if}>公開</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>公開の日時</th>
+									<td>
+										<p><strong>※即時公開したい場合には、そのままお進みください。</strong></p>
+										<p class="error">{$errors.public_date|escape}</p>
+										<input type="text" name="public_year" value="{$public_year}" maxlength="4" class="shortText"/>&nbsp;年&nbsp;
+										<input type="text" name="public_month" value="{$public_month}" maxlength="2" class="shortText"/>&nbsp;月&nbsp;
+										<input type="text" name="public_day" value="{$public_day}" maxlength="2" class="shortText"/>&nbsp;日&nbsp;<br />
+										入力例)2008年 09月 30日<br />
+										<input type="text" name="public_hour" value="{$public_hour}" maxlength="2" class="shortText"/>&nbsp;時&nbsp;
+										<input type="text" name="public_minute" value="{$public_minute}" maxlength="2" class="shortText"/>&nbsp;分&nbsp;
+										<input type="text" name="public_second" value="{$public_second}" maxlength="2" class="shortText"/>&nbsp;秒&nbsp;<br />
+										入力例)09時 12時 00秒
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" name="confirm" value="確認" /></p>
+						<input type="hidden" name="action" value="confirm" />
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<ul class="social-icon-list">
+    <li class="social-icon">
+        <!-- facebook -->
+        <a href="//www.facebook.com/sharer.php?src=bm&u=https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}&t={$title}" title="Facebookでシェア"
+            onclick="javascript:window.open(this.href, '_blank', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=800,width=600');return false;"
+            target="_blank">
+            <img src="{$commonPublisher.url|escape}images/common/fb-icon.png" alt="facebook"></a>
+    </li>
+    <li class="social-icon">
+        <!-- Twitter -->
+        <a href="https://twitter.com/intent/tweet?text={$description|strip_tags:false|truncate:120}&url=https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}&hashtags={$title}"
+            onClick="window.open(encodeURI(decodeURI(this.href)), 'tweetwindow', 'width=650, height=470, personalbar=0, toolbar=0, scrollbars=1, sizable=1'); return false;"
+            rel="nofollow" class="twitter-link">
+            <img src="{$commonPublisher.url|escape}images/common/tw-icon.png" alt="twitter"></a>
+    </li>
+    <!-- LINE -->
+    <li class="social-icon">
+        <a href="https://social-plugins.line.me/lineit/share?url=https://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}">
+            <img src="{$commonPublisher.url|escape}images/common/line-icon.png" alt="line"></a>
+    </li>
+</ul>

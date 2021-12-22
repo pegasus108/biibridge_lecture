@@ -1,0 +1,36 @@
+					<dl>
+						<dt class="title">書誌情報管理</dt>
+						<dd>
+							<ul>
+								<li><a href="/admin/publisher/book/">書誌情報一覧</a></li>
+								<li><a href="/admin/publisher/book/new/?new_entry=true">書誌情報登録</a></li>
+								<li><a href="/admin/publisher/book/new_sort/">新刊並び順指定</a></li>
+								<li>
+									<p class="title">レーベル一覧</p>
+									<ul>
+										<li><a href="/admin/publisher/book/label/">レーベル一覧</a></li>
+										<li><a href="/admin/publisher/book/label/new/?new_entry=true">レーベル登録</a></li>
+									</ul>
+								</li>
+								<li>
+									<p class="title">ジャンル一覧</p>
+									<ul>
+										<li><a href="/admin/publisher/book/genre/">ジャンル一覧</a></li>
+										<li><a href="/admin/publisher/book/genre/new/?new_entry=true">ジャンル登録</a></li>
+									</ul>
+								</li>
+								<li>
+									<p class="title">シリーズ一覧</p>
+									<ul>
+										<li><a href="/admin/publisher/book/series/">シリーズ一覧</a></li>
+										<li><a href="/admin/publisher/book/series/new/?new_entry=true">シリーズ登録</a></li>
+									</ul>
+								</li>
+								<li><a href="/admin/publisher/book/import/">書誌情報一括取込</a></li>
+								<li><a href="/admin/publisher/book/export/">書誌情報一括出力</a></li>
+{if $publisher.import_images == 1}
+								<li><a href="/admin/publisher/book/import_images/">書影一括取込</a></li>
+{/if}
+							</ul>
+						</dd>
+					</dl>

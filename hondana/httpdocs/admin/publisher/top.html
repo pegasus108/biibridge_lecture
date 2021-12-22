@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>管理トップ - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/top.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/common.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/top.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../js/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<link href="../js/jquery-ui/css/custom-theme/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../js/jquery-ui/js/jquery-ui-1.8.6.custom.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui/js/jquery.ui.datepicker-ja.js"></script>
+<script type="text/javascript" src="../js/top.js"></script>
+<script type="text/javascript" src="../js/showarea.js"></script>
+<link href="../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/top.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/common.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/top.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr>
+<!--グローバルナビ部　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td class="functionlinks">
+					<div id="secInfo">
+						<div class="title"><h2><strong>インフォメーション<span>（クリックで詳細が開きます。）</span></strong></h2></div>
+						<div class="tableWrapper">
+							<table border="0">
+							{if $infoList}
+								{foreach name=info from=$infoList item=info}
+								<tr>
+									<th>
+										<span class="switch">{$info.name}</span>
+										<span>({$info.date})</span>
+									</th>
+								</tr>
+								<tr>
+									<td>
+										<p class="area">{$info.value|nl2br}</p>
+									</td>
+								</tr>
+								{/foreach}
+							{else}
+								<tr>
+									<td colspan="2">現在インフォメーションはございません。</td>
+								</tr>
+							{/if}
+							</table>
+						</div>
+					</div>
+					<div id="helpTextDisplay">
+						<div class="helpTextDisplayInner">
+							<div class="contentsWrapper">
+								<div class="contents">&nbsp;</div>
+							</div>
+						</div>
+					</div>
+					<div class="section" id="secBook">
+						<div class="title"><h2><strong>書誌情報管理</strong></h2></div>
+						<ul>
+							<li><a href="book/">書誌情報一覧</a></li>
+							<li><a href="book/new/?new_entry=true">書誌情報登録</a></li>
+							<li><a href="book/label/">レーベル一覧</a></li>
+							<li><a href="book/genre/">ジャンル一覧</a></li>
+							<li><a href="book/series/">シリーズ一覧</a></li>
+{*if $publisher.import_images == 1}
+							<li><a href="book/import_images/">書影一括取込</a></li>
+{/if*}
+						</ul>
+						<div class="helpText">
+							<p>
+								登録済みの書誌情報が一覧で表示されます。<br />
+								書誌情報の変更・削除やデータ連携はこの画面から行います。
+							</p>
+							<p>新しく書誌情報を登録することが出来ます。</p>
+							<p>
+								登録済みのレーベルが一覧で表示されます。<br />
+								レーベルの追加や変更・削除はこの画面から行います。
+							</p>
+							<p>
+								登録済みのジャンルが一覧で表示されます。<br />
+								ジャンルの追加や変更・削除はこの画面から行います。
+							</p>
+							<p>
+								登録済みのシリーズが一覧で表示されます。<br />
+								シリーズの追加や変更・削除はこの画面から行います。
+							</p>
+{*if $publisher.import_images == 1}
+							<p>
+								書影の一括登録を行います。<br />
+								ISBNが登録されている書籍のみ取り込みが可能です。
+							</p>
+{/if*}
+						</div>
+					</div>
+					<div class="section" id="secAuthor">
+						<div class="title"><h2><strong>著者情報管理</strong></h2></div>
+						<ul>
+							<li><a href="author/">著者情報一覧</a></li>
+							<li><a href="author/new/">著者情報登録</a></li>
+						</ul>
+						<div class="helpText">
+							<p>登録済みの著者情報が一覧で表示されます。<br />
+							著者情報の変更・削除はこの画面から行います。</p>
+							<p>新しく著者を登録することが出来ます。</p>
+						</div>
+					</div>
+					<div class="section" id="secNews">
+						<div class="title"><h2><strong>お知らせ管理</strong></h2></div>
+						<ul>
+							<li><a href="news/">お知らせ一覧</a></li>
+							<li><a href="news/new/">お知らせ登録</a></li>
+							<li><a href="news/category/">お知らせカテゴリ一覧</a></li>
+						</ul>
+						<div class="helpText">
+							<p>登録済みのお知らせが一覧で表示されます。<br />
+							お知らせの変更・削除はこの画面から行います。</p>
+							<p>新しくお知らせを登録することが出来ます。</p>
+							<p>お知らせを分類するためのカテゴリが一覧で表示されます。<br />
+							カテゴリの追加や変更・削除もこの画面から行います。</p>
+						</div>
+					</div>
+					<div class="section" id="secBanner">
+						<div class="title"><h2><strong>バナー管理</strong></h2></div>
+						<ul>
+							<li><a href="banner/">バナー一覧</a></li>
+							<li><a href="banner/new/">バナー登録</a></li>
+						</ul>
+						<div class="helpText">
+							<p>登録済みのバナーが一覧で表示されます。<br />
+							バナーの変更・削除はこの画面から行います。</p>
+							<p>新しくバナーを登録することが出来ます。</p>
+						</div>
+					</div>
+					<div class="section" id="secCompany">
+						<div class="title"><h2><strong>会社情報管理</strong></h2></div>
+						<ul>
+							<li><a href="company/">会社情報一覧</a></li>
+							<li><a href="company/new/">会社情報登録</a></li>
+							<li><a href="company/category/">会社情報カテゴリ一覧</a></li>
+						</ul>
+						<div class="helpText">
+							<p>登録済みの会社情報が一覧で表示されます。<br />
+							会社情報の変更・削除はこの画面から行います。</p>
+							<p>新しく会社情報を登録することが出来ます。</p>
+							<p>会社情報を分類するためのカテゴリが一覧で表示されます。<br />
+							カテゴリの追加や変更・削除もこの画面から行います。</p>
+						</div>
+					</div>
+					<div class="section" id="secSystem">
+						<div class="title"><h2><strong>システム設定管理</strong></h2></div>
+						<ul>
+							<li><a href="system/">システム設定</a></li>
+							<li><a href="system/netshop/">ネット書店設定</a></li>
+							{if isset($cart) && $cart == '1'}
+							<li><a href="system/payment_option/">決済方法設定</a></li>
+							{/if}
+							<li><a href="system/ebookstores/">電子書籍書店設定</a></li>
+						</ul>
+						<div class="helpText">
+							<p>システムの共通設定を行います。</p>
+							<p>ネット書店の共通設定を行います。</p>
+							{if isset($cart) && $cart == '1'}
+							<p>メールカートで使用する決済方法の設定を行います。</p>
+							{/if}
+							<p>電子書籍書店の共通設定を行います。</p>
+							<p>生成されているキャッシュデータの削除を行います。</p>
+						</div>
+					</div>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

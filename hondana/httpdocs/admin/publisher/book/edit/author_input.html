@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報変更 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/publisher/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common_lower.js"></script>
+<script type="text/javascript" src="/admin/js/common_public.js"></script>
+<script type="text/javascript" src="/admin/js/unload.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書誌情報変更</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+				<td id="main">
+					<div class="title"><h1><strong>書誌情報変更</strong></h1></div>
+					<form action="./" method="post" enctype="multipart/form-data">
+<input type="hidden" name="book_no" value="{$book_no}" />
+<input type="hidden" name="upkey" value="{$upkey}" />
+{assign var=aname value="stockStatusList"}
+{assign var=inner value=$aname|cat:"inner"}
+{assign var=alist value=$stockStatusList}
+{if $alist}
+{foreach name=$aname from=$alist key=id item=list}
+{foreach name=$inner from=$list key=k item=v}
+<input type="hidden" name="{$aname}[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="{$aname}" value="" />
+{/if}
+
+{assign var=aname value="oldBookGenreList"}
+{assign var=inner value=$aname|cat:"inner"}
+{assign var=alist value=$oldBookGenreList}
+{if $alist}
+{foreach name=$aname from=$alist key=id item=list}
+{foreach name=$inner from=$list key=k item=v}
+<input type="hidden" name="{$aname}[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="{$aname}" value="" />
+{/if}
+
+{assign var=aname value="oldBookSeriesList"}
+{assign var=inner value=$aname|cat:"inner"}
+{assign var=alist value=$oldBookSeriesList}
+{if $alist}
+{foreach name=$aname from=$alist key=id item=list}
+{foreach name=$inner from=$list key=k item=v}
+<input type="hidden" name="{$aname}[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="{$aname}" value="" />
+{/if}
+
+{assign var=aname value="oldOpusList"}
+{assign var=inner value=$aname|cat:"inner"}
+{assign var=alist value=$oldOpusList}
+{if $alist}
+{foreach name=$aname from=$alist key=id item=list}
+{foreach name=$inner from=$list key=k item=v}
+<input type="hidden" name="{$aname}[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="{$aname}" value="" />
+{/if}
+
+{assign var=aname value="oldBookRelateList"}
+{assign var=inner value=$aname|cat:"inner"}
+{assign var=alist value=$oldBookRelateList}
+{if $alist}
+{foreach name=$aname from=$alist key=id item=list}
+{foreach name=$inner from=$list key=k item=v}
+<input type="hidden" name="{$aname}[{$id}][{$k}]" value="{$v}" />
+{/foreach}
+{/foreach}
+{else}
+<input type="hidden" name="{$aname}" value="" />
+{/if}
+
+<input type="hidden" name="name" value="{$name|escape}" />
+<input type="hidden" name="kana" value="{$kana|escape}" />
+<input type="hidden" name="volume" value="{$volume|escape}" />
+<input type="hidden" name="sub_name" value="{$sub_name|escape}" />
+<input type="hidden" name="sub_kana" value="{$sub_kana|escape}" />
+{foreach name=book_genre from=$book_genre_list item=book_genre}
+<input type="hidden" name="book_genre_list[]" value="{$book_genre}" />
+{foreachelse}
+<input type="hidden" name="book_genre_list" value="" />
+{/foreach}
+{foreach name=book_series from=$book_series_list item=book_series}
+<input type="hidden" name="book_series_list[]" value="{$book_series}" />
+{foreachelse}
+<input type="hidden" name="book_series_list" value="" />
+{/foreach}
+<input type="hidden" name="clear_image" value="{$clear_image}" />
+<input type="hidden" name="image" value="{$image}" />
+
+{foreach name=opus from=$opus_list item=opus}
+<input type="hidden" name="opus_list[]" value="{$opus}" />
+{foreachelse}
+<input type="hidden" name="opus_list" value="" />
+{/foreach}
+{foreach name=authorType from=$author_type_list item=authorType}
+<input type="hidden" name="author_type_list[]" value="{$authorType}" />
+{foreachelse}
+<input type="hidden" name="author_type_list" value="" />
+{/foreach}
+{foreach name=authorTypeOther from=$author_type_other item=authorTypeOther}
+<input type="hidden" name="author_type_other[]" value="{$authorTypeOther}" />
+{foreachelse}
+<input type="hidden" name="author_type_other" value="" />
+{/foreach}
+<input type="hidden" name="product_code" value="{$product_code|escape}" />
+<input type="hidden" name="jan_code" value="{$jan_code|escape}" />
+<input type="hidden" name="isbn" value="{$isbn|escape}" />
+<input type="hidden" name="magazine_code" value="{$magazine_code|escape}" />
+<input type="hidden" name="c_code" value="{$c_code|escape}" />
+<input type="hidden" name="book_date" value="{$book_date}" />
+<input type="hidden" name="release_date" value="{$release_date}" />
+<input type="hidden" name="version" value="{$version|escape}" />
+<input type="hidden" name="book_size_no" value="{$book_size_no}" />
+<input type="hidden" name="measure_height" value="{$measure_height|escape}" />
+<input type="hidden" name="measure_width" value="{$measure_width|escape}" />
+<input type="hidden" name="book_width" value="{$book_width|escape}" />
+<input type="hidden" name="page" value="{$page|escape}" />
+<input type="hidden" name="book_cover" value="{$book_cover|escape}" />
+<input type="hidden" name="book_band" value="{$book_band|escape}" />
+<input type="hidden" name="book_slip" value="{$book_slip|escape}" />
+<input type="hidden" name="copyright" value="{$copyright|escape}" />
+<input type="hidden" name="price" value="{$price|escape}" />
+<input type="hidden" name="ebook_price" value="{$ebook_price|escape}" />
+<input type="hidden" name="outline" value="{$outline|escape}" />
+<input type="hidden" name="outline_abr" value="{$outline_abr|escape}" />
+<input type="hidden" name="explain" value="{$explain|escape}" />
+<input type="hidden" name="content" value="{$content|escape}" />
+<input type="hidden" name="keyword" value="{$keyword|escape}" />
+<input type="hidden" name="public_status" value="{$public_status}" />
+<input type="hidden" name="public_date" value="{$public_date}" />
+<input type="hidden" name="public_date_order" value="{$public_date_order|escape}" />
+<input type="hidden" name="new_status" value="{$new_status}" />
+<input type="hidden" name="next_book" value="{$next_book}" />
+<input type="hidden" name="recommend_status" value="{$recommend_status}" />
+<input type="hidden" name="recommend_order" value="{$recommend_order|escape}" />
+<input type="hidden" name="recommend_sentence" value="{$recommend_sentence|escape}" />
+{if $publisher.recommend_type == 2}
+{if $recommend_image.http_path}
+<input type="hidden" name="recommend_image_httppath" value="{$recommend_image.http_path}" />
+{elseif !$clear_recommend_image && $old_recommend_image}
+<input type="hidden" name="image" value="{$old_recommend_image}" />
+{/if}
+<input type="hidden" name="clear_recommend_image" value="{$clear_recommend_image}" />
+{/if}
+<input type="hidden" name="stock_status_no" value="{$stock_status_no}" />
+{if $publisher.cart}
+<input type="hidden" name="cart_status" value="{$cart_status}" />
+{/if}
+<input type="hidden" name="honzuki" value="{$honzuki}" />
+{foreach name=book_relate from=$news_relate_list item=book_relate}
+<input type="hidden" name="news_relate_list[]" value="{$book_relate}" />
+{foreachelse}
+<input type="hidden" name="news_relate_list" value="" />
+{/foreach}
+
+{foreach from=$publisher.free item=itemname name=freeList}
+<input type="hidden" name="free[{$smarty.foreach.freeList.index}]" value="{$free[$smarty.foreach.freeList.index]|escape}" />
+{foreachelse}
+<input type="hidden" name="free" value="" />
+{/foreach}
+{if $publisher.jpo && $jpoSync}
+<input type="hidden" name="subject_code" value="{$subject_code}" />
+<input type="hidden" name="imprint_name" value="{$imprint_name}" />
+<input type="hidden" name="imprint_collationkey" value="{$imprint_collationkey}" />
+<input type="hidden" name="extent_value" value="{$extent_value}" />
+<input type="hidden" name="unpriced_item_type" value="{$unpriced_item_type}" />
+<input type="hidden" name="price_amount" value="{$price_amount}" />
+<input type="hidden" name="price_effective_from_year" value="{$price_effective_from_year}" />
+<input type="hidden" name="price_effective_from_month" value="{$price_effective_from_month}" />
+<input type="hidden" name="price_effective_from_day" value="{$price_effective_from_day}" />
+<input type="hidden" name="price_effective_until_year" value="{$price_effective_until_year}" />
+<input type="hidden" name="price_effective_until_month" value="{$price_effective_until_month}" />
+<input type="hidden" name="price_effective_until_day" value="{$price_effective_until_day}" />
+<input type="hidden" name="on_sale_date_year" value="{$on_sale_date_year}" />
+<input type="hidden" name="on_sale_date_month" value="{$on_sale_date_month}" />
+<input type="hidden" name="on_sale_date_day" value="{$on_sale_date_day}" />
+<input type="hidden" name="pre_order_limit_year" value="{$pre_order_limit_year}" />
+<input type="hidden" name="pre_order_limit_month" value="{$pre_order_limit_month}" />
+<input type="hidden" name="pre_order_limit_day" value="{$pre_order_limit_day}" />
+<input type="hidden" name="announcement_date_year" value="{$announcement_date_year}" />
+<input type="hidden" name="announcement_date_month" value="{$announcement_date_month}" />
+<input type="hidden" name="announcement_date_day" value="{$announcement_date_day}" />
+<input type="hidden" name="audience_code_value" value="{$audience_code_value}" />
+<input type="hidden" name="audience_description" value="{$audience_description}" />
+<input type="hidden" name="long_description" value="{$long_description}" />
+<input type="hidden" name="containeditem" value="{$containeditem}" />
+<input type="hidden" name="product_form_description" value="{$product_form_description}" />
+<input type="hidden" name="promotional_text" value="{$promotional_text}" />
+<input type="hidden" name="language" value="{$language}" />
+{/if}
+<input type="hidden" name="clear_actibook" value="{$clear_actibook|escape}" />
+<input type="hidden" name="actibook" value="{$actibook.http_path|escape}" />
+<input type="hidden" name="note_epub" value="{$note_epub|escape}" />
+<input type="hidden" name="note_image" value="{$note_image|escape}" />
+<input type="hidden" name="note_logo" value="{$note_logo|escape}" />
+<input type="hidden" name="note_text" value="{$note_text|escape}" />
+<input type="hidden" name="new_status" value="{$new_status}" />
+<input type="hidden" name="next_book" value="{$next_book}" />
+<input type="hidden" name="recommend_status" value="{$recommend_status}" />
+
+						<input type="hidden" name="livOld" value="1" />
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr>
+									<th>著者名</th>
+									<td colspan="3" class="hasLink">
+										<p class="error">{$errors.author}</p>
+										<strong>JPO連携むけに以下の著者の著者区分を設定してください。</strong><br />
+										<table id="opus">
+											{foreach from=$opus_list item=opus key=k}
+												{foreach name=old from=$viewOldOpusList item=old}
+													{if $old.author_no == $opus}
+														{assign var="contributor_role" value=$old.contributor_role}
+													{/if}
+												{/foreach}
+												{if $k|in_array:$errors_author_jpo}
+													<tr>
+														<td>
+															{$author_data_list[$opus].name}
+														</td>
+														<td>
+															<select name="jpo_author_type_list[{$opus}]">
+																{foreach name=contributor_roles from=$contributor_roles item=v2 key=k2}
+																	<option value="{$k2|escape}"{if $contributor_role==$k2} selected{/if}>
+																		{$v2|escape}
+																	</option>
+																{/foreach}
+															</select>
+														</td>
+													</tr>
+												{else}
+													<input type="hidden" name="jpo_author_type_list[]" value="{$jpo_author_type_list[$k]}" />
+												{/if}
+											{/foreach}
+										</table>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button">
+							&nbsp;<input type="submit" value="戻る" name="back" />
+							&nbsp;<input type="submit" name="confirm" value="確認" />
+						</p>
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

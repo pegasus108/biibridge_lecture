@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<title>{$title|escape}{$titleSep|escape}{$baseTitle|escape}</title>
+	<meta name="description" content="{$description|strip_tags:false|truncate:120}" />
+	{if $flgDispMetaKeywords}<meta name="keywords" content="{$keywords|escape}">{/if}
+	{if !isset($preview_status)}
+	<!--#include virtual="/include/head/meta.html" -->
+	<!--#include virtual="/include/head/ogp.html" -->
+	{else}
+	<!--#include virtual="/admin/publisher/company/preview/tmp/include/head/meta.html" -->
+	<!--#include virtual="/admin/publisher/company/preview/tmp/include/head/ogp.html" -->
+	{/if}
+	<!-- CSS -->
+	{if !isset($preview_status)}
+	<!--#include virtual="/include/head/link.html" -->
+	{else}
+	<!--#include virtual="/admin/publisher/company/preview/tmp/include/head/link.html" -->
+	{/if}
+	<!-- JS -->
+	{if !isset($preview_status)}
+	<!--#include virtual="/include/head/script.html" -->
+	{else}
+	<!--#include virtual="/admin/publisher/company/preview/tmp/include/head/script.html" -->
+	{/if}
+</head>
+
+<body>
+	<!-- header start -->
+	{if !isset($preview_status)}
+	<!--#include virtual="/include/header.html" -->
+	{else}
+	<!--#include virtual="/admin/publisher/company/preview/tmp/include/header.html" -->
+	{/if}
+	<!-- header end -->
+	<main class="content">
+    
+    <div class="breadcrumb"><a href="/">TOP</a><a href="/news/">NEWS：新着情報</a>{$newsDetail.name|escape}</div>
+    {if $newsDetail}
+    <h2 class="news news-detail">{$newsDetail.name|escape}</h2>
+		<div class="section-inner">
+			<h3>{$newsDetail.name|escape}</h3>
+			<!-- SNSシェアボタン -->
+			{if !isset($preview_status)}
+			<!--#include virtual="/include/sns-btn.html" -->
+			{else}
+			<!--#include virtual="/admin/publisher/company/preview/tmp/include/sns-btn.html" -->
+			{/if}
+			
+			{$newsDetail.value}
+    </div>
+    {/if}
+		<div id="page_top">
+			<a href="#"><img src="{$commonPublisher.url|escape}images/common/to_top.png" alt="いちばん上まで戻る" /></a>
+    </div>
+	</main>
+
+	<!-- footer start -->
+	{if !isset($preview_status)}
+	<!--#include virtual="/include/footer.html" -->
+	{else}
+	<!--#include virtual="/admin/publisher/company/preview/tmp/include/footer.html" -->
+	{/if}
+	<!-- footer end -->
+</body>
+
+</html>

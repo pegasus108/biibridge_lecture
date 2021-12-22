@@ -1,0 +1,123 @@
+html, body {
+  overflow-x: hidden;
+  width: 100%; }
+
+#Hd {
+  text-align: left;
+  position: relative; }
+
+.hd-logo h1 {
+  font-size: 10px;
+  text-align: center;
+  padding: 15px 0; }
+  .hd-logo p {
+      font-size: 14px;
+  }
+  .hd-logo h1 a {
+    display: block; }
+  .hd-logo h1 img {
+    height: 30px;
+    vertical-align: bottom; }
+
+.hd-global {
+  background: transparent;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc; }
+  .hd-global nav ul {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    text-align: center; }
+    .hd-global nav ul li {
+      list-style: none;
+      width: 25%;
+      border-right: 1px solid #ccc;
+      font-size: 14px;
+      position: relative;
+      display: inline-block;
+      text-decoration: none; }
+      .hd-global nav ul li::after {
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: #333;
+        transform: scale(0, 1);
+        transform-origin: left top;
+        transition: transform .3s;
+      }
+      .hd-global nav ul li:hover::after {
+        transform: scale(1, 1);
+    }
+    .hd-global nav ul li:last-child {
+      border-right: none;
+    }
+      .hd-global nav ul li a {
+        text-decoration: none;
+        color: #888;
+        line-height: 20px;
+        display: block;
+        padding: 15px 0; }
+
+.hd-search__box {
+  padding: 15px 0;
+  position: relative;
+  width: 92%;
+  margin: 0 auto; }
+
+.hd-search__box--keyword {
+  border: 1px solid #ddd;
+  width: 100%;
+  line-height: 35px;
+  height: 35px;
+  background-image: url("../image/common/icons/search.png");
+  background-position: right center;
+  background-size: 35px;
+  text-indent: 10px;
+  border-radius: 5px; }
+  .hd-search__box--keyword::placeholder {
+    color: #ccc; }
+  .hd-search__box--keyword:-ms-input-placeholder {
+    color: #ccc; }
+
+.hd-search__box--button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  line-height: 35px;
+  width: 35px; }
+
+#Ft {
+  background: #0F8299;
+  color: #fff;
+  padding: 30px 5% 15px;
+  margin-top: 60px; }
+
+.ft-navigation h1 {
+  font-size: 10px; }
+  .ft-navigation h1 img {
+    max-width: 300px;
+    width: 100%; }
+.ft-navigation address {
+  font-style: normal;
+  font-size: 15px;
+  line-height: 20px;
+  margin: 15px 0; }
+.ft-navigation nav ul {
+  margin: 15px 0; }
+  .ft-navigation nav ul li {
+    font-size: 15px;
+    line-height: 25px;
+    margin: 0 0 0 20px; }
+    .ft-navigation nav ul li a {
+      text-decoration: none;
+      color: #fff; }
+
+.ft-copyright p {
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+  margin: 20px 0; }

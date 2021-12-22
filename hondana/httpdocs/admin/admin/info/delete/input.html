@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_admin_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>インフォメーション削除 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header">
+				<td colspan="2">
+					<div id="logo"><a href="../../../admin/">hondana管理システム</a></div>
+					<div id="hnavi">
+						<p id="hnaviLogout"><a href="../../../logout/">ログアウト</a></p>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+					<ul>
+						<li id="gnavi01"><a href="../../info/">インフォメーション</a></li>
+						<li id="gnavi02"><a href="../../publisher/">出版社</a></li>
+						<li id="gnavi03"><a href="../../import_images/">書影一括取込</a></li>
+					</ul>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../admin/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../">インフォメーション管理</a>&nbsp;&gt;&nbsp;インフォメーション削除</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+					<dl>
+						<dt>インフォメーション管理</dt>
+						<dd>
+							<ul>
+								<li><a href="../">インフォメーション一覧</a></li>
+								<li><a href="../new/">インフォメーション登録</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</td>
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>インフォメーション削除</strong></h1></div>
+					<form action="./" method="post">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>
+								{if count($publicList)==0}
+									以下のインフォメーションを削除します。
+								{else}
+									現在公開中のインフォメーションが含まれています。すべて削除してもよろしいですか？
+								{/if}
+								</strong>
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>インフォメーション</th>
+									<td>
+									{foreach name=deleteInfo from=$deleteList item=deleteInfo}
+										{$deleteInfo.name}<br />
+									{/foreach}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="submit" name="submit" value="削除" /></p>
+						<input type="hidden" name="action" value="process" />
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

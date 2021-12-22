@@ -1,0 +1,1 @@
+select great_img_status from publisher where publisher_no = {$publisher_no};

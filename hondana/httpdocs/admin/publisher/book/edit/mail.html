@@ -1,0 +1,73 @@
+件名の書籍について、以下の項目が変更されました。
+
+--
+
+{if $fields.name}
+ 書名：{$name}
+ 
+{/if}
+{if $fields.kana}
+ 書名カナ：{$kana}
+ 
+{/if}
+{if $fields.sub_name}
+ サブタイトル：{$sub_name}
+ 
+{/if}
+{if $fields.sub_kana}
+ サブタイトルカナ：{$sub_kana}
+ 
+{/if}
+{if $fields.genre}
+ ジャンル：{foreach name=book_genre from=$book_genre_list item=book_genre}{foreach name=genre from=$genreList item=genre}{if $genre.genre_no==$book_genre}  {$genre.name}{/if}{/foreach}{/foreach}
+
+
+{/if}
+{if $fields.series}
+ シリーズ：{foreach name=book_series from=$book_series_list item=book_series}{foreach name=series from=$seriesList item=series}{if $series.series_no==$book_series}  {$series.name}{/if}{/foreach}{/foreach}
+
+
+{/if}
+{if $fields.opus || $fields.author_type}
+ 著者：{foreach name=opus from=$opus_list item=opus}{foreach name=author from=$authorList item=author}{if $author.author_no==$opus}  {$author.name}{/if}{/foreach}{foreach name=authorType from=$authorTypeList item=authorType}{if $authorType.author_type_no==$author_type_list[$smarty.foreach.opus.index] && 16!=$author_type_list[$smarty.foreach.opus.index]} {$authorType.name}{/if}{/foreach}{if 16==$author_type_list[$smarty.foreach.opus.index]} {$author_type_other[$smarty.foreach.opus.index]}{/if}{/foreach}
+
+
+{/if}
+{if $fields.isbn}
+ ISBN：{$isbn}
+ 
+{/if}
+{if $fields.c_code}
+ Cコード：{$c_code}
+ 
+{/if}
+{if $fields.magazine_code}
+ マガジンコード：{$magazine_code}
+ 
+{/if}
+{if $fields.book_date}
+ 出版年月日：{if $book_date=='0000-00-00'}なし{elseif $book_date!=''}{$book_date}{/if}
+ 
+ 
+{/if}
+{if $fields.release_date}
+ 書店発売日：{if $release_date=='0000-00-00'}なし{elseif $release_date!=''}{$release_date}{/if}
+ 
+ 
+{/if}
+{if $fields.version}
+ 版：{$version}
+ 
+{/if}
+{if $fields.book_size_no}
+ 判型：{foreach name=bookSize from=$bookSizeList item=bookSize}{if $bookSize.book_size_no==$book_size_no}{$bookSize.name|escape}{/if}{/foreach}
+ 
+ 
+{/if}
+{if $fields.page}
+ ページ数：{$page}
+ 
+{/if}
+{if $fields.price}
+ 本体価格：{$price}
+{/if}

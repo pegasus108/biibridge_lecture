@@ -1,0 +1,31 @@
+												<table>
+{if $bookDetail.ebook_status}
+													<tr>
+														<th>電子書籍書店で購入</th>
+														<td>
+															<div class="netShopPullDown">
+																<ul>
+																	<li class="noselect"><a href="javascript:void(0);">選択して下さい</a></li>
+{foreach name=ebook from=$ebookstoreList item=ebook}
+																	<li><a href="{$ebook.url|escape}" target="_blank">{$ebook.name|escape}</a></li>
+{/foreach}
+																</ul>
+															</div>
+														</td>
+													</tr>
+{elseif $netshopList}
+													<tr>
+														<th>ネット書店を選択</th>
+														<td>
+															<div class="netShopPullDown">
+																<ul>
+																	<li class="noselect"><a href="javascript:void(0);">選択して下さい</a></li>
+{foreach name=netshop from=$netshopList item=netshop}
+																	<li><a href="index.php?action=netshop&netshop_id={$netshop.id|escape}&netshop_no={$netshop.publisher_netshop_no|escape}&{if $bookDetail.isbn}isbn={$bookDetail.isbn|escape}{else}bookname={$bookDetail.name|escape:"url"}{/if}" target="_blank">{$netshop.name|escape}</a></li>
+{/foreach}
+																</ul>
+															</div>
+														</td>
+													</tr>
+{/if}
+												</table>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>バナー管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;バナー管理</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/banner.html" -->
+				</td>
+			<td id="main">
+					<div class="title"><h1><strong>バナー管理</strong></h1></div>
+					<form method="post" id="listForm">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>選択したバナーを</strong>
+								<select id="selectSlime">
+									<option value=""></option>
+									<option value="delete">削除する</option>
+									<option value="display">公開する</option>
+									<option value="display_none">非公開にする</option>
+								</select>
+								<input type="submit" name="" value="実行" />
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>公開</th>
+									<th>バナー</th>
+									<th>タイトル</th>
+									<th>リンク先</th>
+									<th>表示順</th>
+								</tr>
+								{foreach name=banner from=$bannerList item=banner}
+								<tr>
+									<td><input type="checkbox" name="banner_no_list[]" value="{$banner.banner_no}" class="slimeCheck" /></td>
+									<td class="icon">
+									{if $banner.public_status == '1'}○{else}&nbsp;{/if}
+									</td>
+									<td><img src="{$banner.image}" alt="{$banner.name}" /></td>
+									<td class="nowrap"><a href="edit/?banner_no={$banner.banner_no}">{$banner.name}</a></td>
+									<td>{$banner.url}{if $banner.target} (外部リンク){/if}</td>
+									<td>
+										<a {if $smarty.foreach.banner.first}class="hidden" {/if}href="sort/?banner_no={$banner.banner_no}&order=up"><img src="../../images/common/icon_order_up.gif" /></a>&nbsp;
+										<a {if $smarty.foreach.banner.last}class="hidden" {/if}href="sort/?banner_no={$banner.banner_no}&order=down"><img src="../../images/common/icon_order_down.gif" /></a>
+									</td>
+								</tr>
+								{/foreach}
+							</table>
+						</div>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

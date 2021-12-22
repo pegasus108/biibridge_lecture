@@ -1,0 +1,938 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書協 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common_linkage.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../../">書誌情報管理</a>&nbsp;&gt;&nbsp;<a href="../">データ連携一覧</a>&nbsp;&gt;&nbsp;書協</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+			<td id="main">
+					<div class="title">
+					  <h1><strong>書協</strong></h1>
+					</div>
+					<form action="./" method="post">
+						<input type="hidden" name="action" value="confirm">
+						<div id="twBook" class="tableWrapper">
+							<table>
+								<tr>
+									<th colspan="3" class="title">送信データ</th>
+									<th class="title">
+										HONDANA登録内容<br />
+										<input type="button" value="全項目を反映" name="reflect" />
+									</th>
+								</tr>
+								<tr>
+									<th>データ区分</th>
+									<td >
+										<p class="error">{$errors.data_type_1|strip_tags|escape}</p>
+										<select name="data_type_1" id="jbpa_data_type_1">
+											<option value=""></option>
+											<option value="1" {if '1'==$data_type_1}selected{/if}>刊行予定情報</option>
+											<option value="2" {if '2'==$data_type_1}selected{/if}>長期品切情報</option>
+											<option value="3" {if '3'==$data_type_1}selected{/if}>本体価格改定情報</option>
+											<option value="4" {if '4'==$data_type_1}selected{/if}>既刊情報</option>
+											<option value="5" {if '5'==$data_type_1}selected{/if}>これから出る本情報（書協会員のみ・有料）</option>
+										</select>
+									</td>
+								    <td>&nbsp;</td>
+								    <td>
+										{if $new.data_type_1 != ''}
+										<p class="newItem">
+											{if $new.data_type_1=='1'}刊行予定情報
+											{elseif $new.data_type_1=='2'}長期品切情報
+											{elseif $new.data_type_1=='3'}本体価格改定情報
+											{elseif $new.data_type_1=='4'}既刊情報
+											{elseif $new.data_type_1=='5'}これから出る本情報
+											{/if}
+										</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>ISBN<strong>※必須</strong></th>
+									<td >
+										<p class="error">{$errors.isbn_1|strip_tags|escape}</p>
+										<strong>半角数字（チェックデジットXは大文字）でご入力ください。</strong><br />
+										<input type="text" name="isbn_1" value="{$isbn_1|strip_tags|escape}" size="25" /><br />
+										ハイフン有りでの記入をお願いいたします。 （例）4-9999-9999-9<br />
+										※13桁の場合もそのまま記入可
+									</td>
+								    <td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.isbn_1 != ''}
+										<p class="newItem">{$new.isbn_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>分類コード（Ｃコード）</th>
+									<td >
+										<p class="error">{$errors.category_1|strip_tags|escape}</p>
+										<strong>半角数字4桁でご入力ください。</strong><br />
+										<input type="text" name="category_1" value="{$category_1|strip_tags|escape}" maxlength="4" />
+									</td>
+								    <td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.category_1 != ''}
+										<p class="newItem">{$new.category_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>書名<strong>※必須</strong></th>
+									<td  class="longTextWrapper">
+										<p class="error">{$errors.name_1|strip_tags|escape}</p>
+										<input type="text" name="name_1" value="{$name_1|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.name_1 != ''}
+										<p class="newItem">{$new.name_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+								    <th>書名読み<strong>※必須</strong></th>
+								    <td  class="longTextWrapper">
+										<p class="error">{$errors.kana_1|strip_tags|escape}</p>
+										<strong>全角カナでご入力ください。</strong><br />
+										<input type="text" name="kana_1" value="{$kana_1|strip_tags|escape}" />
+									</td>
+								    <td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.kana_1 != ''}
+										<p class="newItem">{$new.kana_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>副書名掲載区分</th>
+									<td>
+										<p class="error">{$errors.preliminary_1}</p>
+										<input type="hidden" name="preliminary_1" value="" />
+										<input id="cp1" type="checkbox" name="preliminary_1" value="◎" {if $preliminary_1 && $preliminary_1=='◎'}checked{/if} />
+										<label for="cp1">掲載しない</label>
+										<br />
+										副書名を誌面に記載するかを選択します。
+									</td>
+								    <td><input type="button" value="←" name="list2check" /></td>
+								    <td>
+										<ul class="newItem">
+											<li>
+											{if $new.preliminary_1=='◎'}掲載しない
+											{/if}
+											</li>
+										</ul>
+									</td>
+								</tr>
+								<tr>
+									<th>副書名（サブタイトル）</th>
+									<td  class="longTextWrapper">
+										<p class="error">{$errors.sub_1|strip_tags|escape}</p>
+										<strong>文字部分だけを記載してください。</strong><br />
+										<input type="text" name="sub_1" value="{$sub_1|strip_tags|escape}" />
+									</td>
+								    <td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.sub_1 != ''}
+										<p class="newItem">{$new.sub_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>版</th>
+									<td >
+										<p class="error">{$errors.version_1|strip_tags|escape}</p>
+										<input type="text" name="version_1" value="{$version_1|strip_tags|escape}" />
+									</td>
+								    <td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.version_1 != ''}
+										<p class="newItem">{$new.version_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>シリーズ名掲載区分</th>
+									<td>
+										<p class="error">{$errors.preliminary_2}</p>
+										<input type="hidden" name="preliminary_2" value="" />
+										<input id="cp2" type="checkbox" name="preliminary_2" value="◎" {if $preliminary_2 && $preliminary_2=='◎'}checked{/if} />
+										<label for="cp2">掲載しない</label>
+										<br />
+										シリーズ名を誌面に記載するかを選択します。
+									</td>
+								    <td><input type="button" value="←" name="list2check" /></td>
+								    <td>
+										<ul class="newItem">
+											<li>
+											{if $new.preliminary_2=='◎'}掲載しない
+											{/if}
+											</li>
+										</ul>
+									</td>
+								</tr>
+								<tr>
+									<th>叢書・シリーズ名</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.series_1}</p>
+										<input type="text" name="series_1" value="{$series_1|strip_tags|escape}" />
+									</td>
+								    <td rowspan="2"><input type="button" value="←" name="s2series" /></td>
+								    <td rowspan="2">
+										<select name="new_series_1" class="series">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=series from=$seriesList item=series}
+											<option value="{$series.series_no|escape}"{if $new.series_1 == $series.name} selected{php}$hasItem = true;{/php}{/if}>
+												{section name=space loop=$series.depth-1}&nbsp;&nbsp;{/section}
+												{if $series.rgt+1 == $series.parent_rgt}└{else}├{/if}
+												{$series.name}
+											</option>
+											{/foreach}
+											{php}$this->assign('hasItem',$hasItem);{/php}
+											{if !$hasItem && $new.series_1}
+											<option value="0" selected>{$new.series_1}</option>
+											{/if}
+										</select>
+										{foreach name=series from=$seriesList item=series}
+										<p class="none" id="series_1_{$series.series_no|escape}">{$series.name}</p>
+										<p class="none" id="series_kana_1_{$series.series_no|escape}">{$series.kana}</p>
+										{/foreach}
+										{if $new.series_1}
+										<p class="none" id="series_name_1_0">{$new.series_1}</p>
+										<p class="none" id="series_kana_1_0">{$new.series_kana_1}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>叢書・シリーズ名読み</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.series_kana_1}</p>
+										<strong>全角カナでご入力ください。</strong><br />
+										<input type="text" name="series_kana_1" value="{$series_kana_1|strip_tags|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>著者表示<strong>※必須</strong></th>
+									<td class="longTextWrapper">
+										<p class="error"></p>
+										<p class="errorMessage" style="color:#ff0000;">{$errors.preliminary_3|escape}</p>
+										<strong>全角40文字以内でご入力ください。</strong> <strong class="error">※原則21文字</strong><br />
+										<textarea name="preliminary_3" id="" cols="58" rows="3">{$preliminary_3|strip_tags|escape}</textarea>
+									</td>
+									<td><input type="button" value="←" name="s2t" /></td>
+									<td>
+										<select name="new_preliminary_3">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author from=$authorList item=author}
+											<option value="{$author.name}"{if $new.preliminary_3 == $author.name} selected{php}$hasItem = true;{/php}{/if}>
+												{$author.name}
+											</option>
+											{/foreach}
+											{if !$hasItem && $new.preliminary_3}
+											<option value="{$new.preliminary_3}" selected>{$new.preliminary_3}</option>
+											{/if}
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>著者名１</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_1}</p>
+										<strong>姓名間は全角スペースをご入力ください。</strong><br />
+										<input type="text" name="author_1" value="{$author_1|strip_tags|escape}" />
+									</td>
+									<td rowspan="2"><input type="button" value="←" name="s2author" /></td>
+									<td rowspan="2">
+										<select name="new_author_1" class="author">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author from=$authorList item=author}
+											<option value="{$author.author_no}"{if $new.author_1 == $author.name} selected{php}$hasItem = true;{/php}{/if}>
+												{$author.name}
+											</option>
+											{/foreach}
+											{php}$this->assign('hasItem',$hasItem);{/php}
+											{if !$hasItem && $new.author_1}
+											<option value="0" selected>{$new.author_1}</option>
+											{/if}
+										</select>
+										{foreach name=author from=$authorList item=author}
+										<p class="none" id="author_kana_1_{$author.author_no}">{$author.kana|strip_tags|escape}</p>
+										<p class="none" id="author_note_1_{$author.author_no}"></p>
+										{/foreach}
+										{if $new.author_1}
+										<p class="none" id="author_kana_1_0">{$new.author_kana_1|strip_tags|escape}</p>
+										<p class="none" id="author_note_1_0"></p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>著者名１読み</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_kana_1}</p>
+										<strong>全角カナでご入力ください。<br />
+										姓名間は全角スペースをご入力ください。</strong><br />
+										<input type="text" name="author_kana_1" value="{$author_kana_1|strip_tags|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>著作の種類を表す語１</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_type_1}</p>
+										<input type="text" name="author_type_1" value="{$author_type_1|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="s2t" /></td>
+									<td>
+										<select name="new_author_type_1">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author_type from=$author_typeList item=author_type}
+												{if $new.author_type_no_1==16 || $author_type.author_type_no!=16}
+													<option value="{if $author_type.author_type_no==16 && $new.author_type_other_1}{$new.author_type_other_1}{else}{$author_type.name}{/if}"{if $new.author_type_1 == $author_type.name} selected{php}$hasItem = true;{/php}{/if}>
+														{if $author_type.author_type_no==16 && $new.author_type_other_1}
+															{$new.author_type_other_1}
+														{else}
+															{$author_type.name}
+														{/if}
+													</option>
+												{/if}
+											{/foreach}
+											{if !$hasItem && $new.author_type_1}
+											<option value="{$new.author_type_1}" selected>{$new.author_type_1}</option>
+											{/if}
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>著者名２</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_2}</p>
+										<strong>姓名間は全角スペースをご入力ください。</strong><br />
+										<input type="text" name="author_2" value="{$author_2|strip_tags|escape}" />
+									</td>
+									<td rowspan="2"><input type="button" value="←" name="s2author" /></td>
+									<td rowspan="2">
+										<select name="new_author_2" class="author">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author from=$authorList item=author}
+											<option value="{$author.author_no}"{if $new.author_2 == $author.name} selected{php}$hasItem = true;{/php}{/if}>
+												{$author.name}
+											</option>
+											{/foreach}
+											{php}$this->assign('hasItem',$hasItem);{/php}
+											{if !$hasItem && $new.author_2}
+											<option value="0" selected>{$new.author_2}</option>
+											{/if}
+										</select>
+										{foreach name=author from=$authorList item=author}
+										<p class="none" id="author_kana_2_{$author.author_no}">{$author.kana|strip_tags|escape}</p>
+										<p class="none" id="author_note_2_{$author.author_no}"></p>
+										{/foreach}
+										{if $new.author_2}
+										<p class="none" id="author_kana_2_0">{$new.author_kana_2|strip_tags|escape}</p>
+										<p class="none" id="author_note_2_0"></p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>著者名２読み</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_kana_2}</p>
+										<strong>全角カナでご入力ください。<br />
+										姓名間は全角スペースをご入力ください。</strong><br />
+										<input type="text" name="author_kana_2" value="{$author_kana_2|strip_tags|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>著作の種類を表す語２</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_type_2}</p>
+										<input type="text" name="author_type_2" value="{$author_type_2|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="s2t" /></td>
+									<td>
+										<select name="new_author_type_2">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author_type from=$author_typeList item=author_type}
+												{if $new.author_type_no_2==16 || $author_type.author_type_no!=16}
+													<option value="{if $author_type.author_type_no==16 && $new.author_type_other_2}{$new.author_type_other_2}{else}{$author_type.name}{/if}"{if $new.author_type_2 == $author_type.name} selected{php}$hasItem = true;{/php}{/if}>
+														{if $author_type.author_type_no==16 && $new.author_type_other_2}{$new.author_type_other_2}{else}{$author_type.name}{/if}
+													</option>
+												{/if}
+											{/foreach}
+											{if !$hasItem && $new.author_type_2}
+											<option value="{$new.author_type_2}" selected>{$new.author_type_2}</option>
+											{/if}
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>著者名３</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_3}</p>
+										<strong>姓名間は全角スペースをご入力ください。</strong><br />
+										<input type="text" name="author_3" value="{$author_3|strip_tags|escape}" />
+									</td>
+									<td rowspan="2"><input type="button" value="←" name="s2author" /></td>
+									<td rowspan="2">
+										<select name="new_author_3" class="author">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author from=$authorList item=author}
+											<option value="{$author.author_no}"{if $new.author_3 == $author.name} selected{php}$hasItem = true;{/php}{/if}>
+												{$author.name}
+											</option>
+											{/foreach}
+											{php}$this->assign('hasItem',$hasItem);{/php}
+											{if !$hasItem && $new.author_3}
+											<option value="0" selected>{$new.author_3}</option>
+											{/if}
+										</select>
+										{foreach name=author from=$authorList item=author}
+										<p class="none" id="author_kana_3_{$author.author_no}">{$author.kana|strip_tags|escape}</p>
+										<p class="none" id="author_note_3_{$author.author_no}"></p>
+										{/foreach}
+										{if $new.author_3}
+										<p class="none" id="author_kana_3_0">{$new.author_kana_3|strip_tags|escape}</p>
+										<p class="none" id="author_note_3_0"></p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>著者名３読み</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_kana_3}</p>
+										<strong>全角カナでご入力ください。<br />
+										姓名間は全角スペースをご入力ください。</strong><br />
+										<input type="text" name="author_kana_3" value="{$author_kana_3|strip_tags|escape}" />
+									</td>
+								</tr>
+								<tr>
+									<th>著作の種類を表す語３</th>
+									<td class="longTextWrapper">
+										<p class="error">{$errors.author_type_3}</p>
+										<input type="text" name="author_type_3" value="{$author_type_3|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="s2t" /></td>
+									<td>
+										<select name="new_author_type_3">
+											<option value=""></option>
+											{php}$hasItem = false;{/php}
+											{foreach name=author_type from=$author_typeList item=author_type}
+												{if $new.author_type_no_3==16 || $author_type.author_type_no!=16}
+													<option value="{if $author_type.author_type_no==16 && $new.author_type_other_3}{$new.author_type_other_3}{else}{$author_type.name}{/if}"{if $new.author_type_3 == $author_type.name} selected{php}$hasItem = true;{/php}{/if}>
+														{if $author_type.author_type_no==16 && $new.author_type_other_3}{$new.author_type_other_3}{else}{$author_type.name}{/if}
+													</option>
+												{/if}
+											{/foreach}
+											{if !$hasItem && $new.author_type_3}
+											<option value="{$new.author_type_3}" selected>{$new.author_type_3}</option>
+											{/if}
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>奥付年月（発行年月）<strong>※必須</strong></th>
+									<td  class="shortTextWrapper">
+										<p class="error">{$errors.book_date_1|strip_tags|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="book_date_1_year" value="{$book_date_1_year}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="book_date_1_month" value="{$book_date_1_month}" maxlength="2"/>&nbsp;月&nbsp;<br />
+										西暦年月日YYYYMMでの記入をお願いいたします。
+									</td>
+									<td><input name="p2date_s" type="button" value="←" /></td>
+									<td>
+										{if $new.book_date_1 != ''}
+										<p class="newItem">{$new.book_date_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>書店発売日</th>
+									<td  class="shortTextWrapper">
+										<p class="error">{$errors.release_date_1|strip_tags|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="release_date_1_year" value="{$release_date_1_year}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="release_date_1_month" value="{$release_date_1_month}" maxlength="2"/>&nbsp;月&nbsp;
+										<input name="release_date_1_day" type="text" value="{$release_date_1_day}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										西暦年月日YYYYMMDDでの記入をお願いいたします。
+									</td>
+									<td><input name="p2date" type="button" value="←" /></td>
+									<td>
+										{if $new.release_date_1 != ''}
+										<p class="newItem">{$new.release_date_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>判型</th>
+									<td class="shortTextWrapper">
+										<p class="error">{$errors.book_size_2|strip_tags|escape}</p>
+										<strong>数値は半角でご入力ください。</strong><br />
+										<select name="book_size_2">
+											<option value=""></option>
+											<option value="4-6" {if '4-6'==$book_size_2}selected{/if}>4-6</option>
+											<option value="4-6変" {if '4-6変'==$book_size_2}selected{/if}>4-6変</option>
+											<option value="B6" {if 'B6'==$book_size_2}selected{/if}>B6</option>
+											<option value="B6変" {if 'B6変'==$book_size_2}selected{/if}>B6変</option>
+											<option value="A5" {if 'A5'==$book_size_2}selected{/if}>A5</option>
+											<option value="A5変" {if 'A5変'==$book_size_2}selected{/if}>A5変</option>
+											<option value="文庫" {if '文庫'==$book_size_2}selected{/if}>文庫</option>
+											<option value="新書" {if '新書'==$book_size_2}selected{/if}>新書</option>
+											<option value="B5" {if 'B5'==$book_size_2}selected{/if}>B5</option>
+											<option value="B5変" {if 'B5変'==$book_size_2}selected{/if}>B5変</option>
+											<option value="A4" {if 'A4'==$book_size_2}selected{/if}>A4</option>
+											<option value="A4変" {if 'A4変'==$book_size_2}selected{/if}>A4変</option>
+											<option value="A6" {if 'A6'==$book_size_2}selected{/if}>A6</option>
+											<option value="A6変" {if 'A6変'==$book_size_2}selected{/if}>A6変</option>
+											<option value="AB" {if 'AB'==$book_size_2}selected{/if}>AB</option>
+											<option value="B4" {if 'B4'==$book_size_2}selected{/if}>B4</option>
+											<option value="菊判" {if '菊判'==$book_size_2}selected{/if}>菊判</option>
+											<option value="菊倍判" {if '菊倍判'==$book_size_2}selected{/if}>菊倍判</option>
+											<option value="菊判変" {if '菊判変'==$book_size_2}selected{/if}>菊判変</option>
+											<option value="x" {if preg_match('/x/',$book_size_2)}selected{/if}>その他</option>
+										</select>
+										<input type="text" name="book_size_2_other_l"{if preg_match('/x/',$book_size_2)} value={$book_size_2_other_l}{/if} />x
+										<input type="text" name="book_size_2_other_r"{if preg_match('/x/',$book_size_2)} value={$book_size_2_other_r}{/if} />cm
+										（タテ x ヨコ）<br />
+										判型がリストに含まれない場合には「その他」を選択し、<br />
+										センチメートル単位（単数切上げ）でご記入ください。
+									</td>
+									<td><input type="button" value="←" name="p2book_size_2" /></td>
+									<td>
+										{if $new.book_size_2 != ''}
+										<p class="newItem">{$new.book_size_2}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>ページ数</th>
+									<td >
+										<p class="error">{$errors.page_1|strip_tags|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="page_1" value="{$page_1|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+									<td>
+										{if $new.page_1 != ''}
+										<p class="newItem">{$new.page_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>セットコード</th>
+									<td >
+										<p class="error">{$errors.set_code_1|strip_tags|escape}</p>
+										<select name="set_code_1">
+											<option value="">それ以外</option>
+											<option value="1" {if $set_code_1=='1'}selected{/if}>セット販売のみ</option>
+										</select>
+									</td>
+									<td><input type="button" value="←" name="p2select" /></td>
+									<td>
+										<p class="newItem">
+											{if $new.set_code_1=='1'}セット販売のみ
+											{elseif $new.set_code_1==''}それ以外
+											{/if}
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<th>本体価格<strong>※必須</strong></th>
+									<td >
+										<p class="error">{$errors.price_1|strip_tags|escape}</p>
+										<strong>税抜価格を半角数字にてご入力ください。</strong><br />
+										<input type="text" name="price_1" value="{$price_1|strip_tags|escape}" />円
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+									<td>
+										{if $new.price_1 != ''}
+										<p class="newItem">{$new.price_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>価格改定日付</th>
+									<td  class="shortTextWrapper">
+										<p class="error">{$errors.price_change_date_1|strip_tags|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="price_change_date_1_year" value="{$price_change_date_1_year}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="price_change_date_1_month" value="{$price_change_date_1_month}" maxlength="2"/>&nbsp;月&nbsp;
+										<input type="text" name="price_change_date_1_day" value="{$price_change_date_1_day}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										西暦年月日YYYYMMDDでの記入をお願いいたします。
+									</td>
+									<td><input name="p2date" type="button" value="←" /></td>
+									<td>
+										{if $new.price_change_date_1 != ''}
+										<p class="newItem">{$new.price_change_date_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>特価</th>
+									<td >
+										<p class="error">{$errors.price_special_1|strip_tags|escape}</p>
+										<strong>税抜価格を半角数字にてご入力ください。</strong><br />
+										<input type="text" name="price_special_1" value="{$price_special_1|strip_tags|escape}" />円
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+									<td>
+										{if $new.price_special_1 != ''}
+										<p class="newItem">{$new.price_special_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>特価期限</th>
+									<td  class="shortTextWrapper">
+										<p class="error">{$errors.price_special_policy_1|strip_tags|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="price_special_policy_1_year" value="{$price_special_policy_1_year}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="price_special_policy_1_month" value="{$price_special_policy_1_month}" maxlength="2"/>&nbsp;月&nbsp;
+										<input type="text" name="price_special_policy_1_day" value="{$price_special_policy_1_day}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										西暦年月日YYYYMMDDでの記入をお願いいたします。
+									</td>
+									<td><input name="p2date" type="button" value="←" /></td>
+									<td>
+										{if $new.price_special_policy_1 != ''}
+										<p class="newItem">{$new.price_special_policy_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>分類<strong>※必須</strong></th>
+									<td >
+										<p class="error">{$errors.preliminary_4|strip_tags|escape}</p>
+										<select name="preliminary_4">
+											<option value=""></option>
+											<option value="0000" {if $preliminary_4=='0000'}selected{/if}>総記</option>
+											<option value="0101" {if $preliminary_4=='0101'}selected{/if}>哲学 心理学 思想</option>
+											<option value="0102" {if $preliminary_4=='0102'}selected{/if}>宗教</option>
+											<option value="0201" {if $preliminary_4=='0201'}selected{/if}>歴史</option>
+											<option value="0202" {if $preliminary_4=='0202'}selected{/if}>地理</option>
+											<option value="0301" {if $preliminary_4=='0301'}selected{/if}>政治 法律</option>
+											<option value="0302" {if $preliminary_4=='0302'}selected{/if}>経済 財政 統計 経営</option>
+											<option value="0303" {if $preliminary_4=='0303'}selected{/if}>ビジネス</option>
+											<option value="0304" {if $preliminary_4=='0304'}selected{/if}>社会</option>
+											<option value="0305" {if $preliminary_4=='0305'}selected{/if}>環境問題</option>
+											<option value="0401" {if $preliminary_4=='0401'}selected{/if}>数学 物理 天文・地学</option>
+											<option value="0402" {if $preliminary_4=='0402'}selected{/if}>化学 生物学</option>
+											<option value="0403" {if $preliminary_4=='0403'}selected{/if}>医学 歯学 薬学</option>
+											<option value="0501" {if $preliminary_4=='0501'}selected{/if}>情報科学</option>
+											<option value="0502" {if $preliminary_4=='0502'}selected{/if}>建築 土木工学 都市工学</option>
+											<option value="0503" {if $preliminary_4=='0503'}selected{/if}>電気 機械</option>
+											<option value="0504" {if $preliminary_4=='0504'}selected{/if}>その他の工学</option>
+											<option value="0600" {if $preliminary_4=='0600'}selected{/if}>産業</option>
+											<option value="0701" {if $preliminary_4=='0701'}selected{/if}>芸術</option>
+											<option value="0702" {if $preliminary_4=='0702'}selected{/if}>漫画 コミック</option>
+											<option value="0800" {if $preliminary_4=='0800'}selected{/if}>言語 語学</option>
+											<option value="0901" {if $preliminary_4=='0901'}selected{/if}>文学総記</option>
+											<option value="0902" {if $preliminary_4=='0902'}selected{/if}>日本文学</option>
+											<option value="0903" {if $preliminary_4=='0903'}selected{/if}>外国文学</option>
+											<option value="1001" {if $preliminary_4=='1001'}selected{/if}>家庭 家事 料理</option>
+											<option value="1002" {if $preliminary_4=='1002'}selected{/if}>旅</option>
+											<option value="1003" {if $preliminary_4=='1003'}selected{/if}>スポーツ 趣味 娯楽</option>
+											<option value="1004" {if $preliminary_4=='1004'}selected{/if}>資格試験</option>
+											<option value="1100" {if $preliminary_4=='1100'}selected{/if}>学習参考書</option>
+											<option value="1200" {if $preliminary_4=='1200'}selected{/if}>児童</option>
+											<option value="1300" {if $preliminary_4=='1300'}selected{/if}>ヤングアダルト</option>
+											<option value="1401" {if $preliminary_4=='1401'}selected{/if}>新書</option>
+											<option value="1402" {if $preliminary_4=='1402'}selected{/if}>文庫</option>
+										</select>
+									</td>
+									<td><input type="button" value="←" name="p2select" /></td>
+									<td>
+										{if $new.preliminary_4 != ''}
+										<p class="newItem">
+											{if $new.preliminary_4=='0'}総記
+											{elseif $new.preliminary_4=='101'}哲学 心理学 思想
+											{elseif $new.preliminary_4=='102'}宗教
+											{elseif $new.preliminary_4=='201'}歴史
+											{elseif $new.preliminary_4=='202'}地理
+											{elseif $new.preliminary_4=='301'}政治 法律
+											{elseif $new.preliminary_4=='302'}経済 財政 統計 経営
+											{elseif $new.preliminary_4=='303'}ビジネス
+											{elseif $new.preliminary_4=='304'}社会
+											{elseif $new.preliminary_4=='305'}環境問題
+											{elseif $new.preliminary_4=='401'}数学 物理 天文・地学
+											{elseif $new.preliminary_4=='402'}化学 生物学
+											{elseif $new.preliminary_4=='403'}医学 歯学 薬学
+											{elseif $new.preliminary_4=='501'}情報科学
+											{elseif $new.preliminary_4=='502'}建築 土木工学 都市工学
+											{elseif $new.preliminary_4=='503'}電気 機械
+											{elseif $new.preliminary_4=='504'}その他の工学
+											{elseif $new.preliminary_4=='600'}産業
+											{elseif $new.preliminary_4=='701'}芸術
+											{elseif $new.preliminary_4=='702'}漫画 コミック
+											{elseif $new.preliminary_4=='800'}言語 語学
+											{elseif $new.preliminary_4=='901'}文学総記
+											{elseif $new.preliminary_4=='902'}日本文学
+											{elseif $new.preliminary_4=='903'}外国文学
+											{elseif $new.preliminary_4=='1001'}家庭 家事 料理
+											{elseif $new.preliminary_4=='1002'}旅
+											{elseif $new.preliminary_4=='1003'}スポーツ 趣味 娯楽
+											{elseif $new.preliminary_4=='1004'}資格試験
+											{elseif $new.preliminary_4=='1100'}学習参考書
+											{elseif $new.preliminary_4=='1200'}児童
+											{elseif $new.preliminary_4=='1300'}ヤングアダルト
+											{elseif $new.preliminary_4=='1401'}新書
+											{elseif $new.preliminary_4=='1402'}文庫
+											{/if}
+										</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>読者対象</th>
+									<td >
+										<p class="error">{$errors.preliminary_5|strip_tags|escape}</p>
+										<input id="c5m" type="checkbox" name="preliminary_5[]" value="05" {if in_array('05',$preliminary_5)}checked{/if} /><label for="c5m">高校</label>
+										<input id="c6m" type="checkbox" name="preliminary_5[]" value="06" {if in_array('06',$preliminary_5)}checked{/if} /><label for="c6m">中学</label>
+										<input id="c8m" type="checkbox" name="preliminary_5[]" value="08" {if in_array('08',$preliminary_5)}checked{/if} /><label for="c8m">小学上</label>
+										<input id="c9m" type="checkbox" name="preliminary_5[]" value="09" {if in_array('09',$preliminary_5)}checked{/if} /><label for="c9m">小学中</label>
+										<input id="c10m" type="checkbox" name="preliminary_5[]" value="10" {if in_array('10',$preliminary_5)}checked{/if} /><label for="c10m">小学初</label>
+										<input id="c11m" type="checkbox" name="preliminary_5[]" value="11" {if in_array('11',$preliminary_5)}checked{/if} /><label for="c11m">幼児</label>
+										<br />
+										複数項目の選択を行うことができます。
+									</td>
+									<td><input type="button" value="←" name="list2check" /></td>
+									<td>
+										{if $new.preliminary_5 != ''}
+										<ul class="newItem">
+											{foreach name=preliminary_5 from=$new.preliminary_5 item=onePreliminary_5}
+											<li>
+											{if $onePreliminary_5=='01'}専門
+											{elseif $onePreliminary_5=='02'}教養
+											{elseif $onePreliminary_5=='03'}一般
+											{elseif $onePreliminary_5=='04'}大学
+											{elseif $onePreliminary_5=='05'}高校
+											{elseif $onePreliminary_5=='06'}中学
+											{elseif $onePreliminary_5=='07'}小学生
+											{elseif $onePreliminary_5=='08'}小学上
+											{elseif $onePreliminary_5=='09'}小学中
+											{elseif $onePreliminary_5=='10'}小学初
+											{elseif $onePreliminary_5=='11'}幼児
+											{/if}
+											</li>
+											{/foreach}
+										</ul>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>読者対象<strong>※必須</strong></th>
+									<td >
+										<p class="error">{$errors.preliminary_5|strip_tags|escape}</p>
+										<input type="hidden" name="preliminary_5" value="" />
+										<input id="c1s" type="radio" name="preliminary_5" value="01" {if $preliminary_5 =='01'}checked{/if} /><label for="c1s">専門</label>
+										<input id="c2s" type="radio" name="preliminary_5" value="02" {if $preliminary_5 =='02'}checked{/if} /><label for="c2s">教養</label>
+										<input id="c3s" type="radio" name="preliminary_5" value="03" {if $preliminary_5 =='03'}checked{/if} /><label for="c3s">一般</label>
+										<input id="c4s" type="radio" name="preliminary_5" value="04" {if $preliminary_5 =='04'}checked{/if} /><label for="c4s">大学</label>
+										<input id="c5s" type="radio" name="preliminary_5" value="05" {if $preliminary_5 =='05'}checked{/if} /><label for="c5s">高校</label>
+										<input id="c6s" type="radio" name="preliminary_5" value="06" {if $preliminary_5 =='06'}checked{/if} /><label for="c6s">中学</label>
+										<input id="cs7" type="radio" name="preliminary_5" value="07" {if $preliminary_5 =='07'}checked{/if} /><label for="c7s">小学生</label>
+										<input id="c8s" type="radio" name="preliminary_5" value="08" {if $preliminary_5 =='08'}checked{/if} /><label for="c8s">小学上</label>
+										<input id="c9s" type="radio" name="preliminary_5" value="09" {if $preliminary_5 =='09'}checked{/if} /><label for="c9s">小学中</label>
+										<input id="c10s" type="radio" name="preliminary_5" value="10" {if $preliminary_5 =='10'}checked{/if} /><label for="c10s">小学初</label>
+										<input id="c11s" type="radio" name="preliminary_5" value="11" {if $preliminary_5 =='11'}checked{/if} /><label for="c11s">幼児</label>
+									</td>
+									<td><input type="button" value="←" name="list3check" /></td>
+									<td>
+										{if $new.preliminary_5 != ''}
+										<ul class="newItem">
+											<li>
+											{if $new.preliminary_5=='01'}専門
+											{elseif $new.preliminary_5=='02'}教養
+											{elseif $new.preliminary_5=='03'}一般
+											{elseif $new.preliminary_5=='04'}大学
+											{elseif $new.preliminary_5=='05'}高校
+											{elseif $new.preliminary_5=='06'}中学
+											{elseif $new.preliminary_5=='07'}小学生
+											{elseif $new.preliminary_5=='08'}小学上
+											{elseif $new.preliminary_5=='09'}小学中
+											{elseif $new.preliminary_5=='10'}小学初
+											{elseif $new.preliminary_5=='11'}幼児
+											{/if}
+											</li>
+										</ul>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>出版者<strong>※必須</strong></th>
+									<td  class="longTextWrapper">
+										<p class="error">{$errors.publisher_1|strip_tags|escape}</p>
+										<input type="text" name="publisher_1" value="{$publisher_1|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+									<td>
+										{if $new.publisher_1 != ''}
+										<p class="newItem">{$new.publisher_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>発売者</th>
+									<td  class="longTextWrapper">
+										<p class="error">{$errors.publisher_2|strip_tags|escape}</p>
+										<strong>出版者と異なる場合のみご入力ください。</strong><br />
+										<input type="text" name="publisher_2" value="{$publisher_2|strip_tags|escape}" />
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+									<td>
+										{if $new.publisher_2 != ''}
+										<p class="newItem">{$new.publisher_2|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>内容紹介<strong>※必須</strong></th>
+									<td  class="longTextWrapper">
+										<p class="error"></p>
+										<p class="errorMessage" style="color:#ff0000;">{$errors.preliminary_6|strip_tags|escape}</p>
+										<strong>全角70文字以内でご入力ください。</strong> <strong class="error">※原則63文字</strong><br />
+										<textarea name="preliminary_6" id="" cols="58" rows="5">{$preliminary_6|strip_tags|escape}</textarea>
+									</td>
+									<td><input type="button" value="←" name="p2t" /></td>
+									<td>
+										{if $new.preliminary_6 != ''}
+										<p class="newItem">{$new.preliminary_6|strip_tags:false}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>長期品切ステータス</th>
+									<td >
+										<p class="error">{$errors.out_status_1|strip_tags|escape}</p>
+									    <select name="out_status_1">
+                                          <option value=""></option>
+                                          <option value="33" {if $out_status_1=='33'}selected{/if}>品切れ重版未定</option>
+                                          <option value="34" {if $out_status_1=='34'}selected{/if}>絶版</option>
+                                        </select>
+									</td>
+								    <td><input type="button" value="←" name="p2select" /></td>
+								    <td>
+										{if $new.out_status_1 != ''}
+										<p class="newItem">
+											{if $new.out_status_1=='33'}品切れ重版未定
+											{elseif $new.out_status_1=='34'}絶版
+											{/if}
+										</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>長期品切日付</th>
+									<td  class="shortTextWrapper">
+										<p class="error">{$errors.out_date_1|strip_tags|escape}</p>
+										<strong>半角数字でご入力ください。</strong><br />
+										<input type="text" name="out_date_1_year" value="{$out_date_1_year}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="out_date_1_month" value="{$out_date_1_month}" maxlength="2"/>&nbsp;月&nbsp;
+										<input type="text" name="out_date_1_day" value="{$out_date_1_day}" maxlength="2"/>&nbsp;日&nbsp;<br />
+										西暦年月日YYYYMMDDでの記入をお願いいたします。
+									</td>
+								    <td><input name="p2date" type="button" value="←" /></td>
+								    <td>
+										{if $new.out_date_1 != ''}
+										<p class="newItem">{$new.out_date_1|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>
+										これから出る本<br />
+										掲載時期<strong>※必須</strong>
+									</th>
+									<td  class="shortTextWrapper">
+										<p class="error">{$errors.preliminary_7|strip_tags|escape}</p>
+										<input type="text" name="preliminary_7_year" value="{$preliminary_7_year}" maxlength="4"/>&nbsp;年&nbsp;
+										<input type="text" name="preliminary_7_month" value="{$preliminary_7_month}" maxlength="2"/>&nbsp;月&nbsp;
+										<select name="preliminary_7_day">
+											<option value="01"{if !$preliminary_7_day || $preliminary_7_day == '01'} selected="selected"{/if}>上期</option>
+											<option value="02"{if $preliminary_7_day == '02'} selected="selected"{/if}>下期</option>
+										</select><br />
+										<p class="error">掲載時期の指定をお願いします<br />
+										例：<br />
+										2010年3月上期の場合は「201003上期」<br />
+										2010年3月下期の場合は「201003下期」</p>
+									</td>
+								    <td><input name="p3date" type="button" value="←" /></td>
+								    <td>
+										{if $new.preliminary_7 != ''}
+										<p class="newItem">{$new.preliminary_7|strip_tags|escape}</p>
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<th>取引コード<strong>※必須</strong></th>
+									<td>
+										<p class="error">{$errors.trade_code_1|strip_tags|escape}</p>
+										<input type="text" name="trade_code_1" value="{$trade_code_1|strip_tags|escape}" />
+									</td>
+								    <td><input type="button" value="←" name="p2t" /></td>
+								    <td>
+										{if $new.trade_code_1 != ''}
+										<p class="newItem">{$new.trade_code_1}</p>
+										{/if}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="attention">
+							送信は登録した日の24時（翌日の午前0時）になります。<br />
+							「これから出る本」情報は、<strong>締め切りの前日まで</strong>に登録をお願いします。
+						</p>
+
+						<p class="button">
+							&nbsp;<input type="submit" name="confirm" value="確認" />
+						</p>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

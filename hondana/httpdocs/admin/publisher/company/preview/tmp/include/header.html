@@ -1,0 +1,150 @@
+<header>
+  <!-- スマホ用メニュー -->
+  <div class="menu-btn open">
+    <img
+      src="{$commonPublisher.url|escape}images/common/humberger-menu.png"
+      alt="menu"
+    />
+  </div>
+  <div class="sp-menu">
+    <div class="sp-menu-header">
+      <a class="sp-menu-logo" href="/"
+        ><img
+          src="{$commonPublisher.url|escape}images/common/logo_white.png"
+          alt="{$siteName|escape}"
+      /></a>
+      <div class="menu-btn close">
+        <img
+          src="{$commonPublisher.url|escape}images/common/close-btn.png"
+          alt="close"
+        />
+      </div>
+    </div>
+    <nav>
+      <div class="form">
+        <form action="/47/" method="get">
+          <input type="hidden" name="search_menu" value="prefecture">
+          <input type="hidden" name="tab" value="3">
+          <div class="prefectures-search prefectures-search-sp">
+            <select id="" name="search_word" onchange="submit(this.form)">
+              <option value="" selected="">都道府県選択</option>
+              {if $prefectures }
+                {foreach item=prefecture from=$prefectures}
+                <option value="{$prefecture.series_no}" {if isset($search_prefecture)}{if $search_prefecture == $prefecture.series_no}selected="selected"{/if}{/if}>
+                  ├ {$prefecture.name}
+                </option>
+                {/foreach}
+              {/if}
+            </select>
+          </div>
+        </form>
+      </div>
+      <ul>
+        <li>
+          <a href="/news/"
+            ><img
+              src="{$commonPublisher.url|escape}images/common/icon-menu-news.png"
+              alt="NEWS"
+          /></a>
+        </li>
+        <li>
+          <a href="/new-release/"
+            ><img
+              src="{$commonPublisher.url|escape}images/common/icon-menu-upcoming.png"
+              alt="新刊情報"
+          /></a>
+        </li>
+        <li>
+          <a href="/book/"
+            ><img
+              src="{$commonPublisher.url|escape}images/common/icon-menu-book.png"
+              alt="書籍情報"
+          /></a>
+        </li>
+        <li>
+          <a href="/47/"
+            ><img
+              src="{$commonPublisher.url|escape}images/common/icon-menu-search.png"
+              alt="検索"
+          /></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="header-top">
+    <div class="logo">
+      <h1>
+        <a href="/">
+          <picture>
+            <source
+              srcset="{$commonPublisher.url|escape}images/common/title.svg"
+              type="image/svg+xml"
+            />
+            <img
+              src="{$commonPublisher.url|escape}images/common/title.png"
+              alt="{$siteName|escape}"
+            />
+          </picture>
+        </a>
+      </h1>
+    </div>
+  </div>
+
+  <!--グローバルナビ部 ここから-->
+  <nav class="nav-global">
+    <ul class="nav-ul">
+      <li class="nav-new-release">
+        <a href="{$commonPublisher.url|escape}new-release/">新刊情報</a>
+      </li>
+      <li class="nav-news">
+        <a href="{$commonPublisher.url|escape}news/">NEWS</a>
+      </li>
+      <li class="nav-upcoming">
+        <a href="{$commonPublisher.url|escape}book/">書籍情報</a>
+      </li>
+    </ul>
+  </nav>
+  <div id="search">
+    <div class="form">
+      <form action="/47/" method="get">
+        <input type="hidden" name="search_menu" value="prefecture">
+        <input type="hidden" name="tab" value="3">
+        <div class="prefectures-search">
+          <select id="" name="search_word" onchange="submit(this.form)">
+            <option value="" selected="">都道府県選択</option>
+            {if $prefectures }
+              {foreach item=prefecture from=$prefectures}
+              <option value="{$prefecture.series_no}" {if isset($search_prefecture)}{if $search_prefecture == $prefecture.series_no}selected="selected"{/if}{/if}>
+                ├ {$prefecture.name}
+              </option>
+              {/foreach}
+            {/if}
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="form">
+      <form action="/47/" method="get">
+        <input type="hidden" name="search_menu" value="keyword" />
+        <input type="hidden" name="tab" value="3" />
+        <div class="simple-seach">
+          <input
+            class="search-keyword"
+            type="text"
+            name="search_word"
+            value=""
+            id="hnaviSearchWordSP"
+            placeholder="都道府県名・市区町村名など入力"
+          />
+          <input
+            class="search-button"
+            type="submit"
+            id="hnaviSearchSubmitSP"
+            value=""
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower_popup.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>お知らせカテゴリ削除 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../../css/common_popup.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>お知らせカテゴリ削除</strong></h1></div>
+					{if $delete}
+					<form action="./" method="post">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong class="error">以下のカテゴリを削除します。</strong>
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>カテゴリ</th>
+									<td>
+									{foreach name=deleteCategory from=$deleteList item=deleteCategory}
+										{$deleteCategory.name}<br />
+									{/foreach}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="button" onclick="location.href='../'" value="一覧へ戻る" />&nbsp;<input type="submit" name="submit" value="削除" /></p>
+						<input type="hidden" name="action" value="process" />
+					</form>
+					{else}
+						{if count($hasChildList)!=0}
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong class="error">以下のカテゴリには下位に関連付けられたカテゴリが存在するため、削除できません。</strong>
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>カテゴリ</th>
+									<td>
+									{foreach name=hasChildCategory from=$hasChildList item=hasChildCategory}
+										{$hasChildCategory.name}<br />
+									{/foreach}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="button" onclick="location.href='../'" value="一覧へ戻る" /></p>
+						{/if}
+						{if count($useNewsList)!=0}
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong class="error">以下のカテゴリはお知らせで使用されているため、削除できません。</strong>
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th>カテゴリ</th>
+									<td>
+									{foreach name=useNewsCategory from=$useNewsList item=useNewsCategory}
+										{$useNewsCategory.name}<br />
+									{/foreach}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="button"><input type="button" onclick="location.href='../'" value="一覧へ戻る" /></p>
+						{/if}
+					{/if}
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

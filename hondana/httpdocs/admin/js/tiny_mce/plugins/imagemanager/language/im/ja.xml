@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language-pack>
+  <!--
+		This language file gets loaded if TinyMCE is in developer mode. This XML is used to generate all <code>.js/<code_dlg>.js files.
+		Consult the Wiki for more details: http://wiki.moxiecode.com/index.php/TinyMCE:Creating_Language
+	-->
+    
+    <header>
+        <author>Moxiecode Systems AB</author>
+        <version major="" minor="" releasedate="2010-11-22" />
+        <description>This is the Japanese language pack for the MCImageManager.</description>
+    </header>
+    <language code="ja" title="Japanese" dir="ltr">
+	<group target="common">
+		<item name="title">画像管理</item>
+		<item name="filemanager">ファイル管理</item>
+		<item name="createdir">フォルダーの作成</item>
+		<item name="refresh">更新</item>
+		<item name="upload">アップロード</item>
+		<item name="help">ヘルプ</item>
+		<item name="edit">編集</item>
+		<item name="deleteit">削除</item>
+		<item name="view">表示</item>
+		<item name="insert">挿入</item>
+		<item name="add_favorite">お気に入りに追加</item>
+		<item name="directory">選択しているフォルダー</item>
+		<item name="removefavorite">お気に入りの削除</item>
+		<item name="loading">読み込み中...</item>
+		<item name="filter">フィルター</item>
+		<item name="alert_ok">確認</item>
+		<item name="confirm_yes">はい</item>
+		<item name="confirm_no">いいえ</item>
+		<item name="prev">前</item>
+		<item name="next">次</item>
+		<item name="image_data">画像のデータを取得中です、しばらくお待ちください...</item>
+		<item name="download">Download</item>
+		<item name="page">Page</item>
+		<item name="of">of</item>
+	</group>
+	<group target="button">
+		<item name="create">作成</item>
+		<item name="cancel">取り消し</item>
+		<item name="apply">適用</item>
+		<item name="save">保存</item>
+	</group>
+	<group target="error">
+		<item name="demo">この操作はデモのモードに制限されています。</item>
+		<item name="no_filesystem">パスに対応するファイルシステムがありません: {path}。</item>
+		<item name="no_access">このファイルやフォルダーのアクセス権がありません。</item>
+		<item name="no_write_access">フォルダーに書き込み権がありません。</item>
+		<item name="file_not_exists">フィアルやフォルダがありません。</item>
+		<item name="invalid_filename">ファイル名が正しくありません。</item>
+		<item name="remove_favorite_failed">お気に入りのリストから削除できませんでした。</item>
+		<item name="template_missing">選択しているテンプレートは存在しません。</item>
+		<item name="folder_exists">指定した名前のフォルダーは既に存在します。</item>
+		<item name="createdir_failed">フォルダーを作成できませんでした。</item>
+		<item name="upload_failed">アップロードできませんでした、フォルダーの書き込み権を確認してください。</item>
+		<item name="file_exists">指定した名前のファイルは既に存在します。</item>
+		<item name="error_to_large">アップロードしようとしているファイルが大きすぎます。</item>
+		<item name="delete_failed">ファイルを削除できませんでした。</item>
+		<item name="crop_failed">画像を切り抜きできませんでした。</item>
+		<item name="resize_failed">画像の大きさを変更できませんでした。</item>
+		<item name="rotate_failed">画像を回転できませんでした。</item>
+		<item name="flip_failed">画像を反転できませんでした。</item>
+		<item name="save_failed">保存できませんでした。</item>
+	</group>
+	<group target="message">
+		<item name="save_success">ファイルを保存しました。</item>
+		<item name="keepalive">生存確認のリクエスト。</item>
+		<item name="delete_success">フィアルを削除しました。</item>
+		<item name="directory_ok">フォルダーを作成しました。</item>
+		<item name="upload_ok">アップロードしました。</item>
+		<item name="crop_success">画像を切り抜きました。</item>
+		<item name="resize_success">画像の大きさを変更しました。</item>
+		<item name="rotate_success">画像を回転しました。</item>
+		<item name="flip_success">画像を反転しました。</item>
+	</group>
+	<group target="panel">
+		<item name="categories">分類区分</item>
+		<item name="folders">フォルダー</item>
+		<item name="favorites">お気に入り</item>
+		<item name="history">履歴</item>
+	</group>
+	<group target="view">
+		<item name="title">表示</item>
+		<item name="mode">表示モード:</item>
+		<item name="thumbnail">サムネイル</item>
+		<item name="textlist">テキストで一覧</item>
+		<item name="images_per_page">画像/ページ</item>
+		<item name="confirm_delete">このファイルを本当に削除してよいですか?</item>
+		<item name="keyboard_next">キーボードのショートカット: スペース、N、右矢印、PAGE DOWN</item>
+		<item name="keyboard_prev">キーボードのショートカット: P、左矢印、PAGE UP</item>
+		<item name="dimensions">寸法</item>
+		<item name="confirm_remove_favorite">これをお気に入りのリストから本当に削除してよいですか?</item>
+	</group>
+	<group target="createdir">
+		<item name="title">フォルダーを作成</item>
+		<item name="description">作成するフォルダーの名前を入力してください。</item>
+		<item name="template">テンプレート:</item>
+		<item name="select_template">-- テンプレートを選択してください --</item>
+		<item name="directory_name">フォルダーの名前:</item>
+		<item name="create_in">作成先:</item>
+		<item name="progress">フォルダーを作成中です、しばらくお待ちください...</item>
+	</group>
+	<group target="upload">
+		<item name="title">アップロード</item>
+		<item name="description">フォームを使用してファイルをアップロードします。</item>
+		<item name="valid_extensions">有効な拡張子:</item>
+		<item name="max_upload_size">アップロードの最大の大きさ:</item>
+		<item name="file_to_upload">アップロードするファイル:</item>
+		<item name="as_file_name">アップロード先のファイル名:</item>
+		<item name="path">パス: </item>
+		<item name="button_upload">アップロード</item>
+		<item name="browse">ファイルを追加</item>
+		<item name="progress">アップロード中...</item>
+		<item name="upload_warn">アップロード中です、アップロードを本当に取り止めますか?</item>
+		<item name="statusrow">You have {files} files (total {size}) eagerly waiting to be uploaded.</item>
+		<item name="progressinfo">{loaded} of {total} uploaded at {speed}/s.</item>
+		<item name="abort">Abort upload</item>
+		<item name="add_more">Add more?</item>
+		<item name="upload_to_server">Upload to server</item>
+		<item name="cancelled">Upload was cancelled</item>
+		<item name="choose_files">Choose files</item>
+		<item name="basic_upload">If you&#039;re having trouble uploading you can always use the {a}basic uploader{/a}.</item>
+		<item name="remove">Remove</item>
+		<item name="file">File</item>
+		<item name="size">Size</item>
+		<item name="status">Status</item>
+		<item name="no_valid_files">No valid files selected, please try again.</item>
+	</group>
+	<group target="edit_image">
+		<item name="title">Moxiecode画像管理エディター</item>
+		<item name="save">保存</item>
+		<item name="revert">取り消す</item>
+		<item name="crop">切り抜き</item>
+		<item name="resize">大きさの変更</item>
+		<item name="please_wait">画像を処理中です、お待ちください...</item>
+		<item name="constrain">属性の制約</item>
+		<item name="left">左</item>
+		<item name="top">上</item>
+		<item name="width">幅</item>
+		<item name="height">高さ</item>
+		<item name="save_as">別名で保存</item>
+		<item name="flip">反転</item>
+		<item name="rotate">回転</item>
+		<item name="reload">再読み込み</item>
+		<item name="horizontal">水平</item>
+		<item name="vertical">垂直</item>
+		<item name="saving_wait">画像を保存中です、しばらくお待ちください...</item>
+		<item name="confirm_revert">本当に最後に保存した画像に戻しますか?</item>
+		<item name="loading">画像を読み込み中、しばらくお待ちください...</item>
+		<item name="confirm_no_save">Are you sure that you don&#039;t want to save the changes you made to the image?</item>
+	</group>
+	<group target="tinymce">
+		<item name="insertimage_desc">画像を挿入</item>
+		<item name="replaceimage_desc">Replace image</item>
+		<item name="editimage_desc">Edit image</item>
+	</group>
+	<group target="favorites">
+		<item name="special_folder_title">Favorites</item>
+		<item name="addfavorites">Add favorite(s)</item>
+		<item name="removefavorites">Remove favorite(s)</item>
+		<item name="confirm_remove_favorite">Are you sure you wish to remove this from your favorites list?</item>
+		<item name="remove_favorite_failed">Failed to remove the favorite from your favorites list.</item>
+	</group>
+	<group target="history">
+		<item name="special_folder_title">履歴</item>
+	</group>
+	<group target="uploaded">
+		<item name="special_folder_title">Uploaded</item>
+	</group>
+    </language>
+</language-pack>

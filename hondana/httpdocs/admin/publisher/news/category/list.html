@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_publisher_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>お知らせカテゴリ管理 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../../../js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+		<tr id="gnavi">
+			<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+			</td>
+		</tr><!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" --><a href="../">お知らせ管理</a>&nbsp;&gt;&nbsp;お知らせカテゴリ管理</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+			<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+<!--#include virtual="/admin/publisher/include/lnavi/news.html" -->
+				</td>
+			<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>お知らせカテゴリ管理</strong></h1></div>
+					<form method="post" id="listForm">
+						<div class="slimeWrapper">
+							<div class="slime">
+								<strong>選択したカテゴリを</strong>
+								<select id="selectSlime">
+									<option value=""></option>
+									<option value="delete">削除する</option>
+								</select>
+								<input type="submit" name="" value="実行" />
+							</div>
+						</div>
+						<div class="tableWrapper">
+							<table>
+								<tr>
+									<th><input type="checkbox" name="allCheck" value="" id="allSlimeCheck" /></th>
+									<th>カテゴリ</th>
+									<th>表示順</th>
+									<th>新規登録</th>
+								</tr>
+								{foreach name=newsCategory from=$newsCategoryList item=newsCategory}
+								{if $newsCategory.lft != $newsCategory.rgt - 1}
+								{/if}
+								<tr>
+									<td>{if !$newsCategory.news_fix_category_no}<input type="checkbox" name="news_category_no_list[]" value="{$newsCategory.news_category_no}" class="slimeCheck" />{/if}</td>
+									<td>
+										{section name=space loop=$newsCategory.depth-1}&nbsp;&nbsp;{/section}
+										{if $newsCategory.rgt+1 == $newsCategory.parent_rgt}└{else}├{/if}
+										{if !$newsCategory.news_fix_category_no}
+											<a href="edit/index.php?news_category_no={$newsCategory.news_category_no}">
+											{/if}
+												{$newsCategory.name}
+											{if !$newsCategory.news_fix_category_no}
+											</a>
+										{/if}
+									</td>
+									<td>
+										{section name=space loop=$newsCategory.depth-1}&nbsp;&nbsp;{/section}
+										<a {if $newsCategory.lft-1 == $newsCategory.parent_lft}class="hidden" {/if}href="sort/?news_category_no={$newsCategory.news_category_no}&order=up"><img src="../../../images/common/icon_order_up.gif" /></a>&nbsp;
+										<a {if $newsCategory.rgt+1 == $newsCategory.parent_rgt}class="hidden" {/if}href="sort/?news_category_no={$newsCategory.news_category_no}&order=down"><img src="../../../images/common/icon_order_down.gif" /></a>
+									</td>
+									<td>
+										{if $newsCategory.add_flag == '1'}
+										{section name=space loop=$newsCategory.depth-1}&nbsp;&nbsp;{/section}
+										<a href="new/?target_category={$newsCategory.news_category_no}">子カテゴリを登録</a>
+										{else}
+										&nbsp;
+										{/if}
+									</td>
+								</tr>
+								{if	$smarty.foreach.newsCategory.last}
+								<tr>
+									<td>&nbsp;</td>
+									<td> ─ <a href="new/">新規カテゴリを登録</a></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+								{/if}
+								{foreachelse}
+								<tr>
+									<td>&nbsp;</td>
+									<td> ─ <a href="new/">新規カテゴリを登録</a></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+								{/foreach}
+							</table>
+						</div>
+					</form>
+				</td>
+		</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

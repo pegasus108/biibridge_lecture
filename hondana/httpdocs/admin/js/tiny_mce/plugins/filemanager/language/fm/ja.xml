@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language-pack>
+  <!--
+		This language file gets loaded if TinyMCE is in developer mode. This XML is used to generate all <code>.js/<code_dlg>.js files.
+		Consult the Wiki for more details: http://wiki.moxiecode.com/index.php/TinyMCE:Creating_Language
+	-->
+    
+    <header>
+        <author>Moxiecode Systems AB</author>
+        <version major="" minor="0" releasedate="2010-11-22" />
+        <description>This is the Japanese language pack for the MCFileManager.</description>
+    </header>
+    <language code="ja" title="Japanese" dir="ltr">
+	<group target="error">
+		<item name="tofile_exists">ファイルは既に存在します。</item>
+		<item name="no_from_file">元のファイルは存在しません。</item>
+		<item name="demo">この操作はデモのモードに制限されています。</item>
+		<item name="invalid_filename">正しくないファイル名です。</item>
+		<item name="no_write_access">このファイルまたはフォルダに書き込み権がありません。</item>
+		<item name="copy_failed">コピーできませんでした。</item>
+		<item name="move_failed">移動できませんでした。</item>
+		<item name="template_missing">テンプレートが存在しません。</item>
+		<item name="createdoc_failed">ドキュメントを作成できませんでした。</item>
+		<item name="no_access">この操作を実行するためのアクセス権がありません。</item>
+		<item name="file_exists">ファイルは既に存在します。</item>
+		<item name="upload_failed">アップロードできませんでした、フォルダーの書き込み権を確認してください。</item>
+		<item name="error_to_large">ファイルの最大サイズに到達しました。</item>
+		<item name="file_not_exists">ファイルは存在しません。</item>
+		<item name="delete_failed">削除できませんでした。</item>
+		<item name="folder_exists">フォルダーは既に存在します。</item>
+		<item name="no_filesystem">ファイルシステムが存在しません。</item>
+		<item name="createdir_failed">フォルダーを作成できませんでした。</item>
+		<item name="createzip_failed">zipファイルを作成できませんでした。</item>
+		<item name="rename_failed">名前を変更できませんでした。</item>
+		<item name="no_read_access"></item>
+		<item name="savecontent_failed"></item>
+	</group>
+	<group target="message">
+		<item name="zip_success">zipを作成しました。</item>
+		<item name="copy_success">コピーしました。</item>
+		<item name="move_success">移動しました。</item>
+		<item name="createdoc_success">ドキュメントを作成しました。</item>
+		<item name="delete_success">削除しました。</item>
+		<item name="directory_ok">フォルダーを作成しました。</item>
+		<item name="keepalive">生存確認</item>
+		<item name="upload_ok">アップロードしました。</item>
+		<item name="confirm_cut">選択しているファイルを本当に切り取りしますか?</item>
+		<item name="confirm_copy">選択しているファイルを本当にコピーしますか?</item>
+		<item name="confirm_paste">ここに切り取りかコピーしたファイルを本当に貼り付けますか?</item>
+		<item name="confirm_delete">選択しているファイルを本当に削除しますか?</item>
+		<item name="insert">ファイルのデータを取得中です、しばらくお待ち下さい...</item>
+		<item name="paste_in_progress">貼り付けの処理が進行中です、しばらくお待ち下さい...</item>
+	</group>
+	<group target="common">
+		<item name="createdir">フォルダーを作成</item>
+		<item name="createfile">新しくファイルを作成</item>
+		<item name="help">ヘルプ</item>
+		<item name="refresh">再表示</item>
+		<item name="upload">アップロード</item>
+		<item name="directory">選択しているフォルダ</item>
+		<item name="imagemanager">画像の管理</item>
+		<item name="title">Moxiecodeファイル管理</item>
+		<item name="alert_ok">確認</item>
+		<item name="confirm_yes">はい</item>
+		<item name="confirm_no">いいえ</item>
+	</group>
+	<group target="button">
+		<item name="create">作成</item>
+		<item name="cancel">取り消し</item>
+		<item name="save"></item>
+	</group>
+	<group target="panel">
+		<item name="categories">カテゴリー</item>
+		<item name="preview">プレビュー</item>
+		<item name="favorites">お気に入り</item>
+		<item name="history">履歴</item>
+	</group>
+	<group target="actions">
+		<item name="insert">挿入</item>
+		<item name="download">ダウンロード</item>
+		<item name="rename">名前を変更</item>
+		<item name="cut">切り取り</item>
+		<item name="copy">コピー</item>
+		<item name="paste">貼り付け</item>
+		<item name="deleteit">削除</item>
+		<item name="zip">圧縮</item>
+		<item name="view">表示</item>
+		<item name="select_all">すべて選択</item>
+		<item name="unselect_all">選択をすべて解除</item>
+		<item name="addfavorites">お気に入りに追加</item>
+		<item name="removefavorites">お気に入りから削除</item>
+		<item name="edit">編集</item>
+	</group>
+	<group target="filelist">
+		<item name="filename">ファイル名</item>
+		<item name="size">サイズ</item>
+		<item name="type">種類</item>
+		<item name="modified">変更日</item>
+		<item name="with_selected">選択しているファイル：</item>
+		<item name="info_dirs">フォルダー：</item>
+		<item name="info_files">ファイル：</item>
+		<item name="info_size">合計のファイルサイズ：</item>
+		<item name="info_access">アクセス権限：</item>
+		<item name="loading">読み込み中...</item>
+	</group>
+	<group target="createdir">
+		<item name="title">フォルダーの作成</item>
+		<item name="description">作成したいフォルダーの名前を入力してください。</item>
+		<item name="template">テンプレート:</item>
+		<item name="select_template">-- テンプレートを選択してください --</item>
+		<item name="directory_name">フォルダー名:</item>
+		<item name="create_in">作成先:</item>
+		<item name="progress">フォルダーを作成中です、しばらくお待ち下さい...</item>
+	</group>
+	<group target="createdoc">
+		<item name="title">ドキュメントを作成</item>
+		<item name="description">フォームに入力するとテンプレートから新しいドキュメントを作成します。</item>
+		<item name="template">テンプレート:</item>
+		<item name="select_template">-- テンプレートを選択してください --</item>
+		<item name="name">名前</item>
+		<item name="path">パス</item>
+		<item name="preview">プレビュー</item>
+		<item name="preview_title"></item>
+	</group>
+	<group target="upload">
+		<item name="title">アップロード</item>
+		<item name="description">フォームを使用してアップロードします。</item>
+		<item name="valid_extensions">有効な拡張子：</item>
+		<item name="max_upload_size">アップロードの最大の大きさ：</item>
+		<item name="file_to_upload">アップロードするファイル：</item>
+		<item name="as_file_name">アップロード先のファイル名：</item>
+		<item name="path">パス： </item>
+		<item name="button_upload">アップロード</item>
+		<item name="browse">ファイルを追加</item>
+		<item name="progress">アップロード中</item>
+		<item name="upload_warn">ファイルをアップロード中です、アップロードを本当に取り止めますか?</item>
+		<item name="statusrow"></item>
+		<item name="progressinfo"></item>
+		<item name="abort"></item>
+		<item name="add_more"></item>
+		<item name="upload_to_server"></item>
+		<item name="cancelled"></item>
+		<item name="choose_files"></item>
+		<item name="basic_upload"></item>
+		<item name="remove"></item>
+		<item name="file"></item>
+		<item name="size"></item>
+		<item name="status"></item>
+		<item name="no_valid_files"></item>
+	</group>
+	<group target="createzip">
+		<item name="title">zipを作成</item>
+		<item name="description">作成したいZIPファイルの名前を入力して下さい。</item>
+		<item name="name">名前：</item>
+		<item name="path">パス：</item>
+	</group>
+	<group target="tinymce">
+		<item name="insertfile_desc">ファイルの挿入</item>
+	</group>
+	<group target="edit">
+		<item name="title"></item>
+	</group>
+	<group target="favorites">
+		<item name="special_folder_title">お気に入り</item>
+	</group>
+	<group target="history">
+		<item name="special_folder_title">履歴</item>
+	</group>
+	<group target="uploaded">
+		<item name="special_folder_title"></item>
+	</group>
+    </language>
+</language-pack>

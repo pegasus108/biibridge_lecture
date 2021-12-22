@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>書誌情報新刊並び順指定 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="/admin/css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/admin/css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-1.4.4.min.js" charset="UTF-8"></script>
+<link href="/admin/js/jquery-ui/css/custom-theme/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/admin/js/jquery-ui/js/jquery-ui-1.8.6.custom.min.js"></script>
+<script type="text/javascript" src="/admin/js/common_list.js"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script>
+<script type="text/javascript" src="/admin/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="/admin/js/new_sort.js"></script>
+<style type="text/css">
+{literal}
+.btn {
+	padding:20px 0;
+}
+#sortable tr:nth-child(even) {
+	background-color: #F9F9F9;
+}
+#sortable tr:hover {
+	background-color: #FFC94D;
+	cursor: move;
+}
+#listForm th.header {
+	padding-right:20px;
+	background-repeat:no-repeat;
+	background-position:right center;
+	background-image:url(/admin/images/new_sort/bg.gif);
+	cursor: pointer;
+}
+#listForm th.headerSortUp {
+	background-image:url(/admin/images/new_sort/desc.gif);
+}
+#listForm th.headerSortDown {
+	background-image:url(/admin/images/new_sort/asc.gif);
+}
+{/literal}
+</style>
+</head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header"><td colspan="2"><!--#include virtual="/admin/publisher/include/header.html" --></td></tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+<!--#include virtual="/admin/publisher/include/gnavi.html" -->
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../../publisher/">管理トップ</a>&nbsp;&gt;&nbsp;<a href="../">書誌情報管理</a>&nbsp;&gt;&nbsp;書誌情報新刊並び順指定</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi">
+<!--#include virtual="/admin/publisher/include/lnavi/book.html" -->
+				</td>
+				<td id="main">
+					<div class="title"><h1><strong>書誌情報新刊並び順指定</strong></h1></div>
+					<p>ドラッグ＆ドロップで並び替えが出来ます。</p>
+					<form method="post" id="listForm" action="index.php">
+						<div class="btn"><input type="submit" value="並び順を保存" /></div>
+{if $errors.sort}
+						<p class="error" style="padding-bottom: 10px;"><strong>{$errors.sort|escape}</strong></p>
+{/if}
+						<div class="tableWrapper">
+							<table>
+								<thead>
+									<tr>
+										<th>書影</th>
+										<th>書籍名</th>
+										<th>ISBN</th>
+										<th>公開</th>
+										<th>出版年月日</th>
+										<th>公開日</th>
+									</tr>
+								</thead>
+								<tbody id="sortable">
+{foreach name=newBookList from=$newBookList item=v}
+									<tr>
+										<td><img src="{if $v.image}{'/\.(.+?)$/'|@preg_replace:'_sml.$1':$v.image}{else}/web/img/common/now_printing_78x97.gif{/if}" alt="" /></td>
+										<td>{$v.name|escape}<input type="hidden" name="bookNoList[]" value="{$v.book_no|escape}" /></td>
+										<td>{$v.isbn|escape}</td>
+										<td>{if $v.public_status == 1}公開{else}非公開{/if}</td>
+										<td>{$v.book_date|date_format:"%Y/%m/%d"|escape}</td>
+										<td>{$v.public_date|date_format:"%Y/%m/%d"|escape}</td>
+									</tr>
+{/foreach}
+								</tbody>
+							</table>
+						</div>
+						<input type="hidden" name="action" value="process" />
+						<div class="btn"><input type="submit" value="並び順を保存" /></div>
+					</form>
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

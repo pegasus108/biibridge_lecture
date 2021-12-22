@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/admin_admin_lower.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Imagetoolbar" content="no" />
+<title>出版社一覧 - hondana管理システム</title>
+<meta name="keywords" content="hondana" />
+<meta name="description" content="hondana" />
+<link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/common.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="../../js/jquery.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/admin/js/common.js"></script></head>
+<body>
+	<a id="pagetop" name="pagetop"></a>
+	<div id="page">
+		<table id="container">
+<!--ヘッダー部　ここから-->
+			<tr id="header">
+				<td colspan="2">
+					<div id="logo"><a href="../../admin/">hondana管理システム</a></div>
+					<div id="hnavi">
+						<p id="hnaviLogout"><a href="../../logout/">ログアウト</a></p>
+						<div class="clear">&nbsp;</div>
+					</div>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--ヘッダー部　ここまで-->
+<!--グローバルナビ部　ここから-->
+			<tr id="gnavi">
+				<td colspan="2">
+					<ul>
+						<li id="gnavi01"><a href="../info/">インフォメーション</a></li>
+						<li id="gnavi02"><a href="../publisher/">出版社</a></li>
+						<li id="gnavi03"><a href="../import_images/">書影一括取込</a></li>
+					</ul>
+					<div class="clear">&nbsp;</div>
+				</td>
+			</tr>
+<!--グローバルナビ部　ここまで-->
+<!--パンくず　ここから-->
+			<tr id="path">
+				<td colspan="2"><a href="../../admin/">管理トップ</a>&nbsp;&gt;&nbsp;<!-- InstanceBeginEditable name="path" -->出版社一覧</td>
+			</tr>
+<!--パンくず　ここまで-->
+<!--コンテンツ部　ここから-->
+			<tr id="contents">
+				<td id="lnavi"><!-- InstanceBeginEditable name="lnavi" -->
+					<dl>
+						<dt class="title">出版社一覧</dt>
+						<dd>
+							<ul>
+								<li><a href="./">出版社一覧</a></li>
+								<li><a href="new/">出版社登録</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</td>
+				<td id="main"><!-- InstanceBeginEditable name="main" -->
+					<div class="title"><h1><strong>出版社一覧</strong></h1></div>
+					<div class="searchWrapper">
+						<form action="./" method="post">
+							<div class="tableWrapper">
+								<table>
+									<tr>
+										<th>出版社名</th>
+										<td><input type="text" name="search_name" value="{$search_name}" /></td>
+									</tr>
+									<tr>
+										<th>出版社名カナ</th>
+										<td><input type="text" name="search_kana" value="{$search_kana}" /></td>
+									</tr>
+									<tr>
+										<th>URL</th>
+										<td><input type="text" name="search_url" value="{$search_url}" /></td>
+									</tr>
+									<tr>
+										<th>表示件数</th>
+										<td>
+											<select name="amount">
+												<option value="10"{if $amount=='10'} selected{/if}>10件</option>
+												<option value="20"{if $amount=='20'} selected{/if}>20件</option>
+												<option value="50"{if $amount=='50'} selected{/if}>50件</option>
+												<option value="100"{if $amount=='100'} selected{/if}>100件</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<p class="button"><input type="submit" name="search_submit" value="検索" /></p>
+						</form>
+					</div>
+					{if $pageInfo.total}
+					<form method="post" id="listForm">
+						<div class="tableWrapper">
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+							<table>
+								<tr>
+									<th>
+										<a href="./?order=name_{if $order=='name_asc'}desc{else}asc{/if}">
+											{if $order=='name_asc'}▲{elseif $order=='name_desc'}▼{/if}出版社名
+										</a>
+									</th>
+									<th>
+										<a href="./?order=kana_{if $order=='kana_asc'}desc{else}asc{/if}">
+											{if $order=='kana_asc'}▲{elseif $order=='kana_desc'}▼{/if}出版社名カナ
+										</a>
+									</th>
+									<th>
+										<a href="./?order=url_{if $order=='url_asc'}desc{else}asc{/if}">
+											{if $order=='url_asc'}▲{elseif $order=='url_desc'}▼{/if}URL
+										</a>
+									</th>
+									<th>
+										<a href="./?order=c_stamp_{if $order=='c_stamp_asc'}desc{else}asc{/if}">
+											{if $order=='c_stamp_asc'}▲{elseif $order=='c_stamp_desc'}▼{/if}登録日
+										</a>
+									</th>
+								</tr>
+								{foreach name=publisher from=$publisherList item=publisher}
+								<tr>
+									<td><a href="edit/?publisher_no={$publisher.publisher_no}">{$publisher.name|escape}</a></td>
+									<td>{$publisher.kana|escape}</td>
+									<td>{$publisher.url|escape}</td>
+									<td>{$publisher.c_stamp_f|escape}</td>
+								</tr>
+								{/foreach}
+							</table>
+							<div class="paging">
+								{$pageInfo.first|escape}～{$pageInfo.last|escape}件 (全{$pageInfo.total|escape}件)
+								{if $pageInfo.prev}<a href="index.php?page={$pageInfo.prev|escape}">前の{$pageInfo.amount|escape}件</a>{/if}
+								{if $pageInfo.pagePrev}<a href="index.php?page={$pageInfo.pagePrev|escape}">＜</a>{/if}
+								|
+								{section name=paging loop=$pageInfo.pageLast-$pageInfo.pageFirst+1}
+								{if $pageInfo.pageFirst+$smarty.section.paging.index == $pageInfo.page}<strong>{$pageInfo.pageFirst+$smarty.section.paging.index|escape}</strong> |
+								{else}<a href="index.php?page={$pageInfo.pageFirst+$smarty.section.paging.index|escape}">&nbsp;{$pageInfo.pageFirst+$smarty.section.paging.index|escape}&nbsp;</a> |{/if}
+								{/section}
+								{if $pageInfo.pageNext}<a href="index.php?page={$pageInfo.pageNext|escape}">＞</a>{/if}
+								{if $pageInfo.next}<a href="index.php?page={$pageInfo.next|escape}">次の{$pageInfo.amount|escape}件</a>{/if}
+							</div>
+						</div>
+					</form>
+					{else}
+					<div class="slimeWrapper">
+						<div class="slime">
+							<strong>ご指定の検索条件に該当する出版社はございません。</strong>
+						</div>
+					</div>
+					{/if}
+				</td>
+			</tr>
+<!--コンテンツ部　ここまで-->
+<!--フッター部　ここから-->
+			<tr id="footer">
+				<td colspan="2">
+					<div id="copyright">Copyright &copy; everiGo-WEB系システム開発プログラマ育成科事業実施委員会</div>
+				</td>
+			</tr>
+<!--フッター部　ここまで-->
+		</table>
+	</div>
+</body>
+</html>

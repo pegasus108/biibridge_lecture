@@ -1,0 +1,56 @@
+version: '3'
+
+services: 
+    laravel:
+        build:
+            context:  .
+            dockerfile: ./docker/laravel/Dockerfile
+        ports:
+            - 80:80
+        env_file: .env.docker
+        volumes:
+            - ./laravel:/var/www/html
+            - /var/www/html/vendor
+        depends_on: 
+            - mysql
+        
+    hondana:
+        build:
+            context: .
+            dockerfile: ./docker/hondana/Dockerfile
+        ports:
+            - 81:80
+        env_file: .env.docker
+        depends_on: 
+            - mysql
+
+    mysql:
+        build:
+            context: .
+            dockerfile: ./docker/mysql/Dockerfile
+        ports:
+            - 3306:3306
+        env_file: .env.docker
+        volumes:
+            - ./docker/mysql/data:/var/lib/mysql
+    
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_USER=root
+            - PMA_PASSWORD=password
+            - UPLOAD_LIMIT=100M
+        depends_on:
+            - mysql
+        ports:
+            - 8080:80
+        volumes:
+            - /sessions 
+
+    mailhog:
+        image: mailhog/mailhog:latest
+        ports:
+            - "8025:8025"
+            - "1025:1025"

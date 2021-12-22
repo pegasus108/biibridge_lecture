@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+* {
+	margin:0;
+	padding:0;
+}
+html, body {
+	height:100%;
+}
+body {
+	font-family:"ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3";
+}
+
+ul, ol, dl {
+	list-style-type:none;
+}
+
+img,
+a img {
+	border:0;
+}
+
+table {
+	border-collapse:collapse;
+}
+
+textarea {
+	font-size:100%;
+}
+
+.clear {
+	clear:both;
+	height:0;
+	visibility:hidden;
+	font-size:1px;
+	line-height:0px;
+}
+
+br {
+	letter-spacing:0;
+}

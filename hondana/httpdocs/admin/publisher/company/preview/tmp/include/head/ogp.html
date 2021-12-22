@@ -1,0 +1,6 @@
+<meta property="og:url" content="http://{$smarty.server.SERVER_NAME|cat:$smarty.server.REQUEST_URI}">
+<meta property="og:site_name" content="{$siteName|escape}">
+<meta property="og:title" content="{$title|escape}{if $title!=''}{$titleSep|escape}{/if}{$baseTitle|escape}">
+<meta property="og:type" content="website">
+<meta property="og:description" content="{$description|strip_tags:false|truncate:120}" />
+<meta property="og:image" content="{$ogpimg|escape}">
