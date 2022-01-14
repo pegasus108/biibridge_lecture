@@ -38,5 +38,5 @@ docker-compose exec laravel php artisan test
 # デプロイ
 Laravelプロジェクトが編集されたときにGithubActionsによって自動で更新されます。  
 
-★branchのテスト★
+2022/01/14★branchのテスト★
 
