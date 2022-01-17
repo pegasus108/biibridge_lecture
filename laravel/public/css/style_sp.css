@@ -120,5 +120,6 @@ html, body {
 .ft-copyright p {
   font-size: 12px;
   line-height: 20px;
-  text-align: center;
+  /* text-align: center; */
+  color: rgb(241, 18, 156);
   margin: 20px 0; }
