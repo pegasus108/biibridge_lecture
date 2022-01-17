@@ -40,3 +40,6 @@ Laravelプロジェクトが編集されたときにGithubActionsによって自
 
 ★branchのテスト★
 
+*2022.1.17　git勉強*
+---
+
