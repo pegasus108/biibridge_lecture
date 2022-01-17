@@ -1,4 +1,4 @@
-# EC2サーバー
+# EC2 Server
 ## URL
 ### Laravel
 ```
