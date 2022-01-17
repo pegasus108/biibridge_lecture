@@ -2,7 +2,7 @@
     <div id="Hd">
         <div class="hd-logo">
             <h1><a href="{{ route('index') }}"><img src="{{ asset('image/common/logo.png') }}" alt="" /></a></h1>
-            <p><a href="{{ route('everigo.index')}}">everiGO</a>専用のシステム教材です</p>
+            <p>『<a href="{{ route('everigo.index')}}">everiGO</a>専用のシステム教材です』</p>
             <p>知識よりも実践に重きを置いた講座です</p>
             <p>本システムの修正を繰り返すことで開発技術を身に着けます</p>
         </div>
